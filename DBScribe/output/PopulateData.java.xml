@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\PopulateData.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Collections</name></name>;</import>
+
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Course</name><operator>.</operator><name>CourseAlreadyExistsException</name></name>;</import>
+
+
+<class><specifier>public</specifier> class <name>PopulateData</name> <block>{
+
+		
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>populateDepartments</name><parameter_list>()</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>done</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name><init>=<expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<comment type="line">//Retrieve the current semester ID</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SemesterSelect</name> <init>= <expr><literal type="string">"Select * FROM namesdept"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SemesterSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						
+						<try>try<block>{
+							
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Adding new dept"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<decl_stmt><decl><type><name>String</name></type> <name>deptName</name><init>=<expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"names"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+								<expr_stmt><expr><call><name><name>Department</name><operator>.</operator><name>addNewDepartment</name></name><argument_list>(<argument><expr><name>deptName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>deptName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><name>done</name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt>
+								
+							
+						}</block>
+						
+						<catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+							<comment type="line">// TODO Auto-generated catch block</comment>
+							<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>Department</name><operator>.</operator><name>DepartmentAlreadyExistsException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+							<comment type="line">// TODO Auto-generated catch block</comment>
+							<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						}</block></catch></try>
+					}</block></while>
+					
+				}</block></then></if>
+				
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+				
+			<finally>finally<block>{
+				<comment type="line">//Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		<return>return <expr><name>done</name></expr>;</return>	
+	}</block></function>
+		
+	
+	<comment type="line">//50 administrators will be added</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>populateAdmins</name><parameter_list>()</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>done</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name><init>=<expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Department</name></argument>&gt;</argument_list></name></type> <name>getAllDepts</name><init>=<expr><call><name><name>Department</name><operator>.</operator><name>getAllDepartments</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<comment type="line">//Retrieve the current semester ID</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SemesterSelect</name> <init>= <expr><literal type="string">"Select * FROM names3 order by rand() LIMIT 50"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SemesterSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+							
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<decl_stmt><decl><type><name>int</name></type> <name>size</name><init>=<expr><call><name><name>getAllDepts</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>rand</name><init>=<expr><call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>random</name></name><argument_list>()</argument_list></call><operator>*</operator><name>size</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>Department</name></type> <name>d</name><init>=<expr><call><name><name>getAllDepts</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>rand</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>name</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<try>try<block>{
+							
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Adding new admin"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>Admin</name><operator>.</operator><name>addAdmin</name></name><argument_list>(<argument><expr><name>name</name></expr></argument>, <argument><expr><name>d</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>d</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"-------"</literal><operator>+</operator><name>name</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><name>done</name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt>
+							
+						}</block>
+						
+						<catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+							<comment type="line">// TODO Auto-generated catch block</comment>
+							<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>People</name><operator>.</operator><name>loginDetailsnotAdded</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+							<comment type="line">// TODO Auto-generated catch block</comment>
+							<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						}</block></catch></try>
+					}</block></while>
+					
+				}</block></then></if>
+					
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+				
+			<finally>finally<block>{
+				<comment type="line">//Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		
+		<return>return <expr><name>done</name></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>populateProfessors</name><parameter_list>()</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>done</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name><init>=<expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Department</name></argument>&gt;</argument_list></name></type> <name>getAllDepts</name><init>=<expr><call><name><name>Department</name><operator>.</operator><name>getAllDepartments</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<comment type="line">//Retrieve the current semester ID</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SemesterSelect</name> <init>= <expr><literal type="string">"Select * FROM names3"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SemesterSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						
+						<decl_stmt><decl><type><name>int</name></type> <name>size</name><init>=<expr><call><name><name>getAllDepts</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>rand</name><init>=<expr><call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>random</name></name><argument_list>()</argument_list></call><operator>*</operator><name>size</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>Department</name></type> <name>d</name><init>=<expr><call><name><name>getAllDepts</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>rand</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>name</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<try>try<block>{
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Adding new professor"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>Professor</name><operator>.</operator><name>addProfToDb</name></name><argument_list>(<argument><expr><name>name</name></expr></argument>, <argument><expr><name>d</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>d</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"------"</literal><operator>+</operator><name>name</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>	
+								<expr_stmt><expr><name>done</name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt>
+						}</block>
+						
+						<catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+							<comment type="line">// TODO Auto-generated catch block</comment>
+							<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						}</block></catch></try>
+					}</block></while>
+					
+				}</block></then></if>
+					
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+				
+			<finally>finally<block>{
+				<comment type="line">//Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		
+		<return>return <expr><name>done</name></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>populateStudents</name><parameter_list>()</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>done</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name><init>=<expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Department</name></argument>&gt;</argument_list></name></type> <name>getAllDepts</name><init>=<expr><call><name><name>Department</name><operator>.</operator><name>getAllDepartments</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<comment type="line">//Retrieve the current semester ID</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SemesterSelect</name> <init>= <expr><literal type="string">"Select * FROM names2"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SemesterSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						
+						<decl_stmt><decl><type><name>String</name></type> <name>name</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>size</name><init>=<expr><call><name><name>getAllDepts</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>rand</name><init>=<expr><call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>random</name></name><argument_list>()</argument_list></call><operator>*</operator><name>size</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>Department</name></type> <name>d</name><init>=<expr><call><name><name>getAllDepts</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>rand</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>level</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+						
+						<while>while<condition>(<expr><name>level</name><operator>==</operator><literal type="number">0</literal> <operator>||</operator> <name>level</name> <operator>==</operator> <literal type="number">4</literal></expr>)</condition><block>{
+							<expr_stmt><expr><name>level</name> <operator>=</operator> <call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>random</name></name><argument_list>()</argument_list></call><operator>*</operator><literal type="number">4</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						}</block></while>
+						
+						
+						<try>try<block>{
+							
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Adding new students"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>Student</name><operator>.</operator><name>addStudentToDb</name></name><argument_list>(<argument><expr><name>name</name></expr></argument>, <argument><expr><name>d</name></expr></argument>, <argument><expr><name>level</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Level:"</literal><operator>+</operator><name>level</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>d</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"---------"</literal><operator>+</operator><name>name</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>name</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><name>done</name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt>
+							
+						}</block>
+						
+						<catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+							<comment type="line">// TODO Auto-generated catch block</comment>
+							<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						}</block></catch> 
+						<catch>catch <parameter_list>(<param><decl><type><name><name>Student</name><operator>.</operator><name>levelNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+							<comment type="line">// TODO Auto-generated catch block</comment>
+							<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						}</block></catch></try>
+					}</block></while>
+					
+				}</block></then></if>
+					
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+				
+			<finally>finally<block>{
+				<comment type="line">//Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		
+		<return>return <expr><name>done</name></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>populateCourses</name><parameter_list>()</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>done</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name><init>=<expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Department</name></argument>&gt;</argument_list></name></type> <name>departments</name> <init>= <expr><call><name><name>Department</name><operator>.</operator><name>getAllDepartments</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<comment type="line">//Retrieve the current semester ID</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SemesterSelect</name> <init>= <expr><literal type="string">"Select * FROM names1"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SemesterSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<decl_stmt><decl><type><name>String</name></type> <name>name</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>Collections</name><operator>.</operator><name>shuffle</name></name><argument_list>(<argument><expr><name>departments</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>Department</name></type> <name>d</name> <init>= <expr><call><name><name>departments</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>Course</name><operator>.</operator><name>addCourse</name></name><argument_list>(<argument><expr><name>name</name></expr></argument>, <argument><expr><name>d</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>done</name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></while>
+					
+				}</block></then></if>
+					
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseAlreadyExistsException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+				
+			<finally>finally<block>{
+				<comment type="line">//Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		
+		<return>return <expr><name>done</name></expr>;</return>
+	}</block></function>
+		
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>populateCoursesOffered</name><parameter_list>()</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>done</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name><init>=<expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Department</name></argument>&gt;</argument_list></name></type> <name>departments</name> <init>= <expr><call><name><name>Department</name><operator>.</operator><name>getAllDepartments</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>count</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+					<for>for<control>(<init><decl><type><name>Department</name></type> <name>d</name><range>:<expr><name>departments</name></expr></range></decl></init>)</control><block>{
+						<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Course</name></argument>&gt;</argument_list></name></type> <name>courses</name> <init>= <expr><call><name><name>Course</name><operator>.</operator><name>getCoursesOfDepartment</name></name><argument_list>(<argument><expr><name>d</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name></type> <name>profs</name> <init>= <expr><call><name><name>Professor</name><operator>.</operator><name>getAllProfInADept</name></name><argument_list>(<argument><expr><call><name><name>d</name><operator>.</operator><name>getDepartmentID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>int</name><index>[]</index></type> <name>capacity</name> <init>= <expr><block>{<expr><literal type="number">5</literal></expr>,<expr><literal type="number">8</literal></expr>,<expr><literal type="number">10</literal></expr>}</block></expr></init></decl>;</decl_stmt>
+						
+						<for>for<control>(<init><decl><type><name>Course</name></type> <name>course</name><range>:<expr><name>courses</name></expr></range></decl></init>)</control><block>{
+							<expr_stmt><expr><call><name><name>Collections</name><operator>.</operator><name>shuffle</name></name><argument_list>(<argument><expr><name>profs</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<decl_stmt><decl><type><name>Professor</name></type> <name>p</name> <init>= <expr><call><name><name>profs</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<decl_stmt><decl><type><name>int</name></type> <name>cap</name> <init>= <expr><call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>random</name></name><argument_list>()</argument_list></call><operator>*</operator><literal type="number">3</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Course:"</literal><operator>+</operator><call><name><name>course</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"--------------"</literal><operator>+</operator><call><name><name>p</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>							
+							<expr_stmt><expr><call><name><name>CourseOffered</name><operator>.</operator><name>addCourseOfferingToDatabase</name></name><argument_list>(<argument><expr><name>course</name></expr></argument>, <argument><expr><name>p</name></expr></argument>, <argument><expr><name><name>capacity</name><index>[<expr><name>cap</name></expr>]</index></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><name>done</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+						}</block></for>
+					}</block></for>
+				}</block></then></if>
+					
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Professor</name><operator>.</operator><name>ProfessorDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingAlreadyExistsException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"------------------------------Offering already exists"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingNotSchedulable</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"*******************************Offering not schedulable"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+				
+			<finally>finally<block>{
+				<comment type="line">//Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		<return>return <expr><name>done</name></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>populateApplicationDetails</name><parameter_list>()</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>done</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name><init>=<expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>getAllStudents</name><init>=<expr><call><name><name>Student</name><operator>.</operator><name>getAllStudents</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					
+					<for>for<control>(<init><decl><type><name>int</name></type> <name>i</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</init><condition><expr><name>i</name><operator>&lt;</operator><literal type="number">150</literal></expr>;</condition><incr><expr><name>i</name><operator>++</operator></expr></incr>)</control><block>{
+						<expr_stmt><expr><call><name><name>Collections</name><operator>.</operator><name>shuffle</name></name><argument_list>(<argument><expr><name>getAllStudents</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>Student</name></type> <name>s</name> <init>= <expr><call><name><name>getAllStudents</name><operator>.</operator><name>remove</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<decl_stmt><decl><type><name>boolean</name><index>[]</index></type> <name>skills</name><init>=<expr><operator>new</operator> <name><name>boolean</name><index>[<expr><literal type="number">5</literal></expr>]</index></name></expr></init></decl>;</decl_stmt>
+						<for>for<control>(<init><decl><type><name>int</name></type> <name>j</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</init><condition><expr><name>j</name><operator>&lt;</operator><literal type="number">5</literal></expr>;</condition><incr><expr><name>j</name><operator>++</operator></expr></incr>)</control><block>{
+							<decl_stmt><decl><type><name>int</name></type> <name>x</name> <init>= <expr><call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>random</name></name><argument_list>()</argument_list></call><operator>*</operator><literal type="number">2</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<if>if<condition>(<expr><name>x</name><operator>==</operator><literal type="number">0</literal></expr>)</condition><then>
+								<block type="pseudo"><expr_stmt><expr><name><name>skills</name><index>[<expr><name>j</name></expr>]</index></name><operator>=</operator><literal type="boolean">false</literal></expr>;</expr_stmt></block></then>
+							<elseif>else <if>if<condition>(<expr><name>x</name><operator>==</operator><literal type="number">1</literal></expr>)</condition><then>
+								<block type="pseudo"><expr_stmt><expr><name><name>skills</name><index>[<expr><name>j</name></expr>]</index></name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt></block></then></if></elseif></if>
+						}</block></for>
+						
+						<decl_stmt><decl><type><name>double</name><index>[]</index></type> <name>workEx</name> <init>= <expr><block>{<expr><literal type="number">1.0</literal></expr>,<expr><literal type="number">1.5</literal></expr>,<expr><literal type="number">2.0</literal></expr>,<expr><literal type="number">2.5</literal></expr>,<expr><literal type="number">3</literal></expr>,<expr><literal type="number">3.5</literal></expr>,<expr><literal type="number">4</literal></expr>}</block></expr></init></decl>;</decl_stmt>
+						
+						<decl_stmt><decl><type><name>double</name></type> <name>workExSelected</name> <init>= <expr><name><name>workEx</name><index>[<expr><call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>random</name></name><argument_list>()</argument_list></call><operator>*</operator><literal type="number">7</literal></expr></argument>)</argument_list></call></expr>]</index></name></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">" "</literal><operator>+</operator><name><name>skills</name><index>[<expr><literal type="number">0</literal></expr>]</index></name><operator>+</operator><name><name>skills</name><index>[<expr><literal type="number">1</literal></expr>]</index></name><operator>+</operator><name><name>skills</name><index>[<expr><literal type="number">2</literal></expr>]</index></name><operator>+</operator><name><name>skills</name><index>[<expr><literal type="number">3</literal></expr>]</index></name><operator>+</operator><name><name>skills</name><index>[<expr><literal type="number">4</literal></expr>]</index></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>workExSelected</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						
+						<decl_stmt><decl><type><name>boolean</name></type> <name>x</name> <init>= <expr><call><name><name>JobApplication</name><operator>.</operator><name>addApplicationDetails</name></name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><name>workExSelected</name></expr></argument>,<argument><expr><name><name>skills</name><index>[<expr><literal type="number">0</literal></expr>]</index></name></expr></argument>, <argument><expr><name><name>skills</name><index>[<expr><literal type="number">1</literal></expr>]</index></name></expr></argument>, <argument><expr><name><name>skills</name><index>[<expr><literal type="number">2</literal></expr>]</index></name></expr></argument>, <argument><expr><name><name>skills</name><index>[<expr><literal type="number">3</literal></expr>]</index></name></expr></argument>, <argument><expr><name><name>skills</name><index>[<expr><literal type="number">4</literal></expr>]</index></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<if>if<condition>(<expr><operator>!</operator><name>x</name></expr>)</condition><then>
+							<block type="pseudo"><expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"*****************************Application exists:"</literal><operator>+</operator><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt></block></then></if>
+						<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>done</name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt>
+						
+					}</block></for>
+					
+				}</block></then></if>
+					
+			}</block> 
+			<catch>catch <parameter_list>(<param><decl><type><name><name>People</name><operator>.</operator><name>PersonDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+				
+			<finally>finally<block>{
+				<comment type="line">//Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		
+		<return>return <expr><name>done</name></expr>;</return>
+	}</block></function>
+		
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>populateJobPostings</name><parameter_list>()</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>done</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name><init>=<expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name></type> <name>getAllProfessors</name><init>=<expr><call><name><name>Professor</name><operator>.</operator><name>getAllProf</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					
+					<for>for<control>(<init><decl><type><name>int</name></type> <name>i</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</init><condition><expr><name>i</name><operator>&lt;</operator><literal type="number">50</literal></expr>;</condition><incr><expr><name>i</name><operator>++</operator></expr></incr>)</control><block>{
+						<expr_stmt><expr><call><name><name>Collections</name><operator>.</operator><name>shuffle</name></name><argument_list>(<argument><expr><name>getAllProfessors</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>Professor</name></type> <name>p</name> <init>= <expr><call><name><name>getAllProfessors</name><operator>.</operator><name>remove</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<decl_stmt><decl><type><name>boolean</name><index>[]</index></type> <name>skills</name><init>=<expr><operator>new</operator> <name><name>boolean</name><index>[<expr><literal type="number">5</literal></expr>]</index></name></expr></init></decl>;</decl_stmt>
+						<for>for<control>(<init><decl><type><name>int</name></type> <name>j</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</init><condition><expr><name>j</name><operator>&lt;</operator><literal type="number">5</literal></expr>;</condition><incr><expr><name>j</name><operator>++</operator></expr></incr>)</control><block>{
+							<decl_stmt><decl><type><name>int</name></type> <name>x</name> <init>= <expr><call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>random</name></name><argument_list>()</argument_list></call><operator>*</operator><literal type="number">2</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<if>if<condition>(<expr><name>x</name><operator>==</operator><literal type="number">0</literal></expr>)</condition><then>
+								<block type="pseudo"><expr_stmt><expr><name><name>skills</name><index>[<expr><name>j</name></expr>]</index></name><operator>=</operator><literal type="boolean">false</literal></expr>;</expr_stmt></block></then>
+							<elseif>else <if>if<condition>(<expr><name>x</name><operator>==</operator><literal type="number">1</literal></expr>)</condition><then>
+								<block type="pseudo"><expr_stmt><expr><name><name>skills</name><index>[<expr><name>j</name></expr>]</index></name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt></block></then></if></elseif></if>
+						}</block></for>
+						
+						<decl_stmt><decl><type><name>double</name><index>[]</index></type> <name>gPA</name> <init>= <expr><block>{<expr><literal type="number">2.5</literal></expr>, <expr><literal type="number">3</literal></expr>, <expr><literal type="number">3.5</literal></expr>, <expr><literal type="number">3.6</literal></expr>, <expr><literal type="number">3.7</literal></expr>, <expr><literal type="number">3.8</literal></expr>, <expr><literal type="number">4</literal></expr>}</block></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>double</name></type> <name>gPASelected</name> <init>= <expr><name><name>gPA</name><index>[<expr><call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>random</name></name><argument_list>()</argument_list></call><operator>*</operator><literal type="number">7</literal></expr></argument>)</argument_list></call></expr>]</index></name></expr></init></decl>;</decl_stmt>
+						
+						<decl_stmt><decl><type><name>double</name><index>[]</index></type> <name>workEx</name> <init>= <expr><block>{<expr><literal type="number">1.0</literal></expr>,<expr><literal type="number">1.5</literal></expr>,<expr><literal type="number">2.0</literal></expr>,<expr><literal type="number">2.5</literal></expr>,<expr><literal type="number">3</literal></expr>,<expr><literal type="number">3.5</literal></expr>,<expr><literal type="number">4</literal></expr>}</block></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>double</name></type> <name>workExSelected</name> <init>= <expr><name><name>workEx</name><index>[<expr><call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>random</name></name><argument_list>()</argument_list></call><operator>*</operator><literal type="number">7</literal></expr></argument>)</argument_list></call></expr>]</index></name></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">" "</literal><operator>+</operator><name><name>skills</name><index>[<expr><literal type="number">0</literal></expr>]</index></name><operator>+</operator><name><name>skills</name><index>[<expr><literal type="number">1</literal></expr>]</index></name><operator>+</operator><name><name>skills</name><index>[<expr><literal type="number">2</literal></expr>]</index></name><operator>+</operator><name><name>skills</name><index>[<expr><literal type="number">3</literal></expr>]</index></name><operator>+</operator><name><name>skills</name><index>[<expr><literal type="number">4</literal></expr>]</index></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>workExSelected</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>gPASelected</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						
+						<decl_stmt><decl><type><name>int</name></type> <name>x</name><init>=<expr><call><name><name>Job</name><operator>.</operator><name>postJob</name></name><argument_list>(<argument><expr><call><name><name>p</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><call><name><name>p</name><operator>.</operator><name>getDeptID</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><name>gPASelected</name></expr></argument>, <argument><expr><name>workExSelected</name></expr></argument>,<argument><expr><name><name>skills</name><index>[<expr><literal type="number">0</literal></expr>]</index></name></expr></argument>, <argument><expr><name><name>skills</name><index>[<expr><literal type="number">1</literal></expr>]</index></name></expr></argument>, <argument><expr><name><name>skills</name><index>[<expr><literal type="number">2</literal></expr>]</index></name></expr></argument>, <argument><expr><name><name>skills</name><index>[<expr><literal type="number">3</literal></expr>]</index></name></expr></argument>, <argument><expr><name><name>skills</name><index>[<expr><literal type="number">4</literal></expr>]</index></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Posted job is: "</literal><operator>+</operator><name>x</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>done</name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt>
+						
+					}</block></for>
+					
+				}</block></then></if>
+					
+			}</block> 
+			<catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+			<catch>catch <parameter_list>(<param><decl><type><name><name>Job</name><operator>.</operator><name>NoPermissionException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+				
+			<finally>finally<block>{
+				<comment type="line">//Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		<return>return <expr><name>done</name></expr>;</return>
+	}</block></function>
+		
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>populateTAs</name><parameter_list>()</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>done</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name><init>=<expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>getAllCoursesOffered</name><init>=<expr><call><name><name>CourseOffered</name><operator>.</operator><name>getAllCurrentlyOfferedCourses</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>getAllStudents</name><init>=<expr><call><name><name>Student</name><operator>.</operator><name>getAllStudents</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					
+					<for>for<control>(<init><decl><type><name>int</name></type> <name>i</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</init><condition><expr><name>i</name><operator>&lt;</operator><literal type="number">100</literal></expr>;</condition><incr><expr><name>i</name><operator>++</operator></expr></incr>)</control><block>{
+						<expr_stmt><expr><call><name><name>Collections</name><operator>.</operator><name>shuffle</name></name><argument_list>(<argument><expr><name>getAllCoursesOffered</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>Collections</name><operator>.</operator><name>shuffle</name></name><argument_list>(<argument><expr><name>getAllStudents</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+						<decl_stmt><decl><type><name>CourseOffered</name></type> <name>c</name><init>=<expr><call><name><name>getAllCoursesOffered</name><operator>.</operator><name>remove</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>Student</name></type> <name>s</name><init>=<expr><call><name><name>getAllStudents</name><operator>.</operator><name>remove</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"--------"</literal><operator>+</operator><call><name><name>c</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>boolean</name></type> <name>check</name><init>=<expr><call><name><name>TA</name><operator>.</operator><name>addTAtoTAtable</name></name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><call><name><name>c</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<if>if<condition>(<expr><operator>!</operator><name>check</name></expr>)</condition><then><block>{
+							<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"---------------------TA already exists"</literal><operator>+</operator><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"------"</literal><operator>+</operator><call><name><name>c</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						}</block></then></if>
+						<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>done</name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt>
+						
+					}</block></for>
+					
+				}</block></then></if>
+					
+			}</block> 
+			<catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>TA</name><operator>.</operator><name>AlreadyExistsInTAException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+				
+			<finally>finally<block>{
+				<comment type="line">//Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		<return>return <expr><name>done</name></expr>;</return>
+	}</block></function>
+		
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>populateExams</name><parameter_list>()</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>done</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name><init>=<expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>getAllOfferedCourses</name><init>=<expr><call><name><name>CourseOffered</name><operator>.</operator><name>getAllCurrentlyOfferedCourses</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					
+
+					<for>for<control>(<init><decl><type><name>CourseOffered</name></type> <name>c</name><range>:<expr><name>getAllOfferedCourses</name></expr></range></decl></init>)</control><block>{
+						
+						<decl_stmt><decl><type><name>int</name><index>[]</index></type> <name>marks</name> <init>= <expr><block>{<expr><literal type="number">20</literal></expr>,<expr><literal type="number">30</literal></expr>,<expr><literal type="number">40</literal></expr>,<expr><literal type="number">50</literal></expr>}</block></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>getMarks</name> <init>= <expr><name><name>marks</name><index>[<expr><call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>random</name></name><argument_list>()</argument_list></call><operator>*</operator><literal type="number">4</literal></expr></argument>)</argument_list></call></expr>]</index></name></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>name</name><init>=<expr><literal type="string">"assign"</literal></expr></init></decl>;</decl_stmt>
+						
+						<for>for<control>(<init><decl><type><name>int</name></type> <name>i</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</init><condition><expr><name>i</name><operator>&lt;</operator><literal type="number">3</literal></expr>;</condition><incr><expr><name>i</name><operator>++</operator></expr></incr>)</control><block>{
+							
+							<decl_stmt><decl><type><name>CourseExamStructure</name></type> <name>examAddition</name><init>=<expr><operator>new</operator> <call><name>CourseExamStructure</name><argument_list>(<argument><expr><name>c</name></expr></argument>, <argument><expr><name>name</name><operator>+</operator><literal type="string">""</literal><operator>+</operator><operator>(</operator><name>i</name><operator>+</operator><literal type="number">1</literal><operator>)</operator></expr></argument>, <argument><expr><name>getMarks</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<decl_stmt><decl><type><name>boolean</name></type> <name>check</name><init>=<expr><call><name><name>examAddition</name><operator>.</operator><name>addNewExam</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+							<if>if<condition>(<expr><name>check</name></expr>)</condition><then>
+								<block type="pseudo"><expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>c</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"-------"</literal><operator>+</operator><name>name</name><operator>+</operator><literal type="string">""</literal><operator>+</operator><operator>(</operator><name>i</name><operator>+</operator><literal type="number">1</literal><operator>)</operator><operator>+</operator><literal type="string">"-----------"</literal><operator>+</operator><name>getMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt></block></then>
+							<else>else<block>{
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"------------------exam not added----------------------"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							}</block></else></if>
+						
+						}</block></for>
+						
+						
+
+						<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>done</name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></for>
+					}</block></then></if>
+					
+				
+					
+			}</block> 
+			<catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+				
+			<finally>finally<block>{
+				<comment type="line">//Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		
+		<return>return <expr><name>done</name></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>populateStudentsToCourses</name><parameter_list>()</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>done</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name><init>=<expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>getAllOfferedCourses</name><init>=<expr><call><name><name>CourseOffered</name><operator>.</operator><name>getAllCurrentlyOfferedCourses</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>				
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>getAllStudents</name><init>=<expr><call><name><name>Student</name><operator>.</operator><name>getAllStudents</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<for>for<control>(<init><decl><type><name>CourseOffered</name></type> <name>c</name><range>:<expr><name>getAllOfferedCourses</name></expr></range></decl></init>)</control><block>{
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"--------------------------------------------------------------------"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<if>if<condition>(<expr><call><name><name>getAllStudents</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call><operator>&lt;=</operator><literal type="number">10</literal></expr>)</condition><then><block>{
+							<expr_stmt><expr><name>getAllStudents</name> <operator>=</operator> <call><name><name>Student</name><operator>.</operator><name>getAllStudents</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						}</block></then></if>
+						
+						<for>for<control>(<init><decl><type><name>int</name></type> <name>i</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</init><condition><expr><name>i</name><operator>&lt;</operator><literal type="number">5</literal></expr>;</condition><incr><expr><name>i</name><operator>++</operator></expr></incr>)</control><block>{
+							
+							<expr_stmt><expr><call><name><name>Collections</name><operator>.</operator><name>shuffle</name></name><argument_list>(<argument><expr><name>getAllStudents</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<decl_stmt><decl><type><name>Student</name></type> <name>s</name><init>=<expr><call><name><name>getAllStudents</name><operator>.</operator><name>remove</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+							<decl_stmt><decl><type><name>StudentEnrollment</name></type> <name>se</name><init>=<expr><operator>new</operator> <call><name>StudentEnrollment</name><argument_list>(<argument><expr><call><name><name>c</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<decl_stmt><decl><type><name>boolean</name></type> <name>check</name><init>=<expr><call><name><name>se</name><operator>.</operator><name>enrollStudents</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+							<if>if<condition>(<expr><name>check</name></expr>)</condition><then><block>{
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">""</literal><operator>+</operator><call><name><name>c</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"-----------"</literal><operator>+</operator><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><name>done</name><operator>=</operator><literal type="boolean">true</literal></expr>;</expr_stmt>
+							}</block></then>
+							<else>else<block>{
+								<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"-------------------no capacity-----------------------------"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							}</block></else></if>
+					}</block></for>
+						
+					}</block></for>
+				}</block></then></if>
+			}</block>
+					 
+			<catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> 
+				
+			<finally>finally<block>{
+				<comment type="line">//Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		<return>return <expr><name>done</name></expr>;</return>
+	}</block></function>
+	
+	
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list> <block>{
+		<comment type="line">// TODO Auto-generated method stub</comment>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkDept</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkAdmin</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkProf</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkStud</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkCourses</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt> 
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkCourseOffered</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkAppDetails</name> <init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkJobPostings</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkTAs</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkExams</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkStudentsToCourse</name><init>=<expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>PopulateData</name></type> <name>p</name><init>=<expr><operator>new</operator> <call><name>PopulateData</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		
+		<expr_stmt><expr><name>checkDept</name><operator>=</operator><call><name><name>p</name><operator>.</operator><name>populateDepartments</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		
+		<if>if<condition>(<expr><name>checkDept</name></expr>)</condition><then><block>{
+			 <expr_stmt><expr><name>checkAdmin</name><operator>=</operator> <call><name><name>p</name><operator>.</operator><name>populateAdmins</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"dept not added---stopped"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+		
+		<if>if<condition>(<expr><name>checkAdmin</name></expr>)</condition><then><block>{
+			 <expr_stmt><expr><name>checkProf</name><operator>=</operator> <call><name><name>p</name><operator>.</operator><name>populateProfessors</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Admin not added---stopped"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+		
+		<if>if<condition>(<expr><name>checkProf</name></expr>)</condition><then><block>{
+			 <expr_stmt><expr><name>checkStud</name> <operator>=</operator> <call><name><name>p</name><operator>.</operator><name>populateStudents</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Prof not added---stopped"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+
+		<if>if<condition>(<expr><name>checkStud</name></expr>)</condition><then><block>{
+			 <expr_stmt><expr><name>checkCourses</name> <operator>=</operator> <call><name><name>p</name><operator>.</operator><name>populateCourses</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Students not added---stopped"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+		
+		<if>if<condition>(<expr><name>checkCourses</name></expr>)</condition><then><block>{
+			 <expr_stmt><expr><name>checkCourseOffered</name> <operator>=</operator> <call><name><name>p</name><operator>.</operator><name>populateCoursesOffered</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Courses not added---stopped"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+		
+		<if>if<condition>(<expr><name>checkCourseOffered</name></expr>)</condition><then><block>{
+			 <expr_stmt><expr><name>checkAppDetails</name> <operator>=</operator> <call><name><name>p</name><operator>.</operator><name>populateApplicationDetails</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Course offered not added---stopped"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+		
+		<if>if<condition>(<expr><name>checkAppDetails</name></expr>)</condition><then><block>{
+			 <expr_stmt><expr><name>checkJobPostings</name> <operator>=</operator> <call><name><name>p</name><operator>.</operator><name>populateJobPostings</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Applications not added---stopped"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+		
+		<if>if<condition>(<expr><name>checkJobPostings</name></expr>)</condition><then><block>{
+			 <expr_stmt><expr><name>checkTAs</name> <operator>=</operator> <call><name><name>p</name><operator>.</operator><name>populateTAs</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Postings not added---stopped"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+		
+		<if>if<condition>(<expr><name>checkTAs</name></expr>)</condition><then><block>{
+			<expr_stmt><expr><name>checkExams</name> <operator>=</operator> <call><name><name>p</name><operator>.</operator><name>populateExams</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"TAs not added---stopped"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+		
+		<if>if<condition>(<expr><name>checkExams</name></expr>)</condition><then><block>{
+			<expr_stmt><expr><name>checkStudentsToCourse</name> <operator>=</operator> <call><name><name>p</name><operator>.</operator><name>populateStudentsToCourses</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"exams not added---stopped"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+		
+		<if>if<condition>(<expr><name>checkStudentsToCourse</name></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"All done"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Students to courses not added---stopped"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+
+	}</block></function>
+
+}</block></class>
+</unit>

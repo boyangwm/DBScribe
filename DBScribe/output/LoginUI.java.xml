@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\frontend\LoginUI.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>frontend</name></name>;</package>
+
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JPanel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>border</name><operator>.</operator><name>EmptyBorder</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JLabel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JOptionPane</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JTextField</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JButton</name></name>;</import>
+
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionListener</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionEvent</name></name>;</import>
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JPasswordField</name></name>;</import>
+
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Login</name></name>;</import>
+
+
+
+<class><specifier>public</specifier> class <name>LoginUI</name> <super><extends>extends <name>JPanel</name></extends></super> <block>{
+
+	<comment type="block" format="javadoc">/**
+	 * 
+	 */</comment>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>String</name></type> <name>loginuserName</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>isLoginSuccessfull</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>final</specifier> <specifier>private</specifier> <name>JTextField</name></type> <name>textField</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>final</specifier> <specifier>private</specifier> <name>JPasswordField</name></type> <name>passwordField</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JButton</name></type> <name>btnForgotPassword</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JButton</name></type> <name>btnLogin</name></decl>;</decl_stmt>
+
+	
+	<constructor><specifier>public</specifier> <name>LoginUI</name><parameter_list>()</parameter_list> <block>{
+		<expr_stmt><expr><call><name>setBounds</name><argument_list>(<argument><expr><literal type="number">100</literal></expr></argument>, <argument><expr><literal type="number">100</literal></expr></argument>, <argument><expr><literal type="number">500</literal></expr></argument>, <argument><expr><literal type="number">300</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>setBorder</name><argument_list>(<argument><expr><operator>new</operator> <call><name>EmptyBorder</name><argument_list>(<argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>setLayout</name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblUmasLogin</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"UMAS Login"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblUmasLogin</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">182</literal></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>, <argument><expr><literal type="number">80</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>lblUmasLogin</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>textField</name> <operator>=</operator> <operator>new</operator> <call><name>JTextField</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>textField</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">171</literal></expr></argument>, <argument><expr><literal type="number">77</literal></expr></argument>, <argument><expr><literal type="number">121</literal></expr></argument>, <argument><expr><literal type="number">20</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>textField</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>textField</name><operator>.</operator><name>setColumns</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblUsername</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Username:"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblUsername</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">81</literal></expr></argument>, <argument><expr><literal type="number">80</literal></expr></argument>, <argument><expr><literal type="number">80</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>lblUsername</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><specifier>final</specifier> <name>JLabel</name></type> <name>lblPassword</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Password: "</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblPassword</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">82</literal></expr></argument>, <argument><expr><literal type="number">120</literal></expr></argument>, <argument><expr><literal type="number">79</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>lblPassword</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>passwordField</name> <operator>=</operator> <operator>new</operator> <call><name>JPasswordField</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>passwordField</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">171</literal></expr></argument>, <argument><expr><literal type="number">117</literal></expr></argument>, <argument><expr><literal type="number">121</literal></expr></argument>, <argument><expr><literal type="number">20</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>passwordField</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>btnLogin</name> <operator>=</operator> <operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"LOGIN"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnLogin</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+		 		<decl_stmt><decl><type><name>Login</name></type> <name>user</name> <init>= <expr><operator>new</operator> <call><name>Login</name><argument_list>(<argument><expr><call><name><name>textField</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call></expr></argument>,<argument><expr><call><name><name>passwordField</name><operator>.</operator><name>getPassword</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name>boolean</name></type> <name>isPresent</name> <init>= <expr><call><name><name>user</name><operator>.</operator><name>authenticate</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<if>if<condition>(<expr><name>isPresent</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+					<expr_stmt><expr><name>isLoginSuccessfull</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					<expr_stmt><expr><name>loginuserName</name> <operator>=</operator> <call><name><name>textField</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>textField</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>passwordField</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="string">"Login Successful"</literal></expr></argument>, <argument><expr><literal type="string">"Login Message"</literal></expr></argument>, <argument><expr><name><name>JOptionPane</name><operator>.</operator><name>INFORMATION_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>UMASAPP</name><operator>.</operator><name>initializeLoggedInUser</name></name><argument_list>(<argument><expr><name>loginuserName</name></expr></argument>, <argument><expr><name>isLoginSuccessfull</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></then> <else>else <block>{
+					<expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="string">"Login Not Successful"</literal></expr></argument>, <argument><expr><literal type="string">"Login Message"</literal></expr></argument>, <argument><expr><name><name>JOptionPane</name><operator>.</operator><name>INFORMATION_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></else></if>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnLogin</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">189</literal></expr></argument>, <argument><expr><literal type="number">164</literal></expr></argument>, <argument><expr><literal type="number">89</literal></expr></argument>, <argument><expr><literal type="number">23</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>btnLogin</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>btnForgotPassword</name> <operator>=</operator> <operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"FORGOT PASSWORD"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><call><name><name>btnForgotPassword</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<decl_stmt><decl><type><name>String</name></type> <name>passText</name> <init>= <expr><call><name><name>btnForgotPassword</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<if>if<condition>(<expr><call><name><name>passText</name><operator>.</operator><name>equals</name></name><argument_list>(<argument><expr><literal type="string">"FORGOT PASSWORD"</literal></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+					<expr_stmt><expr><call><name><name>passwordField</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>lblPassword</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>btnLogin</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>textField</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>btnForgotPassword</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">150</literal></expr></argument>, <argument><expr><literal type="number">164</literal></expr></argument>, <argument><expr><literal type="number">180</literal></expr></argument>, <argument><expr><literal type="number">23</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>btnForgotPassword</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"RECOVER PASSWORD"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></then> <else>else <block>{
+					<decl_stmt><decl><type><name>String</name></type> <name>username</name> <init>= <expr><call><name><name>textField</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<if>if<condition>(<expr><operator>!</operator><operator>(</operator><call><name><name>username</name><operator>.</operator><name>isEmpty</name></name><argument_list>()</argument_list></call><operator>)</operator></expr>)</condition><then><block>{
+						<decl_stmt><decl><type><name>boolean</name></type> <name>passwordrecovered</name> <init>= <expr><call><name><name>Login</name><operator>.</operator><name>recoverPassword</name></name><argument_list>(<argument><expr><name>username</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<if>if <condition>(<expr><name>passwordrecovered</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+							<expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="string">"Incorrect Username"</literal></expr></argument>,<argument><expr><literal type="string">"Error"</literal></expr></argument>,<argument><expr><name><name>JOptionPane</name><operator>.</operator><name>ERROR_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						}</block></then> <else>else<block>{
+							<expr_stmt><expr><call><name><name>btnForgotPassword</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">159</literal></expr></argument>, <argument><expr><literal type="number">214</literal></expr></argument>, <argument><expr><literal type="number">160</literal></expr></argument>, <argument><expr><literal type="number">23</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>btnForgotPassword</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"FORGOT PASSWORD"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>textField</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>passwordField</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>lblPassword</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>btnLogin</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						}</block></else></if>
+					}</block></then> <else>else <block>{
+						<expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="string">"No Data Entered"</literal></expr></argument>,<argument><expr><literal type="string">"Error"</literal></expr></argument>,<argument><expr><name><name>JOptionPane</name><operator>.</operator><name>ERROR_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></else></if>
+
+				}</block></else></if>
+				
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><call><name><name>btnForgotPassword</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">159</literal></expr></argument>, <argument><expr><literal type="number">214</literal></expr></argument>, <argument><expr><literal type="number">160</literal></expr></argument>, <argument><expr><literal type="number">23</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>btnForgotPassword</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		
+	}</block></constructor>
+}</block></class>
+</unit>

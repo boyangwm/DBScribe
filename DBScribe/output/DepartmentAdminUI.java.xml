@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\frontend\DepartmentAdminUI.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>frontend</name></name>;</package>
+
+
+<comment type="block" format="javadoc">/****************@author Simant Purohit*********************************/</comment>
+
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>BorderLayout</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>EventQueue</name></name>;</import>
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JFrame</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JPanel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>border</name><operator>.</operator><name>EmptyBorder</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JTabbedPane</name></name>;</import>
+
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Admin</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>DBAnnotation</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Department</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name>;</import>
+
+
+<class><specifier>public</specifier> class <name>DepartmentAdminUI</name> <super><extends>extends <name>JPanel</name></extends></super> <block>{
+
+	<comment type="block" format="javadoc">/**
+	 * 
+	 */</comment>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>Admin</name></type> <name>admin</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>Department</name></type> <name>adminDepartment</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>DepartmentAdminUI</name></type> <name>deptAdminUI</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>CourseScheduleUI</name></type> <name>courseScheduleUI</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>manageDeptCourses</name></type> <name>deptCoursesUI</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>OfferCoursesUI</name></type> <name>courseOfferedUI</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>WaitListMonitorDeptUI</name></type> <name>deptWaitList</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>ManageDeptPeople</name></type> <name>managePeople</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>AdminUseUI</name></type>  <name>adminDetailsPanel</name></decl>;</decl_stmt>
+
+	<comment type="block" format="javadoc">/**
+	 * Launch the application.
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name><name>EventQueue</name><operator>.</operator><name>invokeLater</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>Runnable</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>run</name><parameter_list>()</parameter_list> <block>{
+				<try>try <block>{
+					<decl_stmt><decl><type><name>DepartmentAdminUI</name></type> <name>frame</name> <init>= <expr><call><name><name>DepartmentAdminUI</name><operator>.</operator><name>getInstance</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Admin</name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>frame</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>DepartmentAdminUI</name></type> <name>getInstance</name><parameter_list>(<param><decl><type><name>Admin</name></type> <name>admin</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name></expr></argument></throws><block>{
+		<expr_stmt><expr><name>deptAdminUI</name> <operator>=</operator> <operator>new</operator> <call><name>DepartmentAdminUI</name><argument_list>(<argument><expr><name>admin</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<if>if<condition>(<expr><name>admin</name> <operator>==</operator> <literal type="null">null</literal> <operator>||</operator> <name>adminDepartment</name> <operator>==</operator> <literal type="null">null</literal></expr>)</condition><then>
+			<block type="pseudo"><return>return <expr><literal type="null">null</literal></expr>;</return></block></then>
+		<else>else
+			<block type="pseudo"><return>return <expr><name>deptAdminUI</name></expr>;</return></block></else></if>
+	}</block></function>
+
+	<constructor><specifier>private</specifier> <name>DepartmentAdminUI</name><parameter_list>(<param><decl><type><name>Admin</name></type> <name>a</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name></expr></argument></throws> <block>{
+		<expr_stmt><expr><name><name>DepartmentAdminUI</name><operator>.</operator><name>admin</name></name> <operator>=</operator> <name>a</name></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"deptID"</literal></expr></argument>, <argument><expr><literal type="string">"People"</literal></expr></argument>, <argument><expr><literal type="string">"DepartmentID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>deptID</name> <init>= <expr><call><name><name>admin</name><operator>.</operator><name>getDeptID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name><name>DepartmentAdminUI</name><operator>.</operator><name>adminDepartment</name></name> <operator>=</operator> <operator>new</operator> <call><name>Department</name><argument_list>(<argument><expr><name>deptID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<comment type="line">//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</comment>
+		<expr_stmt><expr><call><name>setBounds</name><argument_list>(<argument><expr><literal type="number">100</literal></expr></argument>, <argument><expr><literal type="number">100</literal></expr></argument>, <argument><expr><literal type="number">1024</literal></expr></argument>, <argument><expr><literal type="number">800</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<comment type="line">//contentPane = new JPanel();</comment>
+		<comment type="line">//contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));</comment>
+		<comment type="line">//contentPane.setLayout(new BorderLayout(0, 0));</comment>
+		<comment type="line">//setContentPane(contentPane);</comment>
+		<expr_stmt><expr><call><name>setBorder</name><argument_list>(<argument><expr><operator>new</operator> <call><name>EmptyBorder</name><argument_list>(<argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>setLayout</name><argument_list>(<argument><expr><operator>new</operator> <call><name>BorderLayout</name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JTabbedPane</name></type> <name>tabbedPane</name> <init>= <expr><operator>new</operator> <call><name>JTabbedPane</name><argument_list>(<argument><expr><name><name>JTabbedPane</name><operator>.</operator><name>TOP</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<comment type="line">//contentPane.add(tabbedPane, BorderLayout.CENTER);</comment>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>tabbedPane</name></expr></argument>, <argument><expr><name><name>BorderLayout</name><operator>.</operator><name>CENTER</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>courseScheduleUI</name> <operator>=</operator> <call><name><name>CourseScheduleUI</name><operator>.</operator><name>getInstance</name></name><argument_list>(<argument><expr><name>admin</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>panel</name> <init>= <expr><name>courseScheduleUI</name></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>tabbedPane</name><operator>.</operator><name>addTab</name></name><argument_list>(<argument><expr><literal type="string">"Manage Schedule"</literal></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><name>panel</name></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>deptCoursesUI</name> <operator>=</operator> <call><name><name>manageDeptCourses</name><operator>.</operator><name>getInstance</name></name><argument_list>(<argument><expr><name>admin</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>JTabbedPane</name></type> <name>tabbedPane_1</name> <init>= <expr><name>deptCoursesUI</name></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>tabbedPane</name><operator>.</operator><name>addTab</name></name><argument_list>(<argument><expr><literal type="string">"Manage Courses"</literal></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><name>tabbedPane_1</name></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>courseOfferedUI</name> <operator>=</operator> <call><name><name>OfferCoursesUI</name><operator>.</operator><name>getInstance</name></name><argument_list>(<argument><expr><name>admin</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>offerCourses</name> <init>= <expr><name>courseOfferedUI</name></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>tabbedPane_1</name><operator>.</operator><name>addTab</name></name><argument_list>(<argument><expr><literal type="string">"Offer Courses"</literal></expr></argument>, <argument><expr><name>offerCourses</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>deptWaitList</name> <operator>=</operator> <call><name><name>WaitListMonitorDeptUI</name><operator>.</operator><name>getInstance</name></name><argument_list>(<argument><expr><name>admin</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>waitListPanel</name> <init>= <expr><name>deptWaitList</name></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>tabbedPane</name><operator>.</operator><name>addTab</name></name><argument_list>(<argument><expr><literal type="string">"Wait List Monitor"</literal></expr></argument>, <argument><expr><name>waitListPanel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>managePeople</name> <operator>=</operator> <call><name><name>ManageDeptPeople</name><operator>.</operator><name>getInstance</name></name><argument_list>(<argument><expr><name>admin</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>managePeoplePanel</name> <init>= <expr><name>managePeople</name></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>tabbedPane</name><operator>.</operator><name>addTab</name></name><argument_list>(<argument><expr><literal type="string">"Manage Dept People"</literal></expr></argument>, <argument><expr><name>managePeoplePanel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		
+		<expr_stmt><expr><name>adminDetailsPanel</name> <operator>=</operator> <call><name><name>AdminUseUI</name><operator>.</operator><name>getInstance</name></name><argument_list>(<argument><expr><name>admin</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>adminDetails</name> <init>= <expr><name>adminDetailsPanel</name></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>tabbedPane</name><operator>.</operator><name>addTab</name></name><argument_list>(<argument><expr><literal type="string">"Manage my details"</literal></expr></argument>, <argument><expr><name>adminDetails</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>logOut</name> <init>= <expr><operator>new</operator> <call><name>LogOutUI</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>tabbedPane</name><operator>.</operator><name>addTab</name></name><argument_list>(<argument><expr><literal type="string">"Log out"</literal></expr></argument>, <argument><expr><name>logOut</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+<comment type="line">//		Thread waitListThread = new Thread(new WaitListScan());</comment>
+<comment type="line">//		waitListThread.start();</comment>
+	}</block></constructor>
+
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <specifier>synchronized</specifier> <name>void</name></type> <name>initializeAllTabs</name><parameter_list>()</parameter_list><block>{
+		<expr_stmt><expr><call><name><name>courseScheduleUI</name><operator>.</operator><name>initializeBackgroundData</name></name><argument_list>(<argument><expr><name>adminDepartment</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>deptCoursesUI</name><operator>.</operator><name>initializeData</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>courseOfferedUI</name><operator>.</operator><name>initializeEveryThing</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>managePeople</name><operator>.</operator><name>initializeValues</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>deptWaitList</name><operator>.</operator><name>initializeWaitListMonitor</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>		
+	}</block></function>
+}</block></class>
+</unit>

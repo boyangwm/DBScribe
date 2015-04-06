@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\Timeslots.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+
+<comment type="block" format="javadoc">/****************@author Simant Purohit*********************************/</comment>
+
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+
+
+<class><specifier>public</specifier> class <name>Timeslots</name> <block>{
+	<decl_stmt><decl><type><specifier>private</specifier> <name>int</name></type> <name>timeSlotID</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>int</name></type> <name>startHour</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>int</name></type> <name>endHour</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>int</name></type> <name>timeslotType</name></decl>;</decl_stmt>
+	
+	<comment type="block" format="javadoc">/**
+	 * @return the timeSlotID
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getTimeSlotID</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>timeSlotID</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @return the startHour
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getStartHour</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>startHour</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @return the endHour
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getEndHour</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>endHour</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @return the timeslotType
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getTimeslotType</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>timeslotType</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block">/*
+	 * Initializes the timeslot object using the timeslot id
+	 * Throws a illegal argument exception if the timeslot with the passed id does not exist 
+	 */</comment>
+	<constructor><specifier>public</specifier> <name>Timeslots</name><parameter_list>(<param><decl><type><name>int</name></type> <name>timeSlotID</name></decl></param>)</parameter_list><block>{
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<comment type="block">/*
+					 * query to retrieve all time slots and check if the time slot already exists
+					 */</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>findString</name> <init>= <expr><literal type="string">"Select * "</literal>
+							<operator>+</operator> <literal type="string">"FROM timeslots "</literal>
+							<operator>+</operator> <literal type="string">"WHERE TimeSlotID= ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>findString</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>timeSlotID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<comment type="block">/*
+					 * TIme slot exists, initialize all the instance variables
+					 */</comment>
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"startHour"</literal></expr></argument>, <argument><expr><literal type="string">"timeslots"</literal></expr></argument>, <argument><expr><literal type="string">"StartHour"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>startHour</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"StartHour"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"endHour"</literal></expr></argument>, <argument><expr><literal type="string">"timeslots"</literal></expr></argument>, <argument><expr><literal type="string">"EndHour"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>endHour</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"EndHour"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"timeSlotType"</literal></expr></argument>, <argument><expr><literal type="string">"timeslots"</literal></expr></argument>, <argument><expr><literal type="string">"TimeslotType"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>timeSlotType</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"TimeslotType"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>timeSlotID</name></name> <operator>=</operator> <name>timeSlotID</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>startHour</name></name> <operator>=</operator> <name>startHour</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>endHour</name></name> <operator>=</operator> <name>endHour</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>timeslotType</name></name> <operator>=</operator> <name>timeSlotType</name></expr>;</expr_stmt>
+					}</block></then>
+					
+					<else>else<block>{
+						<comment type="block">/*
+						 * the time slot doesn't exist
+						 */</comment>
+						<throw>throw <expr><operator>new</operator> <call><name>IllegalArgumentException</name><argument_list>(<argument><expr><literal type="string">"Timeslot does not exist"</literal></expr></argument>)</argument_list></call></expr>;</throw>
+					}</block></else></if>
+				}</block></then></if>
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<comment type="block">/*
+				 * Catches any exception related to the sql query
+				 */</comment>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+						
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+	}</block></constructor>
+	
+	<comment type="block">/*
+	 * Initialize a time sllot by using the start and end hour arguments
+	 * If the timeslot combination does not exist, a exception is thrown else the object is initialized
+	 * 
+	 */</comment>
+	<constructor><specifier>public</specifier> <name>Timeslots</name><parameter_list>(<param><decl><type><name>int</name></type> <name>startHour</name></decl></param>, <param><decl><type><name>int</name></type> <name>endHour</name></decl></param>)</parameter_list><block>{
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name>String</name></type> <name>findString</name> <init>= <expr><literal type="string">"Select *"</literal>
+							<operator>+</operator> <literal type="string">"FROM timeslots "</literal>
+							<operator>+</operator> <literal type="string">"WHERE starthour = ? and endhour = ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>findString</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>startHour</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>endHour</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<comment type="block">/*
+					 * if the time slot exists, initialize the instance variables
+					 */</comment>
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"startHour"</literal></expr></argument>, <argument><expr><literal type="string">"timeslots"</literal></expr></argument>, <argument><expr><literal type="string">"StartHour"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>timeslotID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"TimeslotID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"startHour"</literal></expr></argument>, <argument><expr><literal type="string">"timeslots"</literal></expr></argument>, <argument><expr><literal type="string">"StartHour"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>sHour</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"StartHour"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"endHour"</literal></expr></argument>, <argument><expr><literal type="string">"timeslots"</literal></expr></argument>, <argument><expr><literal type="string">"EndHour"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>eHour</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"EndHour"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"timeSlotType"</literal></expr></argument>, <argument><expr><literal type="string">"timeslots"</literal></expr></argument>, <argument><expr><literal type="string">"TimeslotType"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>timeSlotType</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"TimeslotType"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>timeSlotID</name></name> <operator>=</operator> <name>timeslotID</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>startHour</name></name> <operator>=</operator> <name>sHour</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>endHour</name></name> <operator>=</operator> <name>eHour</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>timeslotType</name></name> <operator>=</operator> <name>timeSlotType</name></expr>;</expr_stmt>
+					}</block></then>
+					
+					<else>else<block>{
+						<comment type="block">/*
+						 * the timeslot doesnt exist
+						 */</comment>
+						<throw>throw <expr><operator>new</operator> <call><name>IllegalArgumentException</name><argument_list>(<argument><expr><literal type="string">"Timeslot does not exist"</literal></expr></argument>)</argument_list></call></expr>;</throw>
+					}</block></else></if>
+				}</block></then></if>
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+			
+			
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+	}</block></constructor>
+	
+	<comment type="block">/*
+	 * Add the time slot with the specified start hor and end hour and the time slot type to the database
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>addTimeSlot</name><parameter_list>(<param><decl><type><name>int</name></type> <name>startHour</name></decl></param>, <param><decl><type><name>int</name></type> <name>endHour</name></decl></param>, <param><decl><type><name>int</name></type> <name>type</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name>IllegalArgumentException</name></expr></argument></throws><block>{
+		<comment type="block">/*
+		 * Checks the format and the length of hours and type of time slot along with the hours
+		 * Time slot type 1 is a one hour long time slot an type 2 is a 2 hour long time slots
+		 * If the checks are passed, the program proceeds with adding the time slots to the database
+		 */</comment>
+		<if>if<condition>(<expr><operator>!</operator><call><name>areHoursCorrect</name><argument_list>(<argument><expr><name>startHour</name></expr></argument>, <argument><expr><name>endHour</name></expr></argument>)</argument_list></call> <operator>||</operator> <operator>!</operator><call><name>isTypeCorrect</name><argument_list>(<argument><expr><name>startHour</name></expr></argument>,<argument><expr><name>endHour</name></expr></argument>,<argument><expr><name>type</name></expr></argument>)</argument_list></call></expr>)</condition><then>
+			<block type="pseudo"><throw>throw <expr><operator>new</operator> <call><name>IllegalArgumentException</name><argument_list>(<argument><expr><literal type="string">"Arguments incorrect"</literal></expr></argument>)</argument_list></call></expr>;</throw></block></then></if>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isAdded</name> <init>= <expr><literal type="boolean">true</literal></expr></init></decl>;</decl_stmt>
+		
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<comment type="line">//query to retrieve all time slots and check if the time slot already exists</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>findString</name> <init>= <expr><literal type="string">"Select * "</literal>
+							<operator>+</operator> <literal type="string">"FROM timeslots "</literal>
+							<operator>+</operator> <literal type="string">"WHERE starthour = ? and endhour = ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>findString</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>startHour</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>endHour</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<comment type="block">/*
+						 * time slot with similar parameters already exists, hence the exception
+						 */</comment>
+						<throw>throw <expr><operator>new</operator> <call><name>IllegalArgumentException</name><argument_list>(<argument><expr><literal type="string">"Already existing timeslot"</literal></expr></argument>)</argument_list></call></expr>;</throw>
+					}</block></then>
+					
+					<else>else<block>{
+						<comment type="block">/*
+						 * the new time slot can be added as all the pre-conditions are satisfied
+						 */</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Adding new timeslot:"</literal><operator>+</operator><name>startHour</name><operator>+</operator><literal type="string">" to "</literal><operator>+</operator><name>endHour</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+												
+						<decl_stmt><decl><type><name>String</name></type> <name>addString</name> <init>= <expr><literal type="string">"INSERT INTO timeslots "</literal>
+								<operator>+</operator> <literal type="string">"(StartHour, EndHour, TimeslotType) "</literal>
+								<operator>+</operator> <literal type="string">"Values(?,?,?);"</literal></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><name>statement</name> <operator>=</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>addString</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>startHour</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>endHour</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">3</literal></expr></argument>, <argument><expr><name>type</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"startHour"</literal></expr></argument>, <argument><expr><literal type="string">"timeslots"</literal></expr></argument>, <argument><expr><literal type="string">"StartHour"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"endHour"</literal></expr></argument>, <argument><expr><literal type="string">"timeslots"</literal></expr></argument>, <argument><expr><literal type="string">"EndHour"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"type"</literal></expr></argument>, <argument><expr><literal type="string">"timeslots"</literal></expr></argument>, <argument><expr><literal type="string">"TimeslotType"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>isAdded</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></else></if>
+				}</block></then></if>
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+			}</block></catch></try>
+			
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		
+		<return>return <expr><name>isAdded</name></expr>;</return>
+
+	}</block></function>
+	
+	<comment type="block">/*
+	 * Checks if the start and end hours mentioned are correct
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>areHoursCorrect</name><parameter_list>(<param><decl><type><name>int</name></type> <name>startHour</name></decl></param>, <param><decl><type><name>int</name></type> <name>endHour</name></decl></param>)</parameter_list><block>{
+		<if>if<condition>(<expr><name><name>startHour</name> <argument_list type="template">&lt; <argument><literal type="number">6</literal> <operator>||</operator> <name>startHour</name></argument> &gt;</argument_list></name> <literal type="number">20</literal></expr>)</condition><then>
+			<block type="pseudo"><return>return <expr><literal type="boolean">false</literal></expr>;</return></block></then></if>
+		<if>if<condition>(<expr><name>endHour</name><operator>&gt;</operator><literal type="number">21</literal> <operator>||</operator> <name>endHour</name> <operator>&lt;</operator> <literal type="number">7</literal></expr>)</condition><then>
+			<block type="pseudo"><return>return <expr><literal type="boolean">false</literal></expr>;</return></block></then></if>
+		<if>if<condition>(<expr><operator>(</operator><name>endHour</name> <operator>-</operator> <name>startHour</name><operator>)</operator> <operator>&lt;</operator> <literal type="number">1</literal></expr>)</condition><then>
+			<block type="pseudo"><return>return <expr><literal type="boolean">false</literal></expr>;</return></block></then></if>
+		<if>if<condition>(<expr><operator>(</operator><name>endHour</name> <operator>-</operator> <name>startHour</name><operator>)</operator> <operator>&gt;</operator> <literal type="number">2</literal></expr>)</condition><then>
+			<block type="pseudo"><return>return <expr><literal type="boolean">false</literal></expr>;</return></block></then>
+		<else>else 
+			<block type="pseudo"><return>return <expr><literal type="boolean">true</literal></expr>;</return></block></else></if>
+	}</block></function>
+	
+	<comment type="block">/*
+	 * Checks if any time conflict exists between two specified time slot objects
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>isConflict</name><parameter_list>(<param><decl><type><name>Timeslots</name></type> <name>t1</name></decl></param>, <param><decl><type><name>Timeslots</name></type> <name>t2</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>t1Type</name> <init>= <expr><call><name><name>t1</name><operator>.</operator><name>getTimeslotType</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>t2Type</name> <init>= <expr><call><name><name>t2</name><operator>.</operator><name>getTimeslotType</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">//System.out.println("Looking for conflict between timeslots "+t1+" and:"+t2);</comment>
+		
+		<if>if<condition>(<expr><name>t1Type</name> <operator>!=</operator> <name>t2Type</name></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>t1s</name> <init>= <expr><call><name><name>t1</name><operator>.</operator><name>getStartHour</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>t1e</name> <init>= <expr><call><name><name>t1</name><operator>.</operator><name>getEndHour</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>t2s</name> <init>= <expr><call><name><name>t2</name><operator>.</operator><name>getStartHour</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>t2e</name> <init>= <expr><call><name><name>t2</name><operator>.</operator><name>getEndHour</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<if>if<condition>(<expr><name>t1s</name> <operator>==</operator> <name>t2s</name> <operator>||</operator> <name>t1e</name> <operator>==</operator> <name>t2e</name></expr>)</condition><then>
+			<block type="pseudo"><return>return <expr><literal type="boolean">true</literal></expr>;</return></block></then></if>
+		<if>if<condition>(<expr><call><name>isInBetween</name><argument_list>(<argument><expr><name>t1s</name></expr></argument>, <argument><expr><name>t1e</name></expr></argument>, <argument><expr><name>t2s</name></expr></argument>)</argument_list></call></expr>)</condition><then>
+			<block type="pseudo"><return>return <expr><literal type="boolean">true</literal></expr>;</return></block></then></if>
+		<if>if<condition>(<expr><call><name>isInBetween</name><argument_list>(<argument><expr><name>t1s</name></expr></argument>, <argument><expr><name>t1e</name></expr></argument>, <argument><expr><name>t2e</name></expr></argument>)</argument_list></call></expr>)</condition><then>
+			<block type="pseudo"><return>return <expr><literal type="boolean">true</literal></expr>;</return></block></then></if>
+		<if>if<condition>(<expr><call><name>isInBetween</name><argument_list>(<argument><expr><name>t2s</name></expr></argument>, <argument><expr><name>t2e</name></expr></argument>, <argument><expr><name>t1s</name></expr></argument>)</argument_list></call></expr>)</condition><then>
+			<block type="pseudo"><return>return <expr><literal type="boolean">true</literal></expr>;</return></block></then></if>
+		<if>if<condition>(<expr><call><name>isInBetween</name><argument_list>(<argument><expr><name>t2s</name></expr></argument>, <argument><expr><name>t2e</name></expr></argument>, <argument><expr><name>t1e</name></expr></argument>)</argument_list></call></expr>)</condition><then>
+			<block type="pseudo"><return>return <expr><literal type="boolean">true</literal></expr>;</return></block></then></if>
+		
+		
+		<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+	}</block></function>
+	
+	<comment type="block">/*
+	 * Checks if the specified time slot (tocheck) falls between the start and end hours
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>isInBetween</name><parameter_list>(<param><decl><type><name>int</name></type> <name>start</name></decl></param>, <param><decl><type><name>int</name></type> <name>end</name></decl></param>, <param><decl><type><name>int</name></type> <name>toCheck</name></decl></param>)</parameter_list><block>{
+		<if>if<condition>(<expr><name><name>toCheck</name><argument_list type="template">&lt;<argument><name>end</name> <operator>&amp;&amp;</operator> <name>toCheck</name></argument>&gt;</argument_list></name><name>start</name></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+		}</block></then>
+		
+		<else>else
+			<block type="pseudo"><return>return <expr><literal type="boolean">false</literal></expr>;</return></block></else></if>
+		
+		
+	}</block></function>
+
+	<comment type="block">/*
+	 * Checks if the type of time slot mentioned is either 1 or two
+	 * Also checks if the time slot type 1 is one hour time slot and time slot 2 is a two hour time slot
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>isTypeCorrect</name><parameter_list>(<param><decl><type><name>int</name></type> <name>startHour</name></decl></param>, <param><decl><type><name>int</name></type> <name>endHour</name></decl></param>, <param><decl><type><name>int</name></type> <name>type</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>flag</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<if>if<condition>(<expr><name>type</name> <operator>!=</operator> <literal type="number">1</literal> <operator>&amp;&amp;</operator> <name>type</name> <operator>!=</operator> <literal type="number">2</literal></expr>)</condition><then>
+			<block type="pseudo"><expr_stmt><expr><name>flag</name> <operator>=</operator> <literal type="boolean">false</literal></expr>;</expr_stmt></block></then></if>
+		
+		<if>if<condition>(<expr><name>type</name> <operator>==</operator> <literal type="number">1</literal></expr>)</condition><then><block>{
+			<if>if<condition>(<expr><name>endHour</name> <operator>-</operator> <name>startHour</name> <operator>!=</operator> <literal type="number">1</literal></expr>)</condition><then>
+				<block type="pseudo"><expr_stmt><expr><name>flag</name> <operator>=</operator> <literal type="boolean">false</literal></expr>;</expr_stmt></block></then>
+			<else>else 
+				<block type="pseudo"><expr_stmt><expr><name>flag</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt></block></else></if>
+		}</block></then></if>
+		
+		<if>if<condition>(<expr><name>type</name> <operator>==</operator> <literal type="number">2</literal></expr>)</condition><then><block>{
+			<if>if<condition>(<expr><name>endHour</name> <operator>-</operator> <name>startHour</name> <operator>!=</operator> <literal type="number">2</literal></expr>)</condition><then>
+				<block type="pseudo"><expr_stmt><expr><name>flag</name> <operator>=</operator> <literal type="boolean">false</literal></expr>;</expr_stmt></block></then>
+			<else>else 
+				<block type="pseudo"><expr_stmt><expr><name>flag</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt></block></else></if>
+		}</block></then></if>
+		
+		<return>return <expr><name>flag</name></expr>;</return>
+	}</block></function>
+	
+	
+	<comment type="block">/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>String</name></type> <name>toString</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>String</name></type> <name>toReturn</name><init>=<expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name>toReturn</name><operator>+=</operator><literal type="string">"\nStart Hour:"</literal><operator>+</operator><call><name><name>this</name><operator>.</operator><name>getStartHour</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name>toReturn</name><operator>+=</operator><literal type="string">"\nEnd Hour:"</literal><operator>+</operator><call><name><name>this</name><operator>.</operator><name>getEndHour</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name>toReturn</name><operator>+=</operator><literal type="string">"\nTimeslot ID:"</literal><operator>+</operator><call><name><name>this</name><operator>.</operator><name>getTimeSlotID</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name>toReturn</name><operator>+=</operator><literal type="string">"\nTimeslot Type:"</literal><operator>+</operator><call><name><name>this</name><operator>.</operator><name>getTimeslotType</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<return>return <expr><name>toReturn</name></expr>;</return>
+	}</block></function>
+		
+}</block></class>
+
+
+</unit>

@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\frontend\CourseExamsUI.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>frontend</name></name>;</package>
+
+
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>BorderLayout</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>EventQueue</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>FlowLayout</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>GridLayout</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>lang</name><operator>.</operator><name>reflect</name><operator>.</operator><name>Array</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Collections</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>HashMap</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Iterator</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>LinkedHashSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>List</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Set</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Timer</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>TimerTask</name></name>;</import>
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JButton</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JFrame</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JPanel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>border</name><operator>.</operator><name>EmptyBorder</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JOptionPane</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JTabbedPane</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JLabel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JTextField</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JRadioButton</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JTable</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JProgressBar</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JScrollBar</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>BoxLayout</name></name>;</import>
+
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionListener</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionEvent</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>Color</name></name>;</import>
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>border</name><operator>.</operator><name>BevelBorder</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>border</name><operator>.</operator><name>EtchedBorder</name></name>;</import>
+
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseCurve</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseExamStructure</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseExams</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseOffered</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Student</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>StudentEnrollment</name></name>;</import>
+
+
+<class><specifier>public</specifier> class <name>CourseExamsUI</name> <super><extends>extends <name>JPanel</name></extends></super> <block>{
+
+	<comment type="block" format="javadoc">/**
+	 * 
+	 */</comment>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JPanel</name></type> <name>contentPane</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTextField</name></type> <name>newExamNameText</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTextField</name></type> <name>newExamTotalMarksText</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTable</name></type> <name>table</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTable</name></type> <name>table_1</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTable</name></type> <name>table_2</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JButton</name></type> <name>btnAddExam</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>final</specifier> <name>JPanel</name></type> <name>gradeDisplayPanel</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>final</specifier> <name>JPanel</name></type> <name>panel</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JPanel</name></type> <name>panel_2</name></decl>;</decl_stmt>
+<comment type="line">//	static private JButton btnCancel;</comment>
+<comment type="line">//	static private JPanel allExamsPanel;</comment>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JButton</name></type> <name>btnCancel</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JPanel</name></type> <name>allExamsPanel</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>CourseOffered</name></type> <name>courseOffered</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name><name>HashMap</name><argument_list type="template">&lt;<argument><name>JLabel</name></argument>,<argument><name>JTextField</name></argument>&gt;</argument_list></name></type> <name>studentExamMarksHashMap</name> <init>= <expr><operator>new</operator> <call><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>JLabel</name></argument>, <argument><name>JTextField</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>isTA</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>deleteFlag</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+	
+	<comment type="block" format="javadoc">/**
+	 * Launch the application.
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name><name>EventQueue</name><operator>.</operator><name>invokeLater</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>Runnable</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>run</name><parameter_list>()</parameter_list> <block>{
+				<try>try <block>{
+					<decl_stmt><decl><type><name>CourseExamsUI</name></type> <name>frame</name> <init>= <expr><operator>new</operator> <call><name>CourseExamsUI</name><argument_list>(<argument><expr><operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><literal type="number">423</literal></expr></argument>)</argument_list></call></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>frame</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	}</block></function>
+
+	
+	<comment type="line">// Paints the UI for the CourseExams</comment>
+	<constructor><specifier>public</specifier> <name>CourseExamsUI</name><parameter_list>(<param><decl><type><name>CourseOffered</name></type> <name>courseOffer</name></decl></param>, <param><decl><type><name>boolean</name></type> <name>taFlag</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name>courseOffered</name> <operator>=</operator> <name>courseOffer</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name>isTA</name> <operator>=</operator> <name>taFlag</name></expr>;</expr_stmt>
+		<comment type="line">//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</comment>
+		<expr_stmt><expr><call><name>setBounds</name><argument_list>(<argument><expr><literal type="number">100</literal></expr></argument>, <argument><expr><literal type="number">100</literal></expr></argument>, <argument><expr><literal type="number">900</literal></expr></argument>, <argument><expr><literal type="number">600</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<comment type="line">//contentPane = new JPanel();</comment>
+		<expr_stmt><expr><call><name>setBorder</name><argument_list>(<argument><expr><operator>new</operator> <call><name>EmptyBorder</name><argument_list>(<argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>setLayout</name><argument_list>(<argument><expr><operator>new</operator> <call><name>BorderLayout</name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<comment type="line">//setContentPane(contentPane);</comment>
+		
+		<decl_stmt><decl><type><name>JTabbedPane</name></type> <name>tabbedPane</name> <init>= <expr><operator>new</operator> <call><name>JTabbedPane</name><argument_list>(<argument><expr><name><name>JTabbedPane</name><operator>.</operator><name>TOP</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>tabbedPane</name></expr></argument>, <argument><expr><name><name>BorderLayout</name><operator>.</operator><name>CENTER</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>panel</name> <operator>=</operator> <operator>new</operator> <call><name>JPanel</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>tabbedPane</name><operator>.</operator><name>addTab</name></name><argument_list>(<argument><expr><literal type="string">"View Course"</literal></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><name>panel</name></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>setLayout</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblCourseDetails</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Course Details"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblCourseDetails</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">184</literal></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>, <argument><expr><literal type="number">92</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblCourseDetails</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblExamName</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Exam Name "</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblExamName</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">42</literal></expr></argument>, <argument><expr><literal type="number">40</literal></expr></argument>, <argument><expr><literal type="number">86</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblExamName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblTotalMarks</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Total Marks"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblTotalMarks</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">194</literal></expr></argument>, <argument><expr><literal type="number">40</literal></expr></argument>, <argument><expr><literal type="number">76</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblTotalMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblAddmodifyMarks</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Add/Modify Marks"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblAddmodifyMarks</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">376</literal></expr></argument>, <argument><expr><literal type="number">40</literal></expr></argument>, <argument><expr><literal type="number">112</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblAddmodifyMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblDelete</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Delete"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblDelete</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">562</literal></expr></argument>, <argument><expr><literal type="number">40</literal></expr></argument>, <argument><expr><literal type="number">46</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblDelete</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>btnAddExam</name> <operator>=</operator> <operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Add Exam"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnAddExam</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<decl_stmt><decl><type><name>String</name></type> <name>buttonText</name> <init>= <expr><call><name><name>btnAddExam</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<if>if<condition>(<expr><call><name><name>buttonText</name><operator>.</operator><name>equals</name></name><argument_list>(<argument><expr><literal type="string">"Add Exam"</literal></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+					<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setEditable</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setEditable</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>btnAddExam</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"Done"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>btnCancel</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></then> <else>else <block>{
+					
+					<decl_stmt><decl><type><name>String</name></type> <name>mks</name> <init>= <expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>String</name></type> <name>newExamName</name> <init>= <expr><call><name><name>newExamNameText</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<if>if<condition>(<expr><operator>(</operator><call><name><name>mks</name><operator>.</operator><name>matches</name></name><argument_list>(<argument><expr><literal type="string">"[0-9]{1,3}"</literal></expr></argument>)</argument_list></call><operator>)</operator> <operator>&amp;&amp;</operator> <operator>!</operator><operator>(</operator><call><name><name>newExamName</name><operator>.</operator><name>isEmpty</name></name><argument_list>()</argument_list></call><operator>)</operator></expr>)</condition><then><block>{
+						<decl_stmt><decl><type><name>int</name></type> <name>marks</name> <init>=  <expr><call><name><name>Integer</name><operator>.</operator><name>parseInt</name></name><argument_list>(<argument><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>CourseExamStructure</name></type> <name>newExamStruct</name> <init>= <expr><operator>new</operator> <call><name>CourseExamStructure</name><argument_list>(<argument><expr><name>courseOffered</name></expr></argument>,<argument><expr><name>newExamName</name></expr></argument>,<argument><expr><name>marks</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>newExamStruct</name><operator>.</operator><name>addNewExam</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						
+						<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setEditable</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setEditable</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>btnAddExam</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"Add Exam"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>revalidate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>repaint</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					}</block></then> <else>else <block>{
+						<expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="string">"Incorrect Data Entered"</literal></expr></argument>,<argument><expr><literal type="string">"Error"</literal></expr></argument>,<argument><expr><name><name>JOptionPane</name><operator>.</operator><name>ERROR_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></else></if>
+				
+				<expr_stmt><expr><call><name>initialize</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></else></if>
+		}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnAddExam</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">26</literal></expr></argument>, <argument><expr><literal type="number">422</literal></expr></argument>, <argument><expr><literal type="number">102</literal></expr></argument>, <argument><expr><literal type="number">23</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<if>if<condition>(<expr><name>isTA</name></expr>)</condition><then>
+			<block type="pseudo"><expr_stmt><expr><call><name><name>btnAddExam</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt></block></then></if>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>btnAddExam</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblExamName_1</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Exam Name:"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblExamName_1</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">156</literal></expr></argument>, <argument><expr><literal type="number">403</literal></expr></argument>, <argument><expr><literal type="number">73</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblExamName_1</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>newExamNameText</name> <operator>=</operator> <operator>new</operator> <call><name>JTextField</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setEditable</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">239</literal></expr></argument>, <argument><expr><literal type="number">400</literal></expr></argument>, <argument><expr><literal type="number">92</literal></expr></argument>, <argument><expr><literal type="number">20</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>newExamNameText</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setColumns</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblExamTotalMarks</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Exam Total Marks"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblExamTotalMarks</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">137</literal></expr></argument>, <argument><expr><literal type="number">445</literal></expr></argument>, <argument><expr><literal type="number">92</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblExamTotalMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>newExamTotalMarksText</name> <operator>=</operator> <operator>new</operator> <call><name>JTextField</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setEditable</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">245</literal></expr></argument>, <argument><expr><literal type="number">442</literal></expr></argument>, <argument><expr><literal type="number">86</literal></expr></argument>, <argument><expr><literal type="number">20</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>newExamTotalMarksText</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setColumns</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>allExamsPanel</name> <operator>=</operator> <operator>new</operator> <call><name>JPanel</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>allExamsPanel</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">26</literal></expr></argument>, <argument><expr><literal type="number">65</literal></expr></argument>, <argument><expr><literal type="number">800</literal></expr></argument>, <argument><expr><literal type="number">327</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>allExamsPanel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>allExamsPanel</name><operator>.</operator><name>setLayout</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>BoxLayout</name><argument_list>(<argument><expr><name>allExamsPanel</name></expr></argument>, <argument><expr><name><name>BoxLayout</name><operator>.</operator><name>Y_AXIS</name></name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>btnCancel</name> <operator>=</operator> <operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Cancel"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnCancel</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setEditable</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>newExamNameText</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setEditable</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>newExamTotalMarksText</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>btnAddExam</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"Add Exam"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name>initialize</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>revalidate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>repaint</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnCancel</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">347</literal></expr></argument>, <argument><expr><literal type="number">422</literal></expr></argument>, <argument><expr><literal type="number">89</literal></expr></argument>, <argument><expr><literal type="number">23</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>btnCancel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblAddeditStudentMarks</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Add/Edit student marks"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblAddeditStudentMarks</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">689</literal></expr></argument>, <argument><expr><literal type="number">40</literal></expr></argument>, <argument><expr><literal type="number">126</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblAddeditStudentMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>String</name></argument>,<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>examDetails</name> <init>= <expr><call><name><name>CourseExamStructure</name><operator>.</operator><name>viewExams</name></name><argument_list>(<argument><expr><name>courseOffered</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>Set</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>keys</name> <init>= <expr><call><name><name>examDetails</name><operator>.</operator><name>keySet</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>Iterator</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>keyIterator</name> <init>= <expr><call><name><name>keys</name><operator>.</operator><name>iterator</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<for>for<control>(<init><decl><type><name>String</name></type> <name>exam</name><range>: <expr><call><name><name>examDetails</name><operator>.</operator><name>keySet</name></name><argument_list>()</argument_list></call></expr></range></decl></init>)</control> <block>{
+			<decl_stmt><decl><type><name>int</name></type> <name>examMarks</name> <init>= <expr><operator>(</operator><name>int</name><operator>)</operator> <call><name><name>examDetails</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>exam</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>CourseExamStructure</name></type> <name>examStruct</name> <init>= <expr><operator>new</operator> <call><name>CourseExamStructure</name><argument_list>(<argument><expr><name>courseOffered</name></expr></argument>, <argument><expr><name>exam</name></expr></argument>,<argument><expr><name>examMarks</name></expr></argument>)</argument_list></call></expr></init></decl> ;</decl_stmt>
+			<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><call><name>makePanel</name><argument_list>(<argument><expr><name>examStruct</name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></for>
+		
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>panel_3</name> <init>= <expr><operator>new</operator> <call><name>JPanel</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><operator>!</operator><name>isTA</name></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>tabbedPane</name><operator>.</operator><name>addTab</name></name><argument_list>(<argument><expr><literal type="string">"Calculate Curve"</literal></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><name>panel_3</name></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>panel_3</name><operator>.</operator><name>setLayout</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then>
+		
+		<else>else<block>{
+			<expr_stmt><expr><call><name><name>panel_3</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>panel_3</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+		
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>panel_4</name> <init>= <expr><operator>new</operator> <call><name>JPanel</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>panel_4</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>, <argument><expr><literal type="number">329</literal></expr></argument>, <argument><expr><literal type="number">112</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel_3</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>panel_4</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel_4</name><operator>.</operator><name>setLayout</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>BoxLayout</name><argument_list>(<argument><expr><name>panel_4</name></expr></argument>, <argument><expr><name><name>BoxLayout</name><operator>.</operator><name>Y_AXIS</name></name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JButton</name></type> <name>btnCalculateByPercentage</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Calculate By Percentage of Students in Each Grade"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>btnCalculateByPercentage</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<decl_stmt><decl><type><name>String</name></type> <name>input</name> <init>= <expr><call><name><name>JOptionPane</name><operator>.</operator><name>showInputDialog</name></name><argument_list>(<argument><expr><literal type="string">"Input comma seperated grading criteria\n example: 30,40,30 (total 100%)"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name>String</name><index>[]</index></type> <name>percentages</name> <init>= <expr><call><name>parseGradeCriteriaString</name><argument_list>(<argument><expr><name>input</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<if>if<condition>(<expr><name>percentages</name><operator>!=</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+					<decl_stmt><decl><type><name><name>List</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>percentArray</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>total</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>count</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+					<comment type="line">//-------------processing string begins-----------//</comment>
+					<for>for<control>(<init><decl><type><name>int</name></type> <name>i</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</init><condition><expr><name>i</name><operator>&lt;</operator><name><name>percentages</name><operator>.</operator><name>length</name></name></expr>;</condition><incr><expr><name>i</name><operator>++</operator></expr></incr>)</control><block>{
+						<expr_stmt><expr><name>total</name><operator>+=</operator><call><name><name>Integer</name><operator>.</operator><name>parseInt</name></name><argument_list>(<argument><expr><name><name>percentages</name><index>[<expr><name>i</name></expr>]</index></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<if>if<condition>(<expr><name>total</name><operator>&lt;=</operator><literal type="number">100</literal></expr>)</condition><then><block>{
+							<expr_stmt><expr><call><name><name>percentArray</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><call><name><name>Integer</name><operator>.</operator><name>parseInt</name></name><argument_list>(<argument><expr><name><name>percentages</name><index>[<expr><name>i</name></expr>]</index></name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><name>count</name><operator>++</operator></expr>;</expr_stmt>
+						}</block></then>
+						
+						<else>else<block>{
+							<expr_stmt><expr><name>total</name><operator>-=</operator><call><name><name>Integer</name><operator>.</operator><name>parseInt</name></name><argument_list>(<argument><expr><name><name>percentages</name><index>[<expr><name>i</name></expr>]</index></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><name>count</name><operator>--</operator></expr>;</expr_stmt>
+							<break>break;</break>
+						}</block></else></if>
+					}</block></for>
+					
+					<if>if<condition>(<expr><name>count</name><operator>==</operator><name><name>percentages</name><operator>.</operator><name>length</name></name><operator>-</operator><literal type="number">1</literal></expr>)</condition><then><block>{
+						<if>if<condition>(<expr><name>total</name><operator>&lt;</operator><literal type="number">100</literal></expr>)</condition><then><block>{
+							<expr_stmt><expr><call><name><name>percentArray</name><operator>.</operator><name>remove</name></name><argument_list>(<argument><expr><name>count</name><operator>-</operator><literal type="number">1</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>percentArray</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><literal type="number">100</literal><operator>-</operator><name>total</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><name>total</name> <operator>=</operator> <literal type="number">100</literal></expr>;</expr_stmt>
+						}</block></then></if>
+					}</block></then></if>
+					
+					<if>if<condition>(<expr><name>total</name><operator>&lt;</operator><literal type="number">100</literal></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>percentArray</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><literal type="number">100</literal><operator>-</operator><name>total</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></then></if>
+					
+					<comment type="line">//-----------------processing string ends------//</comment>
+					
+					<decl_stmt><decl><type><name>CourseCurve</name></type> <name>curve</name> <init>= <expr><call><name><name>CourseCurve</name><operator>.</operator><name>calculatePercentageCurve</name></name><argument_list>(<argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><name>percentArray</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><specifier>final</specifier> <name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>String</name></argument>&gt;</argument_list></name></type> <name>curvedMarks</name> <init>= <expr><call><name><name>curve</name><operator>.</operator><name>getCourseCurve</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>removeAll</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>revalidate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>repaint</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<for>for<control>(<init><decl><type><name>Student</name></type> <name>s</name><range>:<expr><call><name><name>curvedMarks</name><operator>.</operator><name>keySet</name></name><argument_list>()</argument_list></call></expr></range></decl></init>)</control><block>{
+						<decl_stmt><decl><type><name>String</name></type> <name>name</name> <init>= <expr><call><name><name>s</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>curvedMarks</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>s</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>JPanel</name></type> <name>newPanel</name> <init>= <expr><call><name>makeGradePanel</name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>newPanel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></for>
+					
+					<decl_stmt><decl><type><name>JButton</name></type> <name>postbutton</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Post grades"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>postbutton</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+						
+						<comment type="line">//@Override</comment>
+						<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+							<expr_stmt><expr><call><name><name>StudentEnrollment</name><operator>.</operator><name>updateAllStudentGrade</name></name><argument_list>(<argument><expr><name>curvedMarks</name></expr></argument>, <argument><expr><name>courseOffered</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						}</block></function>
+					}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>postbutton</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>revalidate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>repaint</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></then></if>
+				
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel_4</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>btnCalculateByPercentage</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JButton</name></type> <name>btnCalculateByAbsolute</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Calculate By Absolute Marks"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>btnCalculateByAbsolute</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<decl_stmt><decl><type><name>String</name></type> <name>input</name> <init>= <expr><call><name><name>JOptionPane</name><operator>.</operator><name>showInputDialog</name></name><argument_list>(<argument><expr><literal type="string">"Input comma seperated numbers in decreasing order"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name>String</name><index>[]</index></type> <name>percentages</name> <init>= <expr><call><name>parseGradeCriteriaStringAbsolute</name><argument_list>(<argument><expr><name>input</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<if>if<condition>(<expr><name>percentages</name><operator>==</operator> <literal type="null">null</literal></expr>)</condition><then>
+					<block type="pseudo"><return>return;</return></block></then></if>
+				
+				<decl_stmt><decl><type><name><name>Set</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>tempSet</name> <init>= <expr><operator>new</operator> <call><name><name>LinkedHashSet</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<for>for<control>(<init><decl><type><name>String</name></type> <name>s</name><range>:<expr><name>percentages</name></expr></range></decl></init>)</control><block>{
+					<expr_stmt><expr><call><name><name>tempSet</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><call><name><name>Integer</name><operator>.</operator><name>parseInt</name></name><argument_list>(<argument><expr><name>s</name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></for>
+				
+				<decl_stmt><decl><type><name><name>List</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>percentArray</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+				<for>for<control>(<init><decl><type><name>Integer</name></type> <name>i</name><range>:<expr><name>tempSet</name></expr></range></decl></init>)</control><block>{
+					<expr_stmt><expr><call><name><name>percentArray</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>i</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></for>
+				
+				<expr_stmt><expr><call><name><name>Collections</name><operator>.</operator><name>sort</name></name><argument_list>(<argument><expr><name>percentArray</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>Collections</name><operator>.</operator><name>reverse</name></name><argument_list>(<argument><expr><name>percentArray</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+				
+				<if>if<condition>(<expr><name>percentages</name><operator>!=</operator><literal type="null">null</literal></expr>)</condition><then><block>{					
+					<decl_stmt><decl><type><name>CourseCurve</name></type> <name>curve</name> <init>= <expr><call><name><name>CourseCurve</name><operator>.</operator><name>calculateAbsoluteCurve</name></name><argument_list>(<argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><name>percentArray</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><specifier>final</specifier> <name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>String</name></argument>&gt;</argument_list></name></type> <name>curvedMarks</name> <init>= <expr><call><name><name>curve</name><operator>.</operator><name>getCourseCurve</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>removeAll</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>revalidate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>repaint</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<for>for<control>(<init><decl><type><name>Student</name></type> <name>s</name><range>:<expr><call><name><name>curvedMarks</name><operator>.</operator><name>keySet</name></name><argument_list>()</argument_list></call></expr></range></decl></init>)</control><block>{
+						<decl_stmt><decl><type><name>String</name></type> <name>name</name> <init>= <expr><call><name><name>s</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>curvedMarks</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>s</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>JPanel</name></type> <name>newPanel</name> <init>= <expr><call><name>makeGradePanel</name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>newPanel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></for>
+					
+					<decl_stmt><decl><type><name>JButton</name></type> <name>postbutton</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Post grades"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>postbutton</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+						
+						<comment type="line">//@Override</comment>
+						<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+							<expr_stmt><expr><call><name><name>StudentEnrollment</name><operator>.</operator><name>updateAllStudentGrade</name></name><argument_list>(<argument><expr><name>curvedMarks</name></expr></argument>, <argument><expr><name>courseOffered</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						}</block></function>
+					}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>postbutton</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>revalidate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>repaint</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></then></if>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel_4</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>btnCalculateByAbsolute</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JButton</name></type> <name>btnCurveByMax</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Curve By Max Difference Between Marks"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>btnCurveByMax</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<decl_stmt><decl><type><name>String</name></type> <name>input</name> <init>= <expr><call><name><name>JOptionPane</name><operator>.</operator><name>showInputDialog</name></name><argument_list>(<argument><expr><literal type="string">"Input comma seperated numbers in decreasing order"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name>String</name><index>[]</index></type> <name>percentages</name> <init>= <expr><call><name>parseGradeCriteriaStringAbsolute</name><argument_list>(<argument><expr><name>input</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<if>if<condition>(<expr><name>percentages</name><operator>==</operator> <literal type="null">null</literal></expr>)</condition><then>
+					<block type="pseudo"><return>return;</return></block></then></if>
+				
+
+				<decl_stmt><decl><type><name><name>List</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>percentArray</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<for>for<control>(<init><decl><type><name>String</name></type> <name>s</name><range>:<expr><name>percentages</name></expr></range></decl></init>)</control><block>{
+					<expr_stmt><expr><call><name><name>percentArray</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><call><name><name>Integer</name><operator>.</operator><name>parseInt</name></name><argument_list>(<argument><expr><name>s</name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></for>
+				
+				
+				<if>if<condition>(<expr><name>percentages</name><operator>!=</operator><literal type="null">null</literal></expr>)</condition><then><block>{					
+					<decl_stmt><decl><type><name>CourseCurve</name></type> <name>curve</name> <init>= <expr><call><name><name>CourseCurve</name><operator>.</operator><name>calculateMaxGapCurve</name></name><argument_list>(<argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><name>percentArray</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><specifier>final</specifier> <name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>String</name></argument>&gt;</argument_list></name></type> <name>curvedMarks</name> <init>= <expr><call><name><name>curve</name><operator>.</operator><name>getCourseCurve</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>removeAll</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>revalidate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>repaint</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<for>for<control>(<init><decl><type><name>Student</name></type> <name>s</name><range>:<expr><call><name><name>curvedMarks</name><operator>.</operator><name>keySet</name></name><argument_list>()</argument_list></call></expr></range></decl></init>)</control><block>{
+						<decl_stmt><decl><type><name>String</name></type> <name>name</name> <init>= <expr><call><name><name>s</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>curvedMarks</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>s</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>JPanel</name></type> <name>newPanel</name> <init>= <expr><call><name>makeGradePanel</name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>newPanel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></for>
+					
+					<decl_stmt><decl><type><name>JButton</name></type> <name>postbutton</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Post grades"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>postbutton</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+						
+						<comment type="line">//@Override</comment>
+						<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+							<expr_stmt><expr><call><name><name>StudentEnrollment</name><operator>.</operator><name>updateAllStudentGrade</name></name><argument_list>(<argument><expr><name>curvedMarks</name></expr></argument>, <argument><expr><name>courseOffered</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						}</block></function>
+					}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>postbutton</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>revalidate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>repaint</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></then></if>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel_4</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>btnCurveByMax</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>gradeDisplayPanel</name> <operator>=</operator> <operator>new</operator> <call><name>JPanel</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>setBorder</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>EtchedBorder</name><argument_list>(<argument><expr><name><name>EtchedBorder</name><operator>.</operator><name>RAISED</name></name></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">349</literal></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>, <argument><expr><literal type="number">480</literal></expr></argument>, <argument><expr><literal type="number">625</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>gradeDisplayPanel</name><operator>.</operator><name>setLayout</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>GridLayout</name><argument_list>(<argument><expr><literal type="number">20</literal></expr></argument>,<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel_3</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>gradeDisplayPanel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>initialize</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				
+		<decl_stmt><decl><type><name>Timer</name></type> <name>timer</name> <init>= <expr><operator>new</operator> <call><name>Timer</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>timer</name><operator>.</operator><name>scheduleAtFixedRate</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>TimerTask</name></super><argument_list>()</argument_list> <block>{
+			
+			<function><type><annotation>@<name>Override</name></annotation>
+			<specifier>public</specifier> <name>void</name></type> <name>run</name><parameter_list>()</parameter_list> <block>{
+				<if>if<condition>(<expr><name>deleteFlag</name></expr>)</condition><then><block>{
+					<expr_stmt><expr><call><name>initialize</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Reinitializing"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>deleteFlag</name><operator>=</operator><literal type="boolean">false</literal></expr>;</expr_stmt>
+				}</block></then></if>
+				
+			}</block></function>
+		}</block></class></expr></argument>, <argument><expr><literal type="number">100</literal></expr></argument>, <argument><expr><literal type="number">1000</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	}</block></constructor>
+	
+	<comment type="line">// To parse and evalute the grading criteria input entered by the user</comment>
+	<function><type><specifier>public</specifier> <name>String</name><index>[]</index></type> <name>parseGradeCriteriaString</name><parameter_list>(<param><decl><type><name>String</name></type> <name>input</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>String</name><index>[]</index></type> <name>percentages</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><call><name><name>input</name><operator>.</operator><name>matches</name></name><argument_list>(<argument><expr><literal type="string">"^[0-9]{1,3}(,[0-9]{1,3})*"</literal></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+			<expr_stmt><expr><name>percentages</name> <operator>=</operator> <call><name><name>input</name><operator>.</operator><name>split</name></name><argument_list>(<argument><expr><literal type="string">","</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then></if>
+		
+		<return>return <expr><name>percentages</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// To parse and evalute a different type of grading criteria input entered by the user</comment>
+	<function><type><specifier>public</specifier> <name>String</name><index>[]</index></type> <name>parseGradeCriteriaStringAbsolute</name><parameter_list>(<param><decl><type><name>String</name></type> <name>input</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>String</name><index>[]</index></type> <name>percentages</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><call><name><name>input</name><operator>.</operator><name>matches</name></name><argument_list>(<argument><expr><literal type="string">"^[0-9]{1,2}(,[0-9]{1,2})*"</literal></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+			<expr_stmt><expr><name>percentages</name> <operator>=</operator> <call><name><name>input</name><operator>.</operator><name>split</name></name><argument_list>(<argument><expr><literal type="string">","</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then></if>
+		
+		<return>return <expr><name>percentages</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// Creates a panel for each exam</comment>
+	<function><type><specifier>public</specifier> <name>JPanel</name></type> <name>makePanel</name><parameter_list>(<param><decl><type><specifier>final</specifier> <name>CourseExamStructure</name></type> <name>examStruc</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>String</name></type> <name>exam</name> <init>= <expr><call><name><name>examStruc</name><operator>.</operator><name>getExamName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>examMarks</name> <init>= <expr><call><name><name>examStruc</name><operator>.</operator><name>getExamTotal</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Exam: "</literal> <operator>+</operator> <name>exam</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Exam Marks: "</literal> <operator>+</operator> <name>examMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>p</name> <init>= <expr><operator>new</operator> <call><name>JPanel</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>p</name><operator>.</operator><name>setLayout</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>GridLayout</name><argument_list>(<argument><expr><literal type="number">4</literal></expr></argument>, <argument><expr><literal type="number">2</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>ExamName</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<expr_stmt><expr><call><name><name>ExamName</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><name>exam</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>p</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>ExamName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<comment type="line">//p.setLayout(new FlowLayout(4, 3, 4));</comment>
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>Marks</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>Marks</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal><operator>+</operator><name>examMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>p</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>Marks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><specifier>final</specifier> <name>JButton</name></type> <name>addMarks</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Add Marks"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>p</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>addMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<return>return <expr><name>p</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// To initialize the page and paint it with the current values</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>initialize</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>CourseExams</name></type> <name>exam</name> <init>= <expr><operator>new</operator> <call><name>CourseExams</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>allExams</name> <init>= <expr><call><name><name>exam</name><operator>.</operator><name>viewAllExams</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>allExamsPanel</name><operator>.</operator><name>removeAll</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>allExamsPanel</name><operator>.</operator><name>revalidate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>allExamsPanel</name><operator>.</operator><name>repaint</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		
+		<for>for<control>(<init><decl><type><name>String</name></type> <name>oneExamName</name><range>: <expr><name>allExams</name></expr></range></decl></init>)</control><block>{
+			<decl_stmt><decl><type><name>CourseExamStructure</name></type> <name>oneExam</name> <init>= <expr><operator>new</operator> <call><name>CourseExamStructure</name><argument_list>(<argument><expr><name>courseOffered</name></expr></argument>,<argument><expr><name>oneExamName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>allExamsPanel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>SingleExamPanel</name><argument_list>(<argument><expr><name>oneExam</name></expr></argument>,<argument><expr><name>isTA</name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></for>
+		
+		<expr_stmt><expr><call><name><name>allExamsPanel</name><operator>.</operator><name>revalidate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>allExamsPanel</name><operator>.</operator><name>repaint</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		
+		
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>allStudents</name> <init>= <expr><call><name><name>StudentEnrollment</name><operator>.</operator><name>getStudentsInCourse</name></name><argument_list>(<argument><expr><name>courseOffered</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		
+		<comment type="line">// Add Exam Names as Titles for the columns</comment>
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID2</name> <init>= <expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>CourseExams</name></type> <name>courseExam</name> <init>=  <expr><operator>new</operator> <call><name>CourseExams</name><argument_list>(<argument><expr><name>offerID2</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>exams</name> <init>= <expr><call><name><name>courseExam</name><operator>.</operator><name>viewAllExams</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<expr_stmt><expr><call><name><name>btnCancel</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	}</block></function>
+	
+	<comment type="line">// Creates a panel to display grades of each student.</comment>
+	<function><type><specifier>public</specifier> <name>JPanel</name></type> <name>makeGradePanel</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>, <param><decl><type><name>String</name></type> <name>grade</name></decl></param>)</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>singleGradePanel</name> <init>= <expr><operator>new</operator> <call><name>JPanel</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>singleGradePanel</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><literal type="number">200</literal></expr></argument>, <argument><expr><literal type="number">50</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>uinLabel</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">""</literal><operator>+</operator><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>singleGradePanel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>uinLabel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>gradeLabel</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>singleGradePanel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>gradeLabel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<return>return <expr><name>singleGradePanel</name></expr>;</return>		
+	}</block></function>
+		
+}</block></class>
+
+</unit>

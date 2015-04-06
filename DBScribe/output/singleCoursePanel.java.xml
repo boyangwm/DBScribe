@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\frontend\singleCoursePanel.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>frontend</name></name>;</package>
+
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JOptionPane</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JPanel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JLabel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JTextArea</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JButton</name></name>;</import>
+
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>HashMap</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>Color</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>Font</name></name>;</import>
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>border</name><operator>.</operator><name>LineBorder</name></name>;</import>
+
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseOffered</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Student</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>StudentEnrollment</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>TA</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>WaitList</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseOffered</name><operator>.</operator><name>CourseOfferingNotCurrentException</name></name>;</import>
+
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionListener</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionEvent</name></name>;</import>
+
+
+<class><specifier>public</specifier> class <name>singleCoursePanel</name> <super><extends>extends <name>JPanel</name></extends></super> <block>{
+
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>Student</name></type> <name>student</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>CourseOffered</name></type> <name>courseOffered</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTextArea</name></type> <name>txtrGrade</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTextArea</name></type> <name>txtrCourseDetails</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JButton</name></type> <name>btnDrop</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>boolean</name></type> <name>isWaitList</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JButton</name></type> <name>btnSendMeCourse</name></decl>;</decl_stmt>
+	
+	<constructor><specifier>public</specifier> <name>singleCoursePanel</name><parameter_list>(<param><decl><type><name>Student</name></type> <name>s</name></decl></param>, <param><decl><type><name>CourseOffered</name></type> <name>co</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name>setLayout</name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>student</name></name> <operator>=</operator> <name>s</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>courseOffered</name></name> <operator>=</operator> <name>co</name></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>txtrCourseDetails</name> <operator>=</operator> <operator>new</operator> <call><name>JTextArea</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrCourseDetails</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Times New Roman"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>PLAIN</name></name></expr></argument>, <argument><expr><literal type="number">15</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrCourseDetails</name><operator>.</operator><name>setBackground</name></name><argument_list>(<argument><expr><name><name>Color</name><operator>.</operator><name>BLACK</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrCourseDetails</name><operator>.</operator><name>setForeground</name></name><argument_list>(<argument><expr><name><name>Color</name><operator>.</operator><name>WHITE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrCourseDetails</name><operator>.</operator><name>setEditable</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrCourseDetails</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>, <argument><expr><literal type="number">37</literal></expr></argument>, <argument><expr><literal type="number">348</literal></expr></argument>, <argument><expr><literal type="number">425</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrCourseDetails</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"Course Details"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>txtrCourseDetails</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>txtrGrade</name> <operator>=</operator> <operator>new</operator> <call><name>JTextArea</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrGrade</name><operator>.</operator><name>setColumns</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrGrade</name><operator>.</operator><name>setForeground</name></name><argument_list>(<argument><expr><name><name>Color</name><operator>.</operator><name>WHITE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrGrade</name><operator>.</operator><name>setCaretColor</name></name><argument_list>(<argument><expr><name><name>Color</name><operator>.</operator><name>RED</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrGrade</name><operator>.</operator><name>setBorder</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>LineBorder</name><argument_list>(<argument><expr><operator>new</operator> <call><name>Color</name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrGrade</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Monospaced"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>PLAIN</name></name></expr></argument>, <argument><expr><literal type="number">70</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrGrade</name><operator>.</operator><name>setBackground</name></name><argument_list>(<argument><expr><name><name>Color</name><operator>.</operator><name>BLACK</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrGrade</name><operator>.</operator><name>setEditable</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrGrade</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">368</literal></expr></argument>, <argument><expr><literal type="number">175</literal></expr></argument>, <argument><expr><literal type="number">130</literal></expr></argument>, <argument><expr><literal type="number">136</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>txtrGrade</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"A"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>txtrGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>btnSendMeCourse</name> <operator>=</operator> <operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Send me course files"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnSendMeCourse</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<decl_stmt><decl><type><name>boolean</name></type> <name>sent</name> <init>= <expr><call><name><name>courseOffered</name><operator>.</operator><name>sendCourseFilesToStudent</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<if>if<condition>(<expr><name>sent</name></expr>)</condition><then><block>{
+					<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Files sent to you successufully"</literal></expr></argument>, <argument><expr><literal type="string">"Sent"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></then>
+				
+				<else>else<block>{
+					<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Unable to send files"</literal></expr></argument>, <argument><expr><literal type="string">"Not sent"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></else></if>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnSendMeCourse</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">368</literal></expr></argument>, <argument><expr><literal type="number">389</literal></expr></argument>, <argument><expr><literal type="number">130</literal></expr></argument>, <argument><expr><literal type="number">73</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>btnSendMeCourse</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>btnDrop</name> <operator>=</operator> <operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Drop"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnDrop</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<if>if<condition>(<expr><name>isWaitList</name></expr>)</condition><then><block>{
+					<decl_stmt><decl><type><name>boolean</name></type> <name>flag</name> <init>= <expr><call><name><name>WaitList</name><operator>.</operator><name>removeFromWaitListAndCommit</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>, <argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<if>if<condition>(<expr><name>flag</name></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Removed from wait list"</literal></expr></argument>, <argument><expr><literal type="string">"Success"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name>initialize</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>StudentUI</name><operator>.</operator><name>emptyTabs</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					}</block></then>
+					
+					<else>else<block>{
+						<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Not wait list"</literal></expr></argument>, <argument><expr><literal type="string">"Failure"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></else></if>
+				}</block></then>
+				
+				<else>else<block>{
+					<decl_stmt><decl><type><name>StudentEnrollment</name></type> <name>se</name> <init>= <expr><operator>new</operator> <call><name>StudentEnrollment</name><argument_list>(<argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><call><name><name>student</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>boolean</name></type> <name>unregistered</name> <init>= <expr><call><name><name>se</name><operator>.</operator><name>unregisterStudent</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<if>if<condition>(<expr><name>unregistered</name></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Course droppped successfully"</literal></expr></argument>, <argument><expr><literal type="string">"Success"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name>initialize</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>StudentUI</name><operator>.</operator><name>emptyTabs</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					}</block></then>
+					
+					<else>else<block>{
+						<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Unable to drop"</literal></expr></argument>, <argument><expr><literal type="string">"Failure"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></else></if>
+				}</block></else></if>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnDrop</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">368</literal></expr></argument>, <argument><expr><literal type="number">30</literal></expr></argument>, <argument><expr><literal type="number">130</literal></expr></argument>, <argument><expr><literal type="number">38</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>btnDrop</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblCourseDetails</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Course Details"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblCourseDetails</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>, <argument><expr><literal type="number">12</literal></expr></argument>, <argument><expr><literal type="number">290</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>lblCourseDetails</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblCurrentGrade</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Current Grade"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblCurrentGrade</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">368</literal></expr></argument>, <argument><expr><literal type="number">151</literal></expr></argument>, <argument><expr><literal type="number">130</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>lblCurrentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><call><name>initialize</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+	}</block></constructor>
+	
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>initialize</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>TA</name></argument>&gt;</argument_list></name></type> <name>tas</name> <init>= <expr><call><name><name>CourseOffered</name><operator>.</operator><name>getTAsForCourse</name></name><argument_list>(<argument><expr><name>courseOffered</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<if>if<condition>(<expr><call><name><name>WaitList</name><operator>.</operator><name>isStudentOnWaitList</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>, <argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>txtrGrade</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"N/A"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name>isWaitList</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>btnSendMeCourse</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>courseDetails</name> <init>= <expr><literal type="string">"Taught by Prof. "</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getProfessorName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nOffice location and hours:"</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getProfessor</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>getOfficeAddress</name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">", "</literal>
+					<operator>+</operator> <literal type="string">""</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getProfessor</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>getOfficeHours</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\n-------------------------------"</literal></expr>;</expr_stmt>
+			
+			<try>try <block>{
+				<if>if<condition>(<expr><call><name><name>courseOffered</name><operator>.</operator><name>checkIfScheduled</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+					<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nClass location: "</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getClassRoomLocation</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nClassroom name: "</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getClassRoomName</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nTimings: "</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getTiming</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\n-------------------------------"</literal></expr>;</expr_stmt>
+					<for>for<control>(<init><decl><type><name>TA</name></type> <name>ta</name><range>:<expr><name>tas</name></expr></range></decl></init>)</control><block>{
+						<decl_stmt><decl><type><name>String</name></type> <name>name</name> <init>= <expr><call><name><name>ta</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>officeLoc</name> <init>= <expr><call><name><name>TA</name><operator>.</operator><name>getTAOfficeAddress</name></name><argument_list>(<argument><expr><call><name><name>ta</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>officeHours</name> <init>= <expr><call><name><name>TA</name><operator>.</operator><name>getTAOfficeHours</name></name><argument_list>(<argument><expr><call><name><name>ta</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nTeaching assistant:"</literal><operator>+</operator><name>name</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nOffice location and hours:"</literal><operator>+</operator><name>officeLoc</name><operator>+</operator><literal type="string">", "</literal><operator>+</operator><name>officeHours</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\n-------------------------------"</literal></expr>;</expr_stmt>
+					}</block></for>
+				}</block></then></if>
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingNotCurrentException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+			
+			<expr_stmt><expr><call><name><name>txtrCourseDetails</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><name>courseDetails</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then>
+		
+		<else>else<block>{
+			<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>, <argument><name>String</name></argument>&gt;</argument_list></name></type> <name>grades</name> <init>= <expr><call><name><name>StudentEnrollment</name><operator>.</operator><name>getAllGradesOfStudent</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>txtrGrade</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><call><name><name>grades</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>courseOffered</name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			
+			<decl_stmt><decl><type><name>String</name></type> <name>courseDetails</name> <init>= <expr><literal type="string">"Taught by Prof. "</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getProfessorName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nOffice location and hours:"</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getProfessor</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>getOfficeAddress</name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">", "</literal>
+					<operator>+</operator> <literal type="string">""</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getProfessor</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>getOfficeHours</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\n-------------------------------"</literal></expr>;</expr_stmt>
+			<try>try <block>{
+				<if>if<condition>(<expr><call><name><name>courseOffered</name><operator>.</operator><name>checkIfScheduled</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+					<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nClass location: "</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getClassRoomLocation</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nClassroom name: "</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getClassRoomName</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nTimings: "</literal><operator>+</operator><call><name><name>courseOffered</name><operator>.</operator><name>getTiming</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\n-------------------------------"</literal></expr>;</expr_stmt>
+					<for>for<control>(<init><decl><type><name>TA</name></type> <name>ta</name><range>:<expr><name>tas</name></expr></range></decl></init>)</control><block>{
+						<decl_stmt><decl><type><name>String</name></type> <name>name</name> <init>= <expr><call><name><name>ta</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>officeLoc</name> <init>= <expr><call><name><name>TA</name><operator>.</operator><name>getTAOfficeAddress</name></name><argument_list>(<argument><expr><call><name><name>ta</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>officeHours</name> <init>= <expr><call><name><name>TA</name><operator>.</operator><name>getTAOfficeHours</name></name><argument_list>(<argument><expr><call><name><name>ta</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nTeaching assistant:"</literal><operator>+</operator><name>name</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\nOffice location and hours:"</literal><operator>+</operator><name>officeLoc</name><operator>+</operator><literal type="string">", "</literal><operator>+</operator><name>officeHours</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name>courseDetails</name><operator>+=</operator><literal type="string">"\n-------------------------------"</literal></expr>;</expr_stmt>
+					}</block></for>
+				}</block></then></if>
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingNotCurrentException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+			
+			<expr_stmt><expr><call><name><name>txtrCourseDetails</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><name>courseDetails</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+		
+		<if>if<condition>(<expr><call><name><name>courseOffered</name><operator>.</operator><name>checkIfCurrent</name></name><argument_list>()</argument_list></call></expr>)</condition><then>
+			<block type="pseudo"><expr_stmt><expr><call><name><name>btnDrop</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt></block></then>
+		<else>else
+			<block type="pseudo"><expr_stmt><expr><call><name><name>btnDrop</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt></block></else></if>
+			
+		
+		
+		
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>showMessage</name><parameter_list>(<param><decl><type><name>String</name></type> <name>message</name></decl></param>, <param><decl><type><name>String</name></type> <name>title</name></decl></param>)</parameter_list>
+    <block>{
+        <expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><name>message</name></expr></argument>, <argument><expr><name>title</name></expr></argument>, <argument><expr><name><name>JOptionPane</name><operator>.</operator><name>INFORMATION_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+    }</block></function>
+}</block></class>
+</unit>

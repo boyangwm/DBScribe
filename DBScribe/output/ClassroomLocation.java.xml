@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\ClassroomLocation.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+
+<comment type="block" format="javadoc">/****************@author Simant Purohit*********************************/</comment>
+
+<enum><specifier>public</specifier> enum <name>ClassroomLocation</name> <block>{
+	<comment type="line">//List of all locations</comment>
+	<decl><name>LOCATION1</name></decl>,
+	<decl><name>LOCATION2</name></decl>,
+	<decl><name>LOCATION3</name></decl>;
+	
+	
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>String</name><index>[]</index></type> <name>getAllLocations</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>ClassroomLocation</name><index>[]</index></type> <name>cl</name> <init>= <expr><call><name><name>ClassroomLocation</name><operator>.</operator><name>values</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>String</name><index>[]</index></type> <name>locs</name><init>= <expr><operator>new</operator> <name><name>String</name><index>[<expr><name><name>cl</name><operator>.</operator><name>length</name></name></expr>]</index></name></expr></init></decl>;</decl_stmt>
+		<for>for<control>(<init><decl><type><name>int</name></type> <name>i</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</init><condition><expr><name>i</name><operator>&lt;</operator><name><name>cl</name><operator>.</operator><name>length</name></name></expr>;</condition><incr><expr><name>i</name><operator>++</operator></expr></incr>)</control><block>{
+			<expr_stmt><expr><name><name>locs</name><index>[<expr><name>i</name></expr>]</index></name> <operator>=</operator> <name><name>cl</name><index>[<expr><name>i</name></expr>]</index></name><operator>.</operator><call><name>toString</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		}</block></for>
+		
+		<return>return <expr><name>locs</name></expr>;</return>
+	}</block></function>
+
+}</block></enum>
+
+</unit>

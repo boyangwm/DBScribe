@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\TAListScanner.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+
+<comment type="block" format="javadoc">/**
+ * @author Akshay
+ * 
+ */</comment>
+
+<comment type="block" format="javadoc">/*************** TALISTSCANNER.JAVA CLASS WAS WRITTEN BY AKSHAY THIRKATEH ********************************/</comment>
+
+<class><specifier>public</specifier> class <name>TAListScanner</name>  <super><implements>implements <name>Runnable</name></implements></super><block>{
+
+	<comment type="line">//@Override</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>run</name><parameter_list>()</parameter_list> <block>{
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>TA</name></argument>&gt;</argument_list></name></type> <name>getAllTAs</name><init>= <expr><call><name><name>TA</name><operator>.</operator><name>getAllTAs</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<for>for<control>(<init><decl><type><name>TA</name></type> <name>ta</name><range>: <expr><name>getAllTAs</name></expr></range></decl></init>)</control><block>{
+			
+			<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>getTACourses</name><init>=<expr><call><name><name>CourseOffered</name><operator>.</operator><name>getAllCurrentCoursesTAedBy</name></name><argument_list>(<argument><expr><name>ta</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<if>if<condition>(<expr><call><name><name>getTACourses</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call><operator>&lt;=</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Dwongrading TA to student with UIN:"</literal><operator>+</operator><call><name><name>ta</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"uin"</literal></expr></argument>, <argument><expr><literal type="string">"teachingassistant"</literal></expr></argument>, <argument><expr><literal type="string">"TaUIN"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>int</name></type> <name>uin</name> <init>= <expr><call><name><name>ta</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>TA</name><operator>.</operator><name>updateTAtoStudent</name></name><argument_list>(<argument><expr><name>uin</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></then></if>
+		}</block></for>
+		<comment type="line">// TODO Auto-generated method stub</comment>
+		
+	}</block></function>
+
+}</block></class>
+</unit>

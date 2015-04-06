@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\Job.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>LinkedHashMap</name></name>;</import>
+
+<import>import <name><name>com</name><operator>.</operator><name>mysql</name><operator>.</operator><name>jdbc</name><operator>.</operator><name>Statement</name></name>;</import>
+
+<comment type="block" format="javadoc">/**
+* @author Akshay
+* 
+*/</comment>
+
+<comment type="block" format="javadoc">/*************** JOB.JAVA CLASS WAS WRITTEN BY AKSHAY THIRKATEH ********************************/</comment>
+
+<class><specifier>public</specifier> class <name>Job</name> <block>{
+	
+	<comment type="line">//CLASS VARIABLES USED BY JOB CLASS	</comment>
+	
+	<decl_stmt><decl><type><name>int</name></type> <name>jobID</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name>int</name></type> <name>postedByUIN</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>Professor</name></type> <name>professor</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name>String</name></type> <name>jobInDepartment</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name>double</name></type> <name>reqdMinimumGPA</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name>double</name></type> <name>reqdMinimumWorkExperience</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name>boolean</name></type> <name>skillset1</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name>boolean</name></type> <name>skillset2</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name>boolean</name></type> <name>skillset3</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name>boolean</name></type> <name>skillset4</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name>boolean</name></type> <name>skillset5</name></decl>;</decl_stmt>
+
+	<comment type="block">/* the constructor takes the job ID and then checks for it in the database and the iniitializes all the retrieved values for the jobID
+	 * 
+	 *it sets the class variable names to the specifics 
+	 *
+	 *else it displays the job posting not found
+	 * */</comment>
+	<constructor><specifier>public</specifier> <name>Job</name><parameter_list>(<param><decl><type><name>int</name></type> <name>JobID</name></decl></param>)</parameter_list> <block>{
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//establish the connection to the database</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLPeopleSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><name>SQLPeopleSelect</name> <operator>=</operator> <literal type="string">"Select * From jobpostings where JobID=?;"</literal></expr>;</expr_stmt><comment type="line">//write the query</comment>
+				}</block></then></if>
+
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmtForSelect</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLPeopleSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>JobID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the job ID</comment>
+
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+				<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedjobID"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"JobID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>retreivedjobID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"JobID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//--------retrieve the jobID and store it in a local variable</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"whoPostedUIN"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"PostedByUIN"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>whoPostedUIN</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"PostedByUIN"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//--------retrieve the posted by UIN and store it in a local variable</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"jobInDept"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"JobInDepartment"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>String</name></type> <name>jobInDept</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"JobInDepartment"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//--------retrieve the job in dept and store it in a local variable</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"minimumReqdGPA"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdMinimumGPA"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>double</name></type> <name>minimumReqdGPA</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getDouble</name></name><argument_list>(<argument><expr><literal type="string">"ReqdMinimumGPA"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//--------retrieve the reqd gpa and store it in a local variable</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"minimumReqdWorkExp"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdMinimumWorkExperience"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>double</name></type> <name>minimumReqdWorkExp</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getDouble</name></name><argument_list>(<argument><expr><literal type="string">"ReqdMinimumWorkExperience"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//--------retrieve the work ex and store it in a local variable</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedSkill1"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset1"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>boolean</name></type> <name>retreivedSkill1</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getBoolean</name></name><argument_list>(<argument><expr><literal type="string">"ReqdSkillset1"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//--------retrieve the skill1 and store it in a local variable</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedSkill2"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset2"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>boolean</name></type> <name>retreivedSkill2</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getBoolean</name></name><argument_list>(<argument><expr><literal type="string">"ReqdSkillset2"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//--------retrieve the skill2 and store it in a local variable</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedSkill3"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset3"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>boolean</name></type> <name>retreivedSkill3</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getBoolean</name></name><argument_list>(<argument><expr><literal type="string">"ReqdSkillset3"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//--------retrieve the skill3 and store it in a local variable</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedSkill4"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset4"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>boolean</name></type> <name>retreivedSkill4</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getBoolean</name></name><argument_list>(<argument><expr><literal type="string">"ReqdSkillset4"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//--------retrieve the skill4 and store it in a local variable</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedSkill5"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset5"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>boolean</name></type> <name>retreivedSkill5</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getBoolean</name></name><argument_list>(<argument><expr><literal type="string">"ReqdSkillset5"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//--------retrieve the skill5 and store it in a local variable</comment>
+
+					<comment type="block">/*initialize the retrieved variables as the class variables*/</comment>
+					
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>jobID</name></name> <operator>=</operator> <name>retreivedjobID</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>postedByUIN</name></name> <operator>=</operator> <name>whoPostedUIN</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>jobInDepartment</name></name> <operator>=</operator> <name>jobInDept</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>reqdMinimumGPA</name></name> <operator>=</operator> <name>minimumReqdGPA</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>reqdMinimumWorkExperience</name></name> <operator>=</operator> <name>minimumReqdWorkExp</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>skillset1</name></name> <operator>=</operator> <name>retreivedSkill1</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>skillset2</name></name> <operator>=</operator> <name>retreivedSkill2</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>skillset3</name></name> <operator>=</operator> <name>retreivedSkill3</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>skillset4</name></name> <operator>=</operator> <name>retreivedSkill4</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>skillset5</name></name> <operator>=</operator> <name>retreivedSkill5</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>professor</name></name> <operator>=</operator> <operator>new</operator> <call><name>Professor</name><argument_list>(<argument><expr><name><name>this</name><operator>.</operator><name>postedByUIN</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></then>
+
+				<else>else <block>{
+					<comment type="line">//else the job ID does not exist</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Job ID does not exist"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+				}</block></else></if>
+
+			}</block>
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch>
+
+			<finally>finally <block>{
+
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//catch block</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+															here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+	}</block></constructor>
+
+	<comment type="block">/*post job takes the posted by UIN and the required job posting credentials and then adds it to the job posting table*/</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>int</name></type> <name>postJob</name><parameter_list>(<param><decl><type><name>int</name></type> <name>postedByUIN</name></decl></param>, <param><decl><type><name>int</name></type> <name>jobInDepartment</name></decl></param>, <param><decl><type><name>double</name></type> <name>reqdMinimumGPA</name></decl></param>, <param><decl><type><name>double</name></type> <name>reqdMinimumWorkExperience</name></decl></param>, <param><decl><type><name>boolean</name></type> <name>skillset1</name></decl></param>, <param><decl><type><name>boolean</name></type> <name>skillset2</name></decl></param>, <param><decl><type><name>boolean</name></type> <name>skillset3</name></decl></param>,<param><decl><type><name>boolean</name></type> <name>skillset4</name></decl></param>, <param><decl><type><name>boolean</name></type> <name>skillset5</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name>NoPermissionException</name></expr></argument></throws> <block>{
+
+		<comment type="line">// check the level of the person who is posting it</comment>
+		<comment type="line">// ---------&gt; if not prof, then return level exception</comment>
+
+		<decl_stmt><decl><type><name>int</name></type> <name>retreivedJobID</name> <init>= <expr><operator>-</operator><literal type="number">1</literal></expr></init></decl>;</decl_stmt>
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkLevel</name> <init>= <expr><call><name>checkEligibility</name><argument_list>(<argument><expr><name>postedByUIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//check if its prof posting the job</comment>
+
+		<if>if <condition>(<expr><name>checkLevel</name></expr>)</condition><then> <block>{
+
+			<try>try <block>{
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+				<decl_stmt><decl><type><name>String</name></type> <name>SQLJobInsert</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+				<try>try <block>{
+
+					<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+						<comment type="line">//write the query</comment>
+						<expr_stmt><expr><name>SQLJobInsert</name> <operator>=</operator> <literal type="string">"Insert into jobpostings (PostedByUIN,JobInDepartment,ReqdMinimumGPA,"</literal>
+								<operator>+</operator> <literal type="string">"ReqdMinimumWorkExperience,"</literal>
+								<operator>+</operator> <literal type="string">"ReqdSkillset1,ReqdSkillset2,ReqdSkillset3,ReqdSkillset4,ReqdSkillset5) "</literal>
+								<operator>+</operator> <literal type="string">"values (?,?,?,?,?,?,?,?,?);"</literal></expr>;</expr_stmt>
+
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmtForSelect</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLJobInsert</name></expr></argument>,<argument><expr><name><name>Statement</name><operator>.</operator><name>RETURN_GENERATED_KEYS</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<comment type="line">//set the values for the query </comment>
+						
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>postedByUIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>jobInDepartment</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">3</literal></expr></argument>, <argument><expr><name>reqdMinimumGPA</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">4</literal></expr></argument>, <argument><expr><name>reqdMinimumWorkExperience</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setBoolean</name></name><argument_list>(<argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><name>skillset1</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setBoolean</name></name><argument_list>(<argument><expr><literal type="number">6</literal></expr></argument>, <argument><expr><name>skillset2</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setBoolean</name></name><argument_list>(<argument><expr><literal type="number">7</literal></expr></argument>, <argument><expr><name>skillset3</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setBoolean</name></name><argument_list>(<argument><expr><literal type="number">8</literal></expr></argument>, <argument><expr><name>skillset4</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setBoolean</name></name><argument_list>(<argument><expr><literal type="number">9</literal></expr></argument>, <argument><expr><name>skillset5</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>stmtForSelect</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>i</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+																		
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"postedByUIN"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"PostedByUIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>												
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"jobInDepartment"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"JobInDepartment"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>												
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"reqdMinimumGPA"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdMinimumGPA"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>												
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"reqdMinimumWorkExperience"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdMinimumWorkExperience"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"skillset1"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset1"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"skillset2"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset2"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"skillset3"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset3"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>												
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"skillset4"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset4"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"skillset5"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset5"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>i</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+						<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>getGeneratedKeys</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+							<expr_stmt><expr><name>retreivedJobID</name> <operator>=</operator> <call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>retreivedJobID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//retrieve the added Job ID</comment>
+							<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>i</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Inserted"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							
+							<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//commit the transaction</comment>
+						}</block></then></if>
+
+					}</block></then></if>
+
+				}</block>
+				<comment type="line">//catch block for SQL exception</comment>
+				<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+				}</block></catch>
+
+				<finally>finally <block>{
+
+					<comment type="line">// System.out.println("retrieved");</comment>
+				}</block></finally></try>
+			}</block>
+			<comment type="line">//catch block </comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch>
+			<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+															here the finally block does not contain any general statements*/</comment>
+			<finally>finally <block>{
+
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+
+		}</block></then>
+
+		<else>else <block>{
+			<comment type="line">//if the permision does not peromit then throw this exception</comment>
+			<throw>throw <expr><operator>new</operator> <call><name>NoPermissionException</name><argument_list>()</argument_list></call></expr>;</throw>
+		}</block></else></if>
+
+		<comment type="line">// added the job posting to the db</comment>
+
+		<return>return <expr><name>retreivedJobID</name></expr>;</return>
+
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>updateJob</name><parameter_list>(<param><decl><type><name>int</name></type> <name>postedByUIN</name></decl></param>, <param><decl><type><name>int</name></type> <name>jobInDepartment</name></decl></param>, <param><decl><type><name>double</name></type> <name>reqdMinimumGPA</name></decl></param>, <param><decl><type><name>double</name></type> <name>reqdMinimumWorkExperience</name></decl></param>, <param><decl><type><name>boolean</name></type> <name>skillset1</name></decl></param>, <param><decl><type><name>boolean</name></type> <name>skillset2</name></decl></param>, <param><decl><type><name>boolean</name></type> <name>skillset3</name></decl></param>, <param><decl><type><name>boolean</name></type> <name>skillset4</name></decl></param>, <param><decl><type><name>boolean</name></type> <name>skillset5</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name>NoPermissionException</name></expr></argument></throws> <block>{
+
+		<comment type="line">// check the level of the person who is posting it</comment>
+		<comment type="line">// ---------&gt; if not prof, then return level exception</comment>
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isAdded</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>retreivedJobID</name> <init>= <expr><operator>-</operator><literal type="number">1</literal></expr></init></decl>;</decl_stmt>
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>checkLevel</name> <init>= <expr><call><name>checkEligibility</name><argument_list>(<argument><expr><name>postedByUIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//check whos updaing the job </comment>
+
+		<if>if <condition>(<expr><name>checkLevel</name></expr>)</condition><then> <block>{
+
+			<try>try <block>{
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the conn</comment>
+				<decl_stmt><decl><type><name>String</name></type> <name>SQLJobInsert</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+				<try>try <block>{
+
+					<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+						<comment type="line">//write the query</comment>
+						<expr_stmt><expr><name>SQLJobInsert</name> <operator>=</operator> <literal type="string">"UPDATE jobpostings SET ReqdMinimumGPA=?,"</literal>
+								<operator>+</operator> <literal type="string">"ReqdMinimumWorkExperience=?,"</literal>
+								<operator>+</operator> <literal type="string">"ReqdSkillset1=?,ReqdSkillset2=?,ReqdSkillset3=?,ReqdSkillset4=?,ReqdSkillset5=? "</literal>
+								<operator>+</operator> <literal type="string">"where PostedByUIN=?;"</literal></expr>;</expr_stmt>
+
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmtForSelect</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLJobInsert</name></expr></argument>,<argument><expr><name><name>Statement</name><operator>.</operator><name>RETURN_GENERATED_KEYS</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<comment type="line">//set the values for the query</comment>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>reqdMinimumGPA</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>reqdMinimumWorkExperience</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setBoolean</name></name><argument_list>(<argument><expr><literal type="number">3</literal></expr></argument>, <argument><expr><name>skillset1</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setBoolean</name></name><argument_list>(<argument><expr><literal type="number">4</literal></expr></argument>, <argument><expr><name>skillset2</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setBoolean</name></name><argument_list>(<argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><name>skillset3</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setBoolean</name></name><argument_list>(<argument><expr><literal type="number">6</literal></expr></argument>, <argument><expr><name>skillset4</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setBoolean</name></name><argument_list>(<argument><expr><literal type="number">7</literal></expr></argument>, <argument><expr><name>skillset5</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">8</literal></expr></argument>, <argument><expr><name>postedByUIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>stmtForSelect</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>i</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+																		
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"reqdMinimumGPA"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdMinimumGPA"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>												
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"reqdMinimumWorkExperience"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdMinimumWorkExperience"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"skillset1"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset1"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"skillset2"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset2"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"skillset3"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset3"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>												
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"skillset4"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset4"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"skillset5"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"ReqdSkillset5"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>	
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"postedByUIN"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"PostedByUIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>	
+						
+						
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>i</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>getGeneratedKeys</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then>
+							<block type="pseudo"><expr_stmt><expr><name>retreivedJobID</name> <operator>=</operator> <call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt></block></then></if><comment type="line">//retrieve the added UIN</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>retreivedJobID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>i</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Updated"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>isAdded</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//add it to the UIN</comment>
+
+						<comment type="line">// get the students and put it in the linked hash map</comment>
+
+						<decl_stmt><decl><type><name><name>LinkedHashMap</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>, <argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>retrievedList</name> <init>= <expr><call><name><name>JobApplication</name><operator>.</operator><name>retreiveMatchingStudents</name></name><argument_list>(<argument><expr><name>reqdMinimumGPA</name></expr></argument>, <argument><expr><name>reqdMinimumWorkExperience</name></expr></argument>, <argument><expr><name>skillset1</name></expr></argument>, <argument><expr><name>skillset2</name></expr></argument>, <argument><expr><name>skillset3</name></expr></argument>, <argument><expr><name>skillset4</name></expr></argument>, <argument><expr><name>skillset5</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+						<for>for <control>(<init><decl><type><name>Integer</name></type> <name>k</name> <range>: <expr><call><name><name>retrievedList</name><operator>.</operator><name>keySet</name></name><argument_list>()</argument_list></call></expr></range></decl></init>)</control> <block>{
+							<decl_stmt><decl><type><name>Student</name></type> <name>s</name> <init>= <expr><call><name><name>retrievedList</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>k</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+							<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//commit the transaction</comment>
+
+
+						}</block></for>
+
+					}</block></then></if>
+
+				}</block>
+				<comment type="line">//catch thre sql exception</comment>
+				<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+				}</block></catch>
+
+				<finally>finally <block>{
+
+					<comment type="line">// System.out.println("retrieved");</comment>
+				}</block></finally></try>
+			}</block>
+			<comment type="line">//catch block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch>
+			<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+			<finally>finally <block>{
+
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+
+		}</block></then>
+
+		<else>else <block>{
+
+			<throw>throw <expr><operator>new</operator> <call><name>NoPermissionException</name><argument_list>()</argument_list></call></expr>;</throw>
+		}</block></else></if>
+
+		<comment type="line">// add the job posting to the db</comment>
+
+		<return>return <expr><name>isAdded</name></expr>;</return>
+
+	}</block></function>
+
+	<comment type="line">// Checks the eligibility to post--should be an employee to post</comment>
+
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>checkEligibility</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>check</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt><comment type="line">//set the boolean to false</comment>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLPeopleSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><name>SQLPeopleSelect</name> <operator>=</operator> <literal type="string">"Select PositionID From people where UIN=?;"</literal></expr>;</expr_stmt><comment type="line">//write the query</comment>
+				}</block></then></if>
+
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmtForSelect</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLPeopleSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+				<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedpositionID"</literal></expr></argument>, <argument><expr><literal type="string">"people"</literal></expr></argument>, <argument><expr><literal type="string">"PositionID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>retreivedpositionID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"PositionID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<if>if <condition>(<expr><name>retreivedpositionID</name> <operator>&lt;=</operator> <literal type="number">2</literal> <operator>||</operator><name>retreivedpositionID</name><operator>==</operator><literal type="number">5</literal></expr>)</condition><then> <block>{
+						<comment type="line">//if positionID is more than 2 or less than 5 then its not an employee</comment>
+						<expr_stmt><expr><name>check</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></then></if>
+
+				}</block></then>
+
+				<else>else <block>{
+					<comment type="line">//no UIN exists</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN does not exist"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+				}</block></else></if>
+
+			}</block>
+			<comment type="line">//catch block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch>
+
+			<finally>finally <block>{
+
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//catch block</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+		<return>return <expr><name>check</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// add to jobRoster adds the students to the job roster table who have already been selected ofr an job and an email has been to.</comment>
+	<comment type="line">//it is added to job roster if the student is being considered, with the offer iD</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>addToJobRoster</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>, <param><decl><type><name>int</name></type> <name>jobiD</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isAdded</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLJobInsert</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><name>SQLJobInsert</name> <operator>=</operator> <literal type="string">"Insert into jobRoster (JobID, UIN) values (?,?);"</literal></expr>;</expr_stmt><comment type="line">//write the query</comment>
+
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmtForSelect</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLJobInsert</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>jobiD</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the job iD</comment>
+					<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>stmtForSelect</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>i</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"jobiD"</literal></expr></argument>, <argument><expr><literal type="string">"jobroster"</literal></expr></argument>, <argument><expr><literal type="string">"JobID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"jobroster"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>i</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Inserted"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+					<expr_stmt><expr><name>isAdded</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//commit the transaction</comment>
+
+				}</block></then></if>
+			}</block>
+			<comment type="line">//catch block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch>
+
+			<finally>finally <block>{
+
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//catch block</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isAdded</name></expr>;</return>
+
+	}</block></function>
+	
+	<comment type="line">//if a student matches the job requirment then send an email to him at his email ID with the job ID and the details</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>sendEmail</name><parameter_list>(<param><decl><type><name>int</name></type> <name>jobID</name></decl></param>, <param><decl><type><name>Student</name></type> <name>student</name></decl></param>)</parameter_list> <block>{
+
+		<if>if <condition>(<expr><name>student</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+			<decl_stmt><decl><type><name>String</name></type> <name>studentUserName</name> <init>= <expr><call><name><name>student</name><operator>.</operator><name>getUserName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the user name</comment>
+
+			<decl_stmt><decl><type><name>String</name></type> <name>studentEmail</name> <init>= <expr><name>studentUserName</name> <operator>+</operator> <literal type="string">"@xyz.com"</literal></expr></init></decl>;</decl_stmt><comment type="line">//get the email ID</comment>
+
+			<comment type="line">//build the email instance</comment>
+			<decl_stmt><decl><type><name>Email</name></type> <name>email</name> <init>= <expr><call><name><name>Email</name><operator>.</operator><name>getInstance</name></name><argument_list>(<argument><expr><literal type="string">"umas.uic@gmail.com"</literal></expr></argument>,<argument><expr><literal type="string">"cs597project"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>body</name> <init>= <expr><literal type="string">"You match our requirments. Please contact us at (xxx) xxx-xxxx for further interview steps"</literal></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>subject</name> <init>= <expr><literal type="string">"Job Match"</literal></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>receipients</name> <init>= <expr><literal type="string">""</literal> <operator>+</operator> <name>studentEmail</name> <operator>+</operator> <literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>boolean</name></type> <name>ifSent</name> <init>= <expr><call><name><name>email</name><operator>.</operator><name>sendEmail</name></name><argument_list>(<argument><expr><name>receipients</name></expr></argument>, <argument><expr><name>subject</name></expr></argument>, <argument><expr><name>body</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//send the email with the required text</comment>
+
+			<if>if <condition>(<expr><name>ifSent</name></expr>)</condition><then> <block>{
+				<decl_stmt><decl><type><name>boolean</name></type> <name>addedToJobRoster</name> <init>= <expr><call><name>addToJobRoster</name><argument_list>(<argument><expr><call><name><name>student</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>,<argument><expr><name>jobID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//add him to the job roster</comment>
+				<if>if <condition>(<expr><name>addedToJobRoster</name></expr>)</condition><then> <block>{
+					<return>return <expr><literal type="boolean">true</literal></expr>;</return><comment type="line">//if added return true</comment>
+				}</block></then> <else>else <block>{
+					<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+				}</block></else></if>
+			}</block></then></if>
+
+		}</block></then></if>
+
+		<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+	}</block></function>
+	<comment type="block">/*retrieve all the jobs posted by one single professor
+	 * 
+	 * the return type is a linked hash map of the job object 
+	 * 
+	 * the prof object is passed to it*/</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>LinkedHashMap</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>, <argument><name>Job</name></argument>&gt;</argument_list></name></type> <name>getAllJobsBySingleProfessor</name><parameter_list>(<param><decl><type><name>Professor</name></type> <name>prof</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name><name>LinkedHashMap</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>, <argument><name>Job</name></argument>&gt;</argument_list></name></type> <name>getAllJobs</name> <init>= <expr><operator>new</operator> <call><name><name>LinkedHashMap</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>, <argument><name>Job</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//initiaLIZE the job linked hash map</comment>
+
+		<if>if <condition>(<expr><name>prof</name> <operator>==</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+			<throw>throw <expr><operator>new</operator> <call><name>NullPointerException</name><argument_list>()</argument_list></call></expr>;</throw><comment type="line">//if the object passed is null then throw exception</comment>
+		}</block></then></if>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLPeopleSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><name>SQLPeopleSelect</name> <operator>=</operator> <literal type="string">"Select JobID From jobpostings where PostedByUIN=?;"</literal></expr>;</expr_stmt><comment type="line">//write the query</comment>
+				}</block></then></if>
+
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmtForSelect</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLPeopleSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><call><name><name>prof</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN of the prof</comment>
+
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+				<while>while <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedjobID"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"JobID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>retreivedjobID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"JobID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//retrieve the job ID</comment>
+					
+					<decl_stmt><decl><type><name>Job</name></type> <name>jobs</name> <init>= <expr><operator>new</operator> <call><name>Job</name><argument_list>(<argument><expr><name>retreivedjobID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//send it to the constructor</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"getJobIDs"</literal></expr></argument>, <argument><expr><literal type="string">"jobpostings"</literal></expr></argument>, <argument><expr><literal type="string">"JobID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>getJobIDs</name><init>=<expr><call><name><name>jobs</name><operator>.</operator><name>getJobID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<expr_stmt><expr><call><name><name>getAllJobs</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>getJobIDs</name></expr></argument>, <argument><expr><name>jobs</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//put it into the linked hash map</comment>
+
+				}</block></while>
+
+			}</block>
+			<comment type="line">//catch block ofr sql exception</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch>
+
+			<finally>finally <block>{
+
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//catch block for the exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+											here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>getAllJobs</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="block">/*--------------------------------Getters and setters start--------------------------------------------------*/</comment>
+
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getJobID</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>jobID</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setJobID</name><parameter_list>(<param><decl><type><name>int</name></type> <name>jobID</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>jobID</name></name> <operator>=</operator> <name>jobID</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getPostedByUIN</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>postedByUIN</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setPostedByUIN</name><parameter_list>(<param><decl><type><name>int</name></type> <name>postedByUIN</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>postedByUIN</name></name> <operator>=</operator> <name>postedByUIN</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>String</name></type> <name>getJobInDepartment</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>jobInDepartment</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setJobInDepartment</name><parameter_list>(<param><decl><type><name>String</name></type> <name>jobInDepartment</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>jobInDepartment</name></name> <operator>=</operator> <name>jobInDepartment</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>double</name></type> <name>getReqdMinimumGPA</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>reqdMinimumGPA</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setReqdMinimumGPA</name><parameter_list>(<param><decl><type><name>double</name></type> <name>reqdMinimumGPA</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>reqdMinimumGPA</name></name> <operator>=</operator> <name>reqdMinimumGPA</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>double</name></type> <name>getReqdMinimumWorkExperience</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>reqdMinimumWorkExperience</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setReqdMinimumWorkExperience</name><parameter_list>(<param><decl><type><name>double</name></type> <name>reqdMinimumWorkExperience</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>reqdMinimumWorkExperience</name></name> <operator>=</operator> <name>reqdMinimumWorkExperience</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>isSkillset1</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>skillset1</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setSkillset1</name><parameter_list>(<param><decl><type><name>boolean</name></type> <name>skillset1</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>skillset1</name></name> <operator>=</operator> <name>skillset1</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>isSkillset2</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>skillset2</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setSkillset2</name><parameter_list>(<param><decl><type><name>boolean</name></type> <name>skillset2</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>skillset2</name></name> <operator>=</operator> <name>skillset2</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>isSkillset3</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>skillset3</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setSkillset3</name><parameter_list>(<param><decl><type><name>boolean</name></type> <name>skillset3</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>skillset3</name></name> <operator>=</operator> <name>skillset3</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>isSkillset4</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>skillset4</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setSkillset4</name><parameter_list>(<param><decl><type><name>boolean</name></type> <name>skillset4</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>skillset4</name></name> <operator>=</operator> <name>skillset4</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>isSkillset5</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>skillset5</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setSkillset5</name><parameter_list>(<param><decl><type><name>boolean</name></type> <name>skillset5</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>skillset5</name></name> <operator>=</operator> <name>skillset5</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<comment type="block">/*--------------------------------Getters and setters start--------------------------------------------------*/</comment>
+	
+	
+	<comment type="line">//new exceptions added for appropriate usage</comment>
+	<class><specifier>public</specifier> <specifier>static</specifier> class <name>NoPermissionException</name> <super><extends>extends <name>Exception</name></extends></super> <block>{
+		<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><specifier>private</specifier> <name>String</name></type> <name>message</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+
+		<constructor><specifier>public</specifier> <name>NoPermissionException</name><parameter_list>()</parameter_list> <block>{
+			<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>message</name></name> <operator>=</operator> <literal type="string">"You do not have the permission "</literal></expr>;</expr_stmt>
+		}</block></constructor>
+
+		<constructor><specifier>public</specifier> <name>NoPermissionException</name><parameter_list>(<param><decl><type><name>String</name></type> <name>message</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>message</name></name> <operator>=</operator> <name>message</name></expr>;</expr_stmt>
+		}</block></constructor>
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>toString</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>getMessage</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+	}</block></class>
+
+	<comment type="line">//new exceptions added for appropriate usage</comment>
+	<class><specifier>static</specifier> class <name>NotAddedToJobRosterException</name> <super><extends>extends <name>Exception</name></extends></super> <block>{
+		<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><specifier>private</specifier> <name>String</name></type> <name>message</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+
+		<constructor><specifier>public</specifier> <name>NotAddedToJobRosterException</name><parameter_list>()</parameter_list> <block>{
+			<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>message</name></name> <operator>=</operator> <literal type="string">"Not Added to job roster "</literal></expr>;</expr_stmt>
+		}</block></constructor>
+
+		<constructor><specifier>public</specifier> <name>NotAddedToJobRosterException</name><parameter_list>(<param><decl><type><name>String</name></type> <name>message</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>message</name></name> <operator>=</operator> <name>message</name></expr>;</expr_stmt>
+		}</block></constructor>
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>toString</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>getMessage</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+	}</block></class>
+
+	<comment type="block">/*
+	 * All job functions add, update, retrieve are specified in the this class
+	 * 
+	 * local main class is used for testing functions and specific executions
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list> <block>{
+
+
+
+	}</block></function>
+
+}</block></class>
+</unit>

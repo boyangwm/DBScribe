@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\frontend\GiveBonusUI.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>frontend</name></name>;</package>
+
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>BorderLayout</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>EventQueue</name></name>;</import>
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JFrame</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JPanel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>border</name><operator>.</operator><name>EmptyBorder</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>DefaultComboBoxModel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JLabel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JOptionPane</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JTextField</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JButton</name></name>;</import>
+
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>Font</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionListener</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionEvent</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JComboBox</name></name>;</import>
+
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Department</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Employee</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>People</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Professor</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Student</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Employee</name><operator>.</operator><name>bonusNotValidException</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>People</name><operator>.</operator><name>PersonDoesNotExistException</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Professor</name><operator>.</operator><name>ProfessorDoesNotExistException</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Student</name><operator>.</operator><name>AccessDeniedException</name></name>;</import>
+
+
+<comment type="block" format="javadoc">/**
+ * @author Akshay
+ * 
+ */</comment>
+
+<comment type="block" format="javadoc">/*************** GIVEBONUSUI.JAVA CLASS WAS WRITTEN BY AKSHAY THIRKATEH ********************************/</comment>
+
+<class><specifier>public</specifier> class <name>GiveBonusUI</name> <super><extends>extends <name>JPanel</name></extends></super> <block>{
+	
+	<decl_stmt><decl><type><specifier>static</specifier> <name>Employee</name></type> <name>prof</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>static</specifier> <name>Department</name></type> <name>dept</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>static</specifier> <name>Employee</name></type> <name>prof2</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Department</name></argument>&gt;</argument_list></name></type> <name>getAllDepts</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Employee</name></argument>&gt;</argument_list></name></type> <name>getAllEmpNames</name></decl>;</decl_stmt>
+
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JPanel</name></type> <name>contentPane</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTextField</name></type> <name>enterBonus</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name><name>JComboBox</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>deptComboBox</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name><name>JComboBox</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>employeeComboBox</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JLabel</name></type> <name>currentPay</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JLabel</name></type> <name>updatedPay</name></decl>;</decl_stmt>
+
+	<comment type="block" format="javadoc">/**
+	 * Launch the application.
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name><name>EventQueue</name><operator>.</operator><name>invokeLater</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>Runnable</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>run</name><parameter_list>()</parameter_list> <block>{
+				<try>try <block>{
+					<decl_stmt><decl><type><name>GiveBonusUI</name></type> <name>frame</name> <init>= <expr><operator>new</operator> <call><name>GiveBonusUI</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>frame</name><operator>.</operator><name>setVisible</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * Create the frame.
+	 */</comment>
+	<constructor><specifier>public</specifier> <name>GiveBonusUI</name><parameter_list>()</parameter_list> <block>{
+		
+		<comment type="line">//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</comment>
+		<expr_stmt><expr><call><name>setBounds</name><argument_list>(<argument><expr><literal type="number">100</literal></expr></argument>, <argument><expr><literal type="number">100</literal></expr></argument>, <argument><expr><literal type="number">553</literal></expr></argument>, <argument><expr><literal type="number">391</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<comment type="line">//contentPane = new JPanel();</comment>
+		<expr_stmt><expr><call><name>setBorder</name><argument_list>(<argument><expr><operator>new</operator> <call><name>EmptyBorder</name><argument_list>(<argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>, <argument><expr><literal type="number">5</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>setLayout</name><argument_list>(<argument><expr><operator>new</operator> <call><name>BorderLayout</name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<comment type="line">//setContentPane(contentPane);</comment>
+		
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>panel</name> <init>= <expr><operator>new</operator> <call><name>JPanel</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>panel</name></expr></argument>, <argument><expr><name><name>BorderLayout</name><operator>.</operator><name>CENTER</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>setLayout</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblPayDetails</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Pay Details"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblPayDetails</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Tahoma"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>BOLD</name></name></expr></argument>, <argument><expr><literal type="number">12</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>lblPayDetails</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">216</literal></expr></argument>, <argument><expr><literal type="number">31</literal></expr></argument>, <argument><expr><literal type="number">75</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblPayDetails</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>enterBonus</name> <operator>=</operator> <operator>new</operator> <call><name>JTextField</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>enterBonus</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">207</literal></expr></argument>, <argument><expr><literal type="number">206</literal></expr></argument>, <argument><expr><literal type="number">64</literal></expr></argument>, <argument><expr><literal type="number">20</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>enterBonus</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>enterBonus</name><operator>.</operator><name>setColumns</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JButton</name></type> <name>btnNewButton</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Give Bonus"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>btnNewButton</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				
+				<try>try <block>{
+					<if>if<condition>(<expr><name>prof</name><operator>==</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="string">"Please select an employee"</literal></expr></argument>, <argument><expr><literal type="string">"Update"</literal></expr></argument>, <argument><expr><name><name>JOptionPane</name><operator>.</operator><name>INFORMATION_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<return>return;</return>
+					}</block></then></if>
+					<if>if<condition>(<expr><name>prof</name><operator>!=</operator><literal type="null">null</literal> <operator>&amp;&amp;</operator> <call><name><name>enterBonus</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>equals</name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="string">"Please enter the bonus percentage"</literal></expr></argument>, <argument><expr><literal type="string">"Update"</literal></expr></argument>, <argument><expr><name><name>JOptionPane</name><operator>.</operator><name>INFORMATION_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<return>return;</return>
+					}</block></then></if>
+					
+					<decl_stmt><decl><type><name>boolean</name></type> <name>check</name><init>=<expr><call><name><name>Employee</name><operator>.</operator><name>giveBonus</name></name><argument_list>(<argument><expr><call><name><name>prof</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><call><name><name>Double</name><operator>.</operator><name>parseDouble</name></name><argument_list>(<argument><expr><call><name><name>enterBonus</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<if>if<condition>(<expr><name>check</name></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="string">"Salary Updated "</literal></expr></argument>, <argument><expr><literal type="string">"Update"</literal></expr></argument>, <argument><expr><name><name>JOptionPane</name><operator>.</operator><name>INFORMATION_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name>initializeSalary</name><argument_list>(<argument><expr><name>prof</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name>initializeAllDepartments</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>enterBonus</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<comment type="line">//employeeComboBox.setSelectedIndex(0);</comment>
+					}</block></then>
+					<else>else<block>{
+						<expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="string">"Salary Not Updated "</literal></expr></argument>, <argument><expr><literal type="string">"Update"</literal></expr></argument>, <argument><expr><name><name>JOptionPane</name><operator>.</operator><name>INFORMATION_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></else></if>
+					
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>NumberFormatException</name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="string">"Not a number "</literal></expr></argument>, <argument><expr><literal type="string">"Update"</literal></expr></argument>, <argument><expr><name><name>JOptionPane</name><operator>.</operator><name>INFORMATION_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch>
+				<catch>catch <parameter_list>(<param><decl><type><name><name>Employee</name><operator>.</operator><name>bonusNotValidException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><literal type="string">"Bonus not valid "</literal></expr></argument>, <argument><expr><literal type="string">"Update"</literal></expr></argument>, <argument><expr><name><name>JOptionPane</name><operator>.</operator><name>INFORMATION_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch>
+				<catch>catch <parameter_list>(<param><decl><type><name><name>Student</name><operator>.</operator><name>AccessDeniedException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+					<comment type="line">// TODO Auto-generated catch block</comment>
+					<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnNewButton</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Tahoma"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>BOLD</name></name></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnNewButton</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">207</literal></expr></argument>, <argument><expr><literal type="number">298</literal></expr></argument>, <argument><expr><literal type="number">112</literal></expr></argument>, <argument><expr><literal type="number">34</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>btnNewButton</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JButton</name></type> <name>tenPercentButton</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"10%"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>tenPercentButton</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>enterBonus</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"10.00"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>double</name></type> <name>newSal</name><init>=<expr><operator>(</operator><operator>(</operator><operator>(</operator><call><name><name>prof2</name><operator>.</operator><name>getSalary</name></name><argument_list>()</argument_list></call><operator>)</operator><operator>*</operator><literal type="number">0.10</literal><operator>)</operator><operator>+</operator><call><name><name>prof2</name><operator>.</operator><name>getSalary</name></name><argument_list>()</argument_list></call><operator>)</operator></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal><operator>+</operator><name>newSal</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+				
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>tenPercentButton</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">381</literal></expr></argument>, <argument><expr><literal type="number">149</literal></expr></argument>, <argument><expr><literal type="number">67</literal></expr></argument>, <argument><expr><literal type="number">23</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>tenPercentButton</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JButton</name></type> <name>fifteenPercentButton</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"15%"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>fifteenPercentButton</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>enterBonus</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"15.00"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>double</name></type> <name>newSal</name><init>=<expr><operator>(</operator><operator>(</operator><operator>(</operator><call><name><name>prof2</name><operator>.</operator><name>getSalary</name></name><argument_list>()</argument_list></call><operator>)</operator><operator>*</operator><literal type="number">0.15</literal><operator>)</operator><operator>+</operator><call><name><name>prof2</name><operator>.</operator><name>getSalary</name></name><argument_list>()</argument_list></call><operator>)</operator></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal><operator>+</operator><name>newSal</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>fifteenPercentButton</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">381</literal></expr></argument>, <argument><expr><literal type="number">183</literal></expr></argument>, <argument><expr><literal type="number">67</literal></expr></argument>, <argument><expr><literal type="number">23</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>fifteenPercentButton</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JButton</name></type> <name>twentyPercentbutton</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"20%"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>twentyPercentbutton</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>enterBonus</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"20.00"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>double</name></type> <name>newSal</name><init>=<expr><operator>(</operator><operator>(</operator><operator>(</operator><call><name><name>prof2</name><operator>.</operator><name>getSalary</name></name><argument_list>()</argument_list></call><operator>)</operator><operator>*</operator><literal type="number">0.20</literal><operator>)</operator><operator>+</operator><call><name><name>prof2</name><operator>.</operator><name>getSalary</name></name><argument_list>()</argument_list></call><operator>)</operator></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal><operator>+</operator><name>newSal</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>twentyPercentbutton</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">381</literal></expr></argument>, <argument><expr><literal type="number">217</literal></expr></argument>, <argument><expr><literal type="number">67</literal></expr></argument>, <argument><expr><literal type="number">23</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>twentyPercentbutton</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JButton</name></type> <name>twentyFivePercentButton</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"25%"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>twentyFivePercentButton</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>enterBonus</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"25.00"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>double</name></type> <name>newSal</name><init>=<expr><operator>(</operator><operator>(</operator><operator>(</operator><call><name><name>prof2</name><operator>.</operator><name>getSalary</name></name><argument_list>()</argument_list></call><operator>)</operator><operator>*</operator><literal type="number">0.25</literal><operator>)</operator><operator>+</operator><call><name><name>prof2</name><operator>.</operator><name>getSalary</name></name><argument_list>()</argument_list></call><operator>)</operator></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal><operator>+</operator><name>newSal</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>twentyFivePercentButton</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">381</literal></expr></argument>, <argument><expr><literal type="number">251</literal></expr></argument>, <argument><expr><literal type="number">67</literal></expr></argument>, <argument><expr><literal type="number">23</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>twentyFivePercentButton</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblQuickUseTools</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Quick use Tools"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblQuickUseTools</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Tahoma"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>BOLD</name></name></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>lblQuickUseTools</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">361</literal></expr></argument>, <argument><expr><literal type="number">124</literal></expr></argument>, <argument><expr><literal type="number">87</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblQuickUseTools</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblCurrentPay</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Current Pay"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblCurrentPay</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Tahoma"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>BOLD</name></name></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>lblCurrentPay</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">131</literal></expr></argument>, <argument><expr><literal type="number">168</literal></expr></argument>, <argument><expr><literal type="number">75</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblCurrentPay</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>currentPay</name> <operator>=</operator> <operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"New label"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>currentPay</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">225</literal></expr></argument>, <argument><expr><literal type="number">168</literal></expr></argument>, <argument><expr><literal type="number">66</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>currentPay</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<comment type="line">//currentPay.setText(""+prof.getSalary());</comment>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>dollarLbl</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"$"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>dollarLbl</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Tahoma"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>BOLD</name></name></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>dollarLbl</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">210</literal></expr></argument>, <argument><expr><literal type="number">168</literal></expr></argument>, <argument><expr><literal type="number">12</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>dollarLbl</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblEnterTheBonus</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Enter the bonus Percentage"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblEnterTheBonus</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Tahoma"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>BOLD</name></name></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>lblEnterTheBonus</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">45</literal></expr></argument>, <argument><expr><literal type="number">209</literal></expr></argument>, <argument><expr><literal type="number">166</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblEnterTheBonus</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblUpdatedPay</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Updated Pay"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblUpdatedPay</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Tahoma"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>BOLD</name></name></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>lblUpdatedPay</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">131</literal></expr></argument>, <argument><expr><literal type="number">255</literal></expr></argument>, <argument><expr><literal type="number">75</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblUpdatedPay</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>updatedPay</name> <operator>=</operator> <operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"New label"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">225</literal></expr></argument>, <argument><expr><literal type="number">255</literal></expr></argument>, <argument><expr><literal type="number">46</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>updatedPay</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>dollarSignLbl</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"$"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>dollarSignLbl</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Tahoma"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>BOLD</name></name></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>dollarSignLbl</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">216</literal></expr></argument>, <argument><expr><literal type="number">255</literal></expr></argument>, <argument><expr><literal type="number">12</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>dollarSignLbl</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>deptComboBox</name> <operator>=</operator> <operator>new</operator> <call><name>JComboBox</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>deptComboBox</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				
+				<decl_stmt><decl><type><name>String</name></type> <name>selectedDept</name><init>=<expr><call><name><name>deptComboBox</name><operator>.</operator><name>getItemAt</name></name><argument_list>(<argument><expr><call><name><name>deptComboBox</name><operator>.</operator><name>getSelectedIndex</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<try>try <block>{
+					<decl_stmt><decl><type><name>Department</name></type> <name>dept</name><init>=<expr><operator>new</operator> <call><name>Department</name><argument_list>(<argument><expr><name>selectedDept</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<try>try <block>{
+						<expr_stmt><expr><call><name>getAllEmployeesInADept</name><argument_list>(<argument><expr><call><name><name>dept</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>currentPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>enterBonus</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<if>if<condition>(<expr><call><name><name>employeeComboBox</name><operator>.</operator><name>getModel</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>getSize</name><argument_list>()</argument_list></call><operator>&gt;</operator><literal type="number">0</literal></expr>)</condition><then>
+							<block type="pseudo"><expr_stmt><expr><call><name><name>employeeComboBox</name><operator>.</operator><name>setSelectedIndex</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt></block></then></if>						
+						
+					}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Professor</name><operator>.</operator><name>ProfessorDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+						<comment type="line">// TODO Auto-generated catch block</comment>
+						<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					}</block></catch></try>
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<comment type="line">// TODO Auto-generated catch block</comment>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+				<expr_stmt><expr><call><name>initializeAllDepartments</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>deptComboBox</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">207</literal></expr></argument>, <argument><expr><literal type="number">81</literal></expr></argument>, <argument><expr><literal type="number">112</literal></expr></argument>, <argument><expr><literal type="number">20</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>deptComboBox</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblSelectDepartment</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Select Department"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblSelectDepartment</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Tahoma"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>BOLD</name></name></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>lblSelectDepartment</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">94</literal></expr></argument>, <argument><expr><literal type="number">84</literal></expr></argument>, <argument><expr><literal type="number">112</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblSelectDepartment</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblSelectEmployee</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Select Employee"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblSelectEmployee</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Tahoma"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>BOLD</name></name></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>lblSelectEmployee</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">111</literal></expr></argument>, <argument><expr><literal type="number">124</literal></expr></argument>, <argument><expr><literal type="number">95</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblSelectEmployee</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>employeeComboBox</name> <operator>=</operator> <operator>new</operator> <call><name>JComboBox</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>employeeComboBox</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				
+				<decl_stmt><decl><type><name>String</name></type> <name>selectedEmp</name><init>=<expr><call><name><name>employeeComboBox</name><operator>.</operator><name>getItemAt</name></name><argument_list>(<argument><expr><call><name><name>employeeComboBox</name><operator>.</operator><name>getSelectedIndex</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+				<expr_stmt><expr><name>prof</name><operator>=</operator><operator>new</operator> <call><name>Professor</name><argument_list>(<argument><expr><name>selectedEmp</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>prof</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>prof</name><operator>.</operator><name>getUserName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>prof</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<try>try <block>{
+					<expr_stmt><expr><name>prof2</name><operator>=</operator><operator>new</operator> <call><name>Employee</name><argument_list>(<argument><expr><call><name><name>prof</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name>initializeSalary</name><argument_list>(<argument><expr><name>prof2</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>updatedPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>enterBonus</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>People</name><operator>.</operator><name>PersonDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<comment type="line">// TODO Auto-generated catch block</comment>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+				
+				
+				
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>employeeComboBox</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">207</literal></expr></argument>, <argument><expr><literal type="number">121</literal></expr></argument>, <argument><expr><literal type="number">112</literal></expr></argument>, <argument><expr><literal type="number">20</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>employeeComboBox</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>label</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"%"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>label</name><operator>.</operator><name>setFont</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>Font</name><argument_list>(<argument><expr><literal type="string">"Tahoma"</literal></expr></argument>, <argument><expr><name><name>Font</name><operator>.</operator><name>BOLD</name></name></expr></argument>, <argument><expr><literal type="number">11</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>label</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">273</literal></expr></argument>, <argument><expr><literal type="number">209</literal></expr></argument>, <argument><expr><literal type="number">18</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>panel</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>label</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	
+	
+	<expr_stmt><expr><call><name>initializeAllDepartments</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+	}</block></constructor>
+	
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>initializeAllDepartments</name><parameter_list>()</parameter_list><block>{
+		
+		<expr_stmt><expr><name>getAllDepts</name><operator>=</operator><call><name><name>Department</name><operator>.</operator><name>getAllDepartments</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>model</name><init>=<expr><operator>new</operator> <call><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<for>for<control>(<init><decl><type><name>Department</name></type> <name>d</name><range>: <expr><name>getAllDepts</name></expr></range></decl></init> )</control><block>{
+			
+			<expr_stmt><expr><call><name><name>model</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><call><name><name>d</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>d</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			
+		}</block></for>
+		<expr_stmt><expr><call><name><name>deptComboBox</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>model</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	}</block></function>
+	
+	
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>getAllEmployeesInADept</name><parameter_list>(<param><decl><type><name>String</name></type> <name>deptNames</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name><name>Professor</name><operator>.</operator><name>ProfessorDoesNotExistException</name></name></expr></argument></throws><block>{
+		
+		<try>try <block>{
+			<expr_stmt><expr><name>getAllEmpNames</name><operator>=</operator><call><name><name>Employee</name><operator>.</operator><name>getAllEmployeesByDepartment</name></name><argument_list>(<argument><expr><name>deptNames</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<decl_stmt><decl><type><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>model</name><init>=<expr><operator>new</operator> <call><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<for>for<control>(<init><decl><type><name>Employee</name></type> <name>p</name><range>: <expr><name>getAllEmpNames</name></expr></range></decl></init>)</control><block>{
+				
+				<expr_stmt><expr><call><name><name>model</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><call><name><name>p</name><operator>.</operator><name>getUserName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></for>
+			
+			<expr_stmt><expr><call><name><name>employeeComboBox</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>model</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<comment type="line">// TODO Auto-generated catch block</comment>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>initializeSalary</name><parameter_list>(<param><decl><type><name>Employee</name></type> <name>p</name></decl></param>)</parameter_list><block>{
+		
+		<decl_stmt><decl><type><name>double</name></type> <name>check</name><init>=<expr><call><name><name>p</name><operator>.</operator><name>getSalary</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>check</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>currentPay</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal><operator>+</operator><call><name><name>p</name><operator>.</operator><name>getSalary</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+	}</block></function>
+}</block></class>
+</unit>

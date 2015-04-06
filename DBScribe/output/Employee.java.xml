@@ -1,0 +1,1241 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\Employee.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+
+<comment type="block" format="javadoc">/**
+ * @author Akshay
+ * 
+ */</comment>
+
+<comment type="block" format="javadoc">/*************** EMPLOYEE.JAVA CLASS WAS WRITTEN BY AKSHAY THIRKATEH ********************************/</comment>
+
+<class><specifier>public</specifier> class <name>Employee</name> <super><extends>extends <name>People</name></extends></super> <block>{
+
+	<comment type="block">/*class variables for employee specific use*/</comment>
+	<decl_stmt><decl><type><specifier>protected</specifier> <name>double</name></type> <name>salary</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>protected</specifier> <name>String</name></type> <name>officeAddress</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>protected</specifier> <name>String</name></type> <name>officeHours</name></decl>;</decl_stmt>
+
+	
+	<comment type="block">/*----------------GETTERS AND SETTERS START------------------------------------*/</comment>
+	<function><type><specifier>public</specifier> <name>double</name></type> <name>getSalary</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>salary</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setSalary</name><parameter_list>(<param><decl><type><name>double</name></type> <name>salary</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>salary</name></name> <operator>=</operator> <name>salary</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>String</name></type> <name>getOfficeAddress</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>officeAddress</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setOfficeAddress</name><parameter_list>(<param><decl><type><name>String</name></type> <name>officeAddress</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>officeAddress</name></name> <operator>=</operator> <name>officeAddress</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>String</name></type> <name>getOfficeHours</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>officeHours</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setOfficeHours</name><parameter_list>(<param><decl><type><name>String</name></type> <name>officeHours</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>officeHours</name></name> <operator>=</operator> <name>officeHours</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<comment type="block">/*----------------GETTERS AND SETTERS END------------------------------------*/</comment>
+	
+	<comment type="block">/*the constructor takes in the UIN and then initializes the employee specific variables
+	 * 
+	 * it calls in super people class and sets the people class variables too
+	 * 
+	 * it thorws person does not exist exception */</comment>
+	<constructor><specifier>public</specifier> <name>Employee</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name>PersonDoesNotExistException</name></expr></argument></throws> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//establish a connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLPeopleSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+
+			<try>try <block>{
+				<comment type="line">//select employee details from employee table where for passed UIN</comment>
+				<expr_stmt><expr><name>SQLPeopleSelect</name> <operator>=</operator> <literal type="string">"Select * From employee where UIN=?;"</literal></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLPeopleSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+				<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+					<comment type="line">//if exists then initialize the variables</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>UIN</name> <operator>+</operator> <literal type="string">"already exists"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retrievedEmployeeUIN"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>retrievedEmployeeUIN</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//retrieve the UIN </comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retrievedEmployeeSalary"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"Salary"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>double</name></type> <name>retrievedEmployeeSalary</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getDouble</name></name><argument_list>(<argument><expr><literal type="string">"Salary"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//retrieve the salary </comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retrievedOfficeAddress"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"OfficeAddress"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>String</name></type> <name>retrievedOfficeAddress</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"OfficeAddress"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//retrieve the office address</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retrievedOfficeHours"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"OfficeHours"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>String</name></type> <name>retrievedOfficeHours</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"OfficeHours"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//retrieve the office hours</comment>
+
+					<comment type="line">//set the class variables to the UIN specific</comment>
+					
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>UIN</name></name> <operator>=</operator> <name>retrievedEmployeeUIN</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>salary</name></name> <operator>=</operator> <name>retrievedEmployeeSalary</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>officeAddress</name></name> <operator>=</operator> <name>retrievedOfficeAddress</name></expr>;</expr_stmt>
+					<expr_stmt><expr><name><name>this</name><operator>.</operator><name>officeHours</name></name> <operator>=</operator> <name>retrievedOfficeHours</name></expr>;</expr_stmt>
+
+				}</block></then>
+
+				<else>else <block>{
+					<comment type="line">//if the resultset is empty then return false and throw an exception</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>UIN</name> <operator>+</operator> <literal type="string">"does not exist"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<throw>throw <expr><operator>new</operator> <call><name>PersonDoesNotExistException</name><argument_list>()</argument_list></call></expr>;</throw>
+
+				}</block></else></if>
+
+			}</block>
+
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding/updating to database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+													here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<comment type="line">// TODO Auto-generated constructor stub</comment>
+	}</block></constructor>
+
+	<comment type="line">//constructor calls the super class</comment>
+	<constructor><specifier>public</specifier> <name>Employee</name><parameter_list>(<param><decl><type><name>String</name></type> <name>name</name></decl></param>, <param><decl><type><name>String</name></type> <name>userName</name></decl></param>, <param><decl><type><name>int</name></type> <name>deptID</name></decl></param>, <param><decl><type><name>int</name></type> <name>positionID</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>(<argument><expr><name>name</name></expr></argument>, <argument><expr><name>userName</name></expr></argument>, <argument><expr><name>deptID</name></expr></argument>, <argument><expr><name>positionID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<comment type="line">// TODO Auto-generated constructor stub</comment>
+	}</block></constructor>
+
+	<comment type="line">//construtor calls the super class</comment>
+	<constructor><specifier>public</specifier> <name>Employee</name><parameter_list>(<param><decl><type><name>String</name></type> <name>userName</name></decl></param>)</parameter_list><block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>(<argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<comment type="line">// TODO Auto-generated constructor stub</comment>
+	}</block></constructor>
+
+	<comment type="block">/*the add employee to the database takes in the UIN and adds him to the employee table
+	 * 
+	 * the return type is boolean 
+	 * 
+	 * */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>addEmployee</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isAdded</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt><comment type="line">//create a boolean value for returning. set it to false</comment>
+		<decl_stmt><decl><type><name>double</name></type> <name>salary</name> <init>= <expr><literal type="number">40000.00</literal></expr></init></decl>;</decl_stmt><comment type="line">//this is a default value</comment>
+		<decl_stmt><decl><type><name>String</name></type> <name>Office_address</name> <init>= <expr><literal type="string">"to be decided"</literal></expr></init></decl>;</decl_stmt><comment type="line">//this is a default value</comment>
+		<decl_stmt><decl><type><name>String</name></type> <name>office_hours</name> <init>= <expr><literal type="string">"to be decided"</literal></expr></init></decl>;</decl_stmt><comment type="line">//this is a default value</comment>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//establish a connection</comment>
+
+			<try>try <block>{
+
+				<decl_stmt><decl><type><name>boolean</name></type> <name>isExisting</name> <init>= <expr><call><name>addEmployeeCheck</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//check if its existing </comment>
+
+				<if>if <condition>(<expr><name>isExisting</name></expr>)</condition><then> <block>{
+					<comment type="line">//return false it the UIN already exists in the employee table</comment>
+					<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+					
+				}</block></then>
+
+				<else>else <block>{
+					<comment type="line">//insert new employee in the database</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Adding new data into the database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLEmployeeInsert</name> <init>= <expr><literal type="string">"Insert into employee (UIN, Salary, OfficeAddress, OfficeHours) Values (?,?,?,?);"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLEmployeeInsert</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+					<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>salary</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the salary</comment>
+					<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">3</literal></expr></argument>, <argument><expr><name>Office_address</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the office address</comment>
+					<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">4</literal></expr></argument>, <argument><expr><name>office_hours</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the office hours					</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>stmt</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>i</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute query</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"salary"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"Salary"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"office_address"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"OfficeAddress"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"office_hours"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"OfficeHours"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>i</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Inserted"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>isAdded</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt><comment type="line">//set the return value to true</comment>
+
+				}</block></else></if>
+
+			}</block>
+
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding/updating to database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+				<comment type="line">// Database.closeConnection(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//the outer catch block catches the general exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isAdded</name></expr>;</return>
+
+	}</block></function>
+	<comment type="block">/*this function mainly is to check whether the employee already exists in the employee table
+	 * 
+	 *  the return type is boolean */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>addEmployeeCheck</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isExisting</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt><comment type="line">//create a boolean value for returning. set it to false</comment>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//establish a connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLEmployeeSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+
+			<try>try <block>{
+				<comment type="line">//select the UIN</comment>
+				<expr_stmt><expr><name>SQLEmployeeSelect</name> <operator>=</operator> <literal type="string">"Select UIN From employee where UIN=?;"</literal></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLEmployeeSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+				<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+					<comment type="line">//if the resultset exists then return true</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>UIN</name> <operator>+</operator> <literal type="string">"already exists"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+				}</block></then></if>
+
+			}</block>
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding/updating to database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+				<comment type="line">// Database.closeConnection(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//the outer catch block catches the general exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+															here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isExisting</name></expr>;</return>
+
+	}</block></function>
+
+
+	<comment type="block">/*
+	 * updateEmployeeDetauls function takes in the inputs of the the new office address and new office hours
+	 * 
+	 * checks if it is an employee
+	 * 
+	 * if updated returns true
+	 * 
+	 * 
+	 * else the function returns false
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>updateEmpDetails</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>, <param><decl><type><name>String</name></type> <name>officeAddress</name></decl></param>,<param><decl><type><name>String</name></type> <name>officeHours</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name><name>Student</name><operator>.</operator><name>AccessDeniedException</name></name></expr></argument></throws> <block>{
+
+		
+		<if>if<condition>(<expr><name>officeAddress</name><operator>==</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+		
+		<if>if<condition>(<expr><name>officeHours</name><operator>==</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+		
+		<if>if<condition>(<expr><call><name><name>officeAddress</name><operator>.</operator><name>length</name></name><argument_list>()</argument_list></call><operator>==</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+		
+		<if>if<condition>(<expr><call><name><name>officeHours</name><operator>.</operator><name>length</name></name><argument_list>()</argument_list></call><operator>==</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>check</name> <init>= <expr><call><name>checkIfEmployee</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//check if the UIN passed is an employee</comment>
+		<if>if <condition>(<expr><operator>!</operator><name>check</name></expr>)</condition><then> <block>{
+			<throw>throw <expr><operator>new</operator> <call><name><name>Student</name><operator>.</operator><name>AccessDeniedException</name></name><argument_list>()</argument_list></call></expr>;</throw><comment type="line">//else access is denied</comment>
+		}</block></then></if>
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isUpdated</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//establish a connection </comment>
+
+			<try>try <block>{
+
+				<decl_stmt><decl><type><name>boolean</name></type> <name>isExisting</name> <init>= <expr><call><name>updateEmpDetailscheck</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//check if the employee details already exist</comment>
+
+				<if>if <condition>(<expr><name>isExisting</name></expr>)</condition><then> <block>{
+
+					<comment type="line">// updating the employee details</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Updating the emp details in the database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLPeopleInsert</name> <init>= <expr><literal type="string">"UPDATE employee SET OfficeAddress=?, OfficeHours=? where UIN=?;"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLPeopleInsert</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>officeAddress</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the values</comment>
+					<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>officeHours</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">3</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>stmt</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>i</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"officeAddress"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"OfficeAddress"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"officeHours"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"OfficeHours"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>i</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Updated"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+					<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//commit the transaction</comment>
+					<expr_stmt><expr><name>isUpdated</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+				}</block></then>
+
+				<else>else <block>{
+					<comment type="line">//if the resultset doesnt return anything then its not an employee</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>UIN</name> <operator>+</operator> <literal type="string">" is not an employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+				}</block></else></if>
+
+			}</block>
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding/updating to database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+				<comment type="line">// Database.closeConnection(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//catch block</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+															here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isUpdated</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="block">/*the function is to mainly check if the employee exists in the table
+	 * 
+	 * the parameter passed is the UIN
+	 * 
+	 *  the return type is boolean */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>updateEmpDetailscheck</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isUpdated</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//establish connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLselectEmp</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+
+			<try>try <block>{
+
+				<expr_stmt><expr><name>SQLselectEmp</name> <operator>=</operator> <literal type="string">"Select UIN From employee where UIN=?;"</literal></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLselectEmp</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute query</comment>
+
+				<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+					<comment type="line">//if exists the return true</comment>
+					<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+				}</block></then>
+
+				<else>else <block>{
+					
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>UIN</name> <operator>+</operator> <literal type="string">" is not an employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+				}</block></else></if>
+
+			}</block>
+			<comment type="line">//catch block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding/updating to database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+			
+			<comment type="line">//finally block</comment>
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+				<comment type="line">// Database.closeConnection(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//catch the outer try s general exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isUpdated</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block">/*to give a bonus to any employee then the percentage and the UIN is passed
+	 * 
+	 *  the return type is boolean */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>giveBonus</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>, <param><decl><type><name>double</name></type> <name>bonusPercent</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name>bonusNotValidException</name></expr></argument>, <argument><expr><name><name>Student</name><operator>.</operator><name>AccessDeniedException</name></name></expr></argument></throws> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>check</name> <init>= <expr><call><name>checkIfEmployee</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//check it its an employee</comment>
+		<if>if <condition>(<expr><operator>!</operator><name>check</name></expr>)</condition><then> <block>{
+			<throw>throw <expr><operator>new</operator> <call><name><name>Student</name><operator>.</operator><name>AccessDeniedException</name></name><argument_list>()</argument_list></call></expr>;</throw><comment type="line">//throw an exception if its not an employee</comment>
+		}</block></then></if>
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>giveBonus</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<comment type="line">//if the bonus percent is not appropriate then throw an exception</comment>
+		<if>if <condition>(<expr><name><name>bonusPercent</name> <argument_list type="template">&lt; <argument><literal type="number">5.0</literal> <operator>||</operator> <name>bonusPercent</name></argument> &gt;</argument_list></name> <literal type="number">30.0</literal></expr>)</condition><then> <block>{
+			<throw>throw <expr><operator>new</operator> <call><name>bonusNotValidException</name><argument_list>()</argument_list></call></expr>;</throw>
+		}</block></then></if>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+
+			<try>try <block>{
+
+				<decl_stmt><decl><type><name>boolean</name></type> <name>isExisting</name> <init>= <expr><call><name>giveBonusCheck</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//checking if the UIn exists in the batabase</comment>
+
+				<if>if <condition>(<expr><name>isExisting</name></expr>)</condition><then> <block>{
+
+					<decl_stmt><decl><type><name>double</name></type> <name>retreivedSalaryForBonus</name> <init>= <expr><call><name>getsalary</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the salary of the employee</comment>
+
+					<if>if <condition>(<expr><name>retreivedSalaryForBonus</name> <operator>!=</operator> <operator>-</operator><literal type="number">1</literal></expr>)</condition><then> <block>{
+						<comment type="line">//calculate the new salary</comment>
+						<decl_stmt><decl><type><name>double</name></type> <name>newSalary</name> <init>= <expr><operator>(</operator><name>retreivedSalaryForBonus</name> <operator>+</operator> <operator>(</operator><operator>(</operator><name>retreivedSalaryForBonus</name> <operator>*</operator> <name>bonusPercent</name><operator>)</operator> <operator>/</operator> <literal type="number">100</literal><operator>)</operator><operator>)</operator></expr></init></decl>;</decl_stmt>
+
+
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Updating the emp details in the database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>SQLPeopleInsert</name> <init>= <expr><literal type="string">"UPDATE employee SET Salary=? where UIN=?;"</literal></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLPeopleInsert</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>newSalary</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the new salary</comment>
+						<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//for the UIN</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>stmt</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>i</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"newSalary"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"Salary"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>i</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Updated"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>giveBonus</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></then></if>
+
+				}</block></then>
+
+				<else>else <block>{
+					<comment type="line">//if the resultset is empty then not an employee</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>UIN</name> <operator>+</operator> <literal type="string">" is not an employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+				}</block></else></if>
+
+			}</block>
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding/updating to database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+				<comment type="line">// Database.closeConnection(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//the outer catch block catches the general exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>giveBonus</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="block">/*to give a bonus to any employee then the salary should be retrieved then this function is called
+	 * 
+	 * the UIN is passed
+	 * 
+	 *  the return type is double */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>double</name></type> <name>getsalary</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//establish the salary</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLselectEmp</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+
+			<try>try <block>{
+
+				<expr_stmt><expr><name>SQLselectEmp</name> <operator>=</operator> <literal type="string">"Select Salary From employee where UIN=?;"</literal></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLselectEmp</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+				<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+					<comment type="line">//retrieve the salary</comment>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedSalary"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"Salary"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>double</name></type> <name>retreivedSalary</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getDouble</name></name><argument_list>(<argument><expr><literal type="string">"Salary"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<return>return <expr><name>retreivedSalary</name></expr>;</return>
+
+				}</block></then>
+
+				<else>else <block>{
+					<comment type="line">//not an employee</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>UIN</name> <operator>+</operator> <literal type="string">" is not an employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+				}</block></else></if>
+
+			}</block>
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding/updating to database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+				<comment type="line">// Database.closeConnection(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//the outer catch block catches the general exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><operator>-</operator><literal type="number">1</literal></expr>;</return>
+	}</block></function>
+
+	<comment type="block">/*the function is to mainly check if the employee exists in the table
+	 * 
+	 * the parameter passed is the UIN
+	 * 
+	 *  the return type is boolean */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>giveBonusCheck</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>giveBonusCheck</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//establish a connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLselectEmp</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+
+			<try>try <block>{
+
+				<expr_stmt><expr><name>SQLselectEmp</name> <operator>=</operator> <literal type="string">"Select * From employee where UIN=?;"</literal></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLselectEmp</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+				<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+					<comment type="line">//if exists then return true</comment>
+					<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+				}</block></then>
+
+				<else>else <block>{
+
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>UIN</name> <operator>+</operator> <literal type="string">" is not an employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+				}</block></else></if>
+
+			}</block>
+
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding/updating to database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+				<comment type="line">// Database.closeConnection(conn);</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//the outer catch block catches the general exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>giveBonusCheck</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="block">/*The delete function takes in the UIN of the user
+	*
+	*The return type is boolean*/</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>deleteFromEmployeeByUIN</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isDeleted</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt><comment type="line">//create a boolean value for returning. set it to false</comment>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//establish a connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLPeopleDelete</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<decl_stmt><decl><type><name>boolean</name></type> <name>ifExisting</name> <init>= <expr><call><name>deleteFromEmployeeByUINCheck</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//check if the emp exists</comment>
+
+					<if>if <condition>(<expr><name>ifExisting</name></expr>)</condition><then> <block>{
+
+						<expr_stmt><expr><name>SQLPeopleDelete</name> <operator>=</operator> <literal type="string">"Delete From employee where UIN=?;"</literal></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLPeopleDelete</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+						<decl_stmt><decl><type><name>int</name></type> <name>rs1</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>rs1</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>UIN</name> <operator>+</operator> <literal type="string">" is deleted"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>isDeleted</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+
+					}</block></then>
+
+					<else>else <block>{
+						<comment type="line">//emp does not exist</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN does not exist"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+					}</block></else></if>
+				}</block></then></if>
+
+			}</block>
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error trying to access the database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+		}</block>
+
+		<comment type="line">//the outer catch block catches the general exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isDeleted</name></expr>;</return>
+
+	}</block></function>
+	<comment type="block">/*The function is mainly check if th UIN passed exists in the table or not
+	 * 
+	 * the return type is boolean
+	 * */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>deleteFromEmployeeByUINCheck</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isExisting</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get connection to db</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLEmployeeSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					<expr_stmt><expr><name>SQLEmployeeSelect</name> <operator>=</operator> <literal type="string">"Select UIN From employee where UIN=?;"</literal></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLEmployeeSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+					<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+						<comment type="line">//if exists then return true</comment>
+						<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+
+					}</block></then>
+
+					<else>else <block>{
+						<comment type="line">//else empl does not exist</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN does not exist in the employee table"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+					}</block></else></if>
+				}</block></then></if>
+
+			}</block>
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error trying to access the database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<comment type="line">//the outer catch block catches the general exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+																here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isExisting</name></expr>;</return>
+
+	}</block></function>
+
+	<comment type="block">/*The delete function takes in the Username of the user
+	*
+	*The return type is boolean*/</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>deleteFromEmployeeByUserName</name><parameter_list>(<param><decl><type><name>String</name></type> <name>userName</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isDeleted</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt><comment type="line">//create a boolean value for returning. set it to false</comment>
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLPeopleDelete</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<decl_stmt><decl><type><name>boolean</name></type> <name>isExisting</name> <init>= <expr><call><name>deleteFromEmployeeByUserNameCheck</name><argument_list>(<argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//check if the emp exists</comment>
+
+					<if>if <condition>(<expr><name>isExisting</name></expr>)</condition><then> <block>{
+						<decl_stmt><decl><type><name>int</name></type> <name>getUINtoDelete</name> <init>= <expr><call><name>getEmployeeUIN</name><argument_list>(<argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//retreive the UIN</comment>
+
+						<expr_stmt><expr><name>SQLPeopleDelete</name> <operator>=</operator> <literal type="string">"Delete From employee where UIN=?;"</literal></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLPeopleDelete</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>getUINtoDelete</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+						<decl_stmt><decl><type><name>int</name></type> <name>rs1</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"getUINtoDelete"</literal></expr></argument>, <argument><expr><literal type="string">"employee"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>rs1</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>getUINtoDelete</name> <operator>+</operator> <literal type="string">" is deleted"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>isDeleted</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt><comment type="line">//set the return value to be true</comment>
+
+					}</block></then>
+
+					<else>else <block>{
+						<comment type="line">//the emp does not exist to delete</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN does not exist as a employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+					}</block></else></if>
+				}</block></then></if>
+
+			}</block>
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error trying to access the database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+			
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+		}</block>
+		
+		<comment type="line">//the outer catch block catches the general exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+															here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isDeleted</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">//get the UIN if the username if the employee is passed</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>int</name></type> <name>getEmployeeUIN</name><parameter_list>(<param><decl><type><name>String</name></type> <name>userName</name></decl></param>)</parameter_list> <block>{
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//create a connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLUINSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					<expr_stmt><expr><name>SQLUINSelect</name> <operator>=</operator> <literal type="string">"Select UIN From people where Username=?;"</literal></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLUINSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the employee</comment>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+					<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"peopleRetrievedUIN"</literal></expr></argument>, <argument><expr><literal type="string">"people"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>peopleRetrievedUIN</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//retrieve the query</comment>
+
+						<return>return <expr><name>peopleRetrievedUIN</name></expr>;</return><comment type="line">//return the UIN</comment>
+
+					}</block></then>
+
+					<else>else <block>{
+						<comment type="line">//not exists in the emp table</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN does not exist as a employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+					}</block></else></if>
+				}</block></then></if>
+
+			}</block>
+			
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error trying to access the database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//CATCH BLOCK</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+																here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><operator>-</operator><literal type="number">1</literal></expr>;</return>
+
+	}</block></function>
+	
+	<comment type="block">/*this function is to mainly check if the username exists in the table
+	 * 
+	 *  return true if exists
+	 *  
+	 *  */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>deleteFromEmployeeByUserNameCheck</name><parameter_list>(<param><decl><type><name>String</name></type> <name>userName</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isExisting</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//establish a connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLPeopleSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					<expr_stmt><expr><name>SQLPeopleSelect</name> <operator>=</operator> <literal type="string">"Select UIN From people where Username=?;"</literal></expr>;</expr_stmt><comment type="line">//write the query</comment>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmt</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLPeopleSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>stmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the uIN</comment>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+					<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+						<comment type="line">//if exists then return true</comment>
+						<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+
+					}</block></then>
+
+					<else>else <block>{
+
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN does not exist as a employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+					}</block></else></if>
+				}</block></then></if>
+
+			}</block>
+			<comment type="line">//The inner catch block catches the SQL exception.</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error trying to access the database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally <block>{
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+		}</block>
+		
+
+		<comment type="line">//the outer catch block catches the general exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+															here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isExisting</name></expr>;</return>
+
+	}</block></function>
+
+	<comment type="block">/*retrieve all the employees that belong in a department 
+	 * 
+	 * when a dept name is passed as a parameter
+	 * 
+	 * return type is an arraylist of employee objects
+	 * 
+	 * this thorws an dept does not exist exception*/</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Employee</name></argument>&gt;</argument_list></name></type> <name>getAllEmployeesByDepartment</name><parameter_list>(<param><decl><type><name>String</name></type> <name>deptName</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name></expr></argument></throws> <block>{
+
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Employee</name></argument>&gt;</argument_list></name></type> <name>getAllEmpDept</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Employee</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//declare the arraylist and initialize it</comment>
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the conn</comment>
+
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+
+					<decl_stmt><decl><type><name>String</name></type> <name>getDeptID</name> <init>= <expr><literal type="string">"Select Username"</literal>
+							<operator>+</operator> <literal type="string">" FROM employee natural join people natural join department"</literal>
+							<operator>+</operator> <literal type="string">" WHERE DepartmentName= ?"</literal></expr></init></decl>;</decl_stmt>
+
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>getDeptID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>deptName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the dept name</comment>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<while>while <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedProfUserNames"</literal></expr></argument>, <argument><expr><literal type="string">"people"</literal></expr></argument>, <argument><expr><literal type="string">"Username"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>retreivedProfUserNames</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"Username"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//retrieve the usernames</comment>
+						
+						<decl_stmt><decl><type><name>Employee</name></type> <name>emps</name> <init>= <expr><operator>new</operator> <call><name>Employee</name><argument_list>(<argument><expr><name>retreivedProfUserNames</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//pass it to the emp constructor</comment>
+						<expr_stmt><expr><call><name><name>getAllEmpDept</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>emps</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//add the objects to the array</comment>
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"empUserName"</literal></expr></argument>, <argument><expr><literal type="string">"people"</literal></expr></argument>, <argument><expr><literal type="string">"Name"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>empUserName</name><init>=<expr><call><name><name>emps</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>empUserName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+					}</block></while>
+				}</block></then></if>
+			}</block>
+			<comment type="line">//catch block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error finding the department name "</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch>
+			<comment type="line">//finally block</comment>
+			<finally>finally <block>{
+				<comment type="line">// Database.commitTransaction(conn);</comment>
+			}</block></finally></try>
+
+		}</block>
+		<comment type="line">//catch block </comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error fetching all the professors of the department "</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+		}</block></finally></try>
+
+		<return>return <expr><name>getAllEmpDept</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block">/*this function is to mainly check if its employee or not
+	 * 
+	 * passed is a UIN
+	 * 
+	 * return type is a boolean*/</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>checkIfEmployee</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//set the connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLEmpSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><name>SQLEmpSelect</name> <operator>=</operator> <literal type="string">"Select PositionID From People where UIN=?;"</literal></expr>;</expr_stmt><comment type="line">//write the query</comment>
+				}</block></then></if>
+
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmtForSelect</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLEmpSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the UIN</comment>
+
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//Execute the query</comment>
+
+				<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"peopleRetrievedPositionID"</literal></expr></argument>, <argument><expr><literal type="string">"people"</literal></expr></argument>, <argument><expr><literal type="string">"PositionID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>peopleRetrievedPositionID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"PositionID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the position ID</comment>
+					
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN:"</literal> <operator>+</operator> <name>UIN</name> <operator>+</operator> <literal type="string">" Position ID:"</literal><operator>+</operator> <name>peopleRetrievedPositionID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+					<if>if <condition>(<expr><name>peopleRetrievedPositionID</name> <operator>&lt;=</operator> <literal type="number">2</literal> <operator>||</operator> <name>peopleRetrievedPositionID</name> <operator>==</operator> <literal type="number">5</literal></expr>)</condition><then> 
+					<comment type="line">//if the position ID is &lt;=2 or 5 then its an employee</comment>
+					<block>{
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN is an employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+					}</block></then> <else>else <block>{<comment type="line">//else not an employee</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN exists, but it is not a Employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+
+					}</block></else></if>
+
+				}</block></then>
+
+				<else>else <block>{
+					<comment type="line">//else the UIN does not exist in the emplloyee table</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN does not exist"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+
+				}</block></else></if>
+
+			}</block>
+
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch>
+
+			<finally>finally <block>{
+
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+		}</block>
+
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+	}</block></function>
+
+	<comment type="block">/*this function is to mainly check if its employee or not
+	 * 
+	 * passed is a Username
+	 * 
+	 * return type is a boolean*/</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>checkIfEmployee</name><parameter_list>(<param><decl><type><name>String</name></type> <name>userName</name></decl></param>)</parameter_list> <block>{
+
+
+		<if>if<condition>(<expr><name>userName</name><operator>==</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+		
+		<if>if<condition>(<expr><call><name><name>userName</name><operator>.</operator><name>length</name></name><argument_list>()</argument_list></call><operator>==</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+		
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLEmpSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><name>SQLEmpSelect</name> <operator>=</operator> <literal type="string">"Select PositionID From People where Username=?;"</literal></expr>;</expr_stmt><comment type="line">//fire the query</comment>
+				}</block></then></if>
+
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmtForSelect</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLEmpSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the query</comment>
+
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+				<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"peopleRetrievedPositionID"</literal></expr></argument>, <argument><expr><literal type="string">"people"</literal></expr></argument>, <argument><expr><literal type="string">"PositionID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>peopleRetrievedPositionID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"PositionID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Username:"</literal> <operator>+</operator> <name>userName</name> <operator>+</operator> <literal type="string">" Position ID:"</literal><operator>+</operator> <name>peopleRetrievedPositionID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<comment type="block">/*
+					 * Checking here if the position ID id of a professor i.e 2,
+					 * UIN exists for students professors, admins TA and
+					 * virtually every person existing in the university Check
+					 * if the position ID of the passed UIN is of a professor, employee or super admin.
+					 */</comment>
+
+					<if>if <condition>(<expr><name>peopleRetrievedPositionID</name> <operator>&lt;=</operator> <literal type="number">2</literal><operator>||</operator> <name>peopleRetrievedPositionID</name> <operator>==</operator> <literal type="number">5</literal></expr>)</condition><then> <block>{
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN is an employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+					}</block></then> <else>else <block>{
+						<comment type="line">//else not an employee</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN is not an employee"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+
+					}</block></else></if>
+					<comment type="line">// System.out.println("Professor UIN exists");</comment>
+
+				}</block></then>
+
+				<else>else <block>{
+					<comment type="line">//Username is not found</comment>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"username does not exist"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+
+				}</block></else></if>
+
+			}</block>
+			<comment type="line">//catch sql block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch>
+
+			<finally>finally <block>{
+
+				<comment type="line">// System.out.println("retrieved");</comment>
+			}</block></finally></try>
+		}</block>
+		<comment type="line">//catch block</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+															here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+	}</block></function>
+
+	<comment type="line">//new bonus not valid added exceptions</comment>
+	<class><specifier>public</specifier> <specifier>static</specifier> class <name>bonusNotValidException</name> <super><extends>extends <name>Exception</name></extends></super> <block>{
+		<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><specifier>private</specifier> <name>String</name></type> <name>message</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+
+		<constructor><specifier>public</specifier> <name>bonusNotValidException</name><parameter_list>()</parameter_list> <block>{
+			<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>message</name></name> <operator>=</operator> <literal type="string">"bonus is not valid"</literal></expr>;</expr_stmt>
+		}</block></constructor>
+
+		<constructor><specifier>public</specifier> <name>bonusNotValidException</name><parameter_list>(<param><decl><type><name>String</name></type> <name>message</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>message</name></name> <operator>=</operator> <name>message</name></expr>;</expr_stmt>
+		}</block></constructor>
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>toString</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>getMessage</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+	}</block></class>
+
+	<comment type="block">/*
+	 * All employee functions add, update, retrieve are specified in the this class
+	 * 
+	 * local main class is used for testing functions and specific executions
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list> <block>{
+
+	}</block></function>
+}</block></class>
+</unit>

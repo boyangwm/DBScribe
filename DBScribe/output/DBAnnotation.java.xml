@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\DBAnnotation.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+<class><specifier>public</specifier> class <name>DBAnnotation</name> <block>{
+  <function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>annoate</name><parameter_list>(<param><decl><type><name>String</name></type> <name>variable</name></decl></param>, <param><decl><type><name>String</name></type> <name>table</name></decl></param>, <param><decl><type><name>String</name></type> <name>column</name></decl></param>, <param><decl><type><name>boolean</name></type> <name>isSource</name></decl></param>)</parameter_list><block>{}</block></function><empty_stmt>;</empty_stmt>
+}</block></class></unit>

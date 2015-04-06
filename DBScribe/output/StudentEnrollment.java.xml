@@ -1,0 +1,898 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\StudentEnrollment.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+
+<comment type="line">//import java.lang.annotation.ElementType;</comment>
+<comment type="line">//import java.lang.annotation.Retention;</comment>
+<comment type="line">//import java.lang.annotation.RetentionPolicy;</comment>
+<comment type="line">//import java.lang.annotation.Target;</comment>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>HashMap</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Iterator</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Set</name></name>;</import>
+
+
+<class><specifier>public</specifier> class <name>StudentEnrollment</name> <block>{
+	<decl_stmt><decl><type><name>int</name></type> <name>enrollmentID</name></decl>;</decl_stmt> <comment type="line">// Unique id per enrollment</comment>
+	<decl_stmt><decl><type><name>int</name></type> <name>UIN</name></decl>;</decl_stmt>		<comment type="line">// Student UIN</comment>
+	<decl_stmt><decl><type><name>int</name></type> <name>offerID</name></decl>;</decl_stmt> <comment type="line">//OfferID of course offered in a sem</comment>
+	<decl_stmt><decl><type><name>String</name></type> <name>grade</name></decl>;</decl_stmt> <comment type="line">//Student Grade = 'A', 'B','C', 'D' and 'F'</comment>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>Student</name></type> <name>stdnt</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>CourseOffered</name></type> <name>cOffered</name></decl>;</decl_stmt>
+	
+	
+<comment type="line">//	@Target({ElementType.LOCAL_VARIABLE})</comment>
+<comment type="line">//	@Retention(RetentionPolicy.RUNTIME)</comment>
+<comment type="line">//	public @interface DBAnnotation {</comment>
+<comment type="line">//	 String[] variable () default "";</comment>
+<comment type="line">//	 String[] table () default "";</comment>
+<comment type="line">//	 String[] column () default "";</comment>
+<comment type="line">//	 boolean[] isSource () default false; </comment>
+<comment type="line">//	}</comment>
+	
+
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getEnrollmentID</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>enrollmentID</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// Constructor to populate object</comment>
+	<constructor><specifier>public</specifier> <name>StudentEnrollment</name><parameter_list>(<param><decl><type><name>int</name></type> <name>enrollmentID</name></decl></param>, <param><decl><type><name>int</name></type> <name>UIN</name></decl></param>, <param><decl><type><name>int</name></type> <name>offerID</name></decl></param>, <param><decl><type><name>String</name></type> <name>grade</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>enrollmentID</name></name> <operator>=</operator> <name>enrollmentID</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>UIN</name></name> <operator>=</operator> <name>UIN</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>offerID</name></name> <operator>=</operator> <name>offerID</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>grade</name></name> <operator>=</operator> <name>grade</name></expr>;</expr_stmt>
+	}</block></constructor>
+	
+	<comment type="line">// Constructor to populate object</comment>
+	<constructor><specifier>public</specifier> <name>StudentEnrollment</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>, <param><decl><type><name>int</name></type> <name>offerID</name></decl></param>, <param><decl><type><name>String</name></type> <name>grade</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>offerID</name></name> <operator>=</operator> <name>offerID</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>grade</name></name> <operator>=</operator> <name>grade</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>UIN</name></name> <operator>=</operator> <name>UIN</name></expr>;</expr_stmt>
+	}</block></constructor>
+	
+	<comment type="line">// Constructor to create objects of studentenrollment before inserting into </comment>
+	<comment type="line">// the database for the first time</comment>
+	<constructor><specifier>public</specifier> <name>StudentEnrollment</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>, <param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>offerID</name></name> <operator>=</operator> <name>offerID</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>grade</name></name> <operator>=</operator> <literal type="string">"A"</literal></expr>;</expr_stmt> <comment type="line">// Default grade at the time of enrollment</comment>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>UIN</name></name> <operator>=</operator> <name>UIN</name></expr>;</expr_stmt>
+	}</block></constructor>
+	
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getUIN</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>UIN</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setUIN</name><parameter_list>(<param><decl><type><name>int</name></type> <name>uIN</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name>UIN</name> <operator>=</operator> <name>uIN</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getOfferID</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>offerID</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setEnrollmentID</name><parameter_list>(<param><decl><type><name>int</name></type> <name>enrollmentID</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>enrollmentID</name></name> <operator>=</operator> <name>enrollmentID</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setOfferID</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>offerID</name></name> <operator>=</operator> <name>offerID</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>String</name></type> <name>getGrade</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>grade</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setGrade</name><parameter_list>(<param><decl><type><name>String</name></type> <name>grade</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>grade</name></name> <operator>=</operator> <name>grade</name></expr>;</expr_stmt>
+	}</block></function>
+	
+	<comment type="line">// Given a student this function returns all the grades of that student</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>HashMap</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>, <argument><name>String</name></argument>&gt;</argument_list></name></type> <name>getAllGradesOfStudent</name> <parameter_list>(<param><decl><type><name>Student</name></type> <name>student</name></decl></param>)</parameter_list> <block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>UIN</name> <init>= <expr><call><name><name>student</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>, <argument><name>String</name></argument>&gt;</argument_list></name></type> <name>courseGrade</name> <init>= <expr><operator>new</operator> <call><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>, <argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"UIN"},  </comment>
+<comment type="line">//				table = "studentenrollment", </comment>
+<comment type="line">//				column = {"UIN"}, </comment>
+<comment type="line">//				isSource = true)</comment>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeSelect</name> <init>= <expr><literal type="string">"Select OfferID, Grade FROM studentenrollment WHERE UIN = ?;"</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+			
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<comment type="line">//Retrieve by column name</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				        <decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"OfferID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				        <expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"grade"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"Grade"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				        <decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"Grade"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				        <decl_stmt><decl><type><name>CourseOffered</name></type> <name>studentCourse</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+				 		
+				 		<try>try <block>{
+				 			<expr_stmt><expr><name>studentCourse</name> <operator>=</operator> <operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				 		}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+				 			<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				 		}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+				 			<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				 		}</block></catch></try>
+				         
+				         <expr_stmt><expr><call><name><name>courseGrade</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>studentCourse</name></expr></argument>, <argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+<comment type="line">//				         Item item = new Item(itemID, itemName,itemQuantity, itemCost);</comment>
+<comment type="line">//				         items.add(item);</comment>
+					}</block></while>      
+				}</block></then></if>
+			}</block>
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+				
+		}</block>
+		<catch>catch<parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+
+
+		<return>return <expr><name>courseGrade</name></expr>;</return>
+	
+	}</block></function>
+
+	<comment type="line">// Given a student this function returns all the courses taken by that student till date </comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>getStudentsAllCourses</name><parameter_list>(<param><decl><type><name>Student</name></type> <name>student</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>coursesTaken</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>UIN</name> <init>= <expr><call><name><name>student</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"UIN"},  </comment>
+<comment type="line">//				table = "studentenrollment", </comment>
+<comment type="line">//				column = {"UIN"}, </comment>
+<comment type="line">//				isSource = true)</comment>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeSelect</name> <init>= <expr><literal type="string">"Select OfferID FROM studentenrollment WHERE UIN = ?;"</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+			
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<comment type="line">//Retrieve by column name</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				        <decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"OfferID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				        <decl_stmt><decl><type><name>CourseOffered</name></type> <name>studentCourse</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+				 		
+				 		<try>try <block>{
+				 			<expr_stmt><expr><name>studentCourse</name> <operator>=</operator> <operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				 		}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+				 			<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				 		}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+				 			<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				 		}</block></catch></try>
+				         
+				 		<expr_stmt><expr><call><name><name>coursesTaken</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>studentCourse</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>      
+				}</block></then></if>
+			}</block> <catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+				
+		}</block> <catch>catch<parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		<return>return <expr><name>coursesTaken</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// Given a course, this function retrives all the students in a particular course</comment>
+ 	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>getStudentsInCourse</name><parameter_list>(<param><decl><type><name>CourseOffered</name></type> <name>courseOffered</name></decl></param>)</parameter_list> <block>{
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>enrolledStudents</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"offerID"},  </comment>
+<comment type="line">//				table = "studentenrollment", </comment>
+<comment type="line">//				column = {"OfferID"}, </comment>
+<comment type="line">//				isSource = true)</comment>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeSelect</name> <init>= <expr><literal type="string">"Select UIN FROM studentenrollment WHERE OfferID = ?;"</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+			
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<comment type="line">//Retrieve by column name</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				        <decl_stmt><decl><type><name>int</name></type> <name>UIN</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				        <decl_stmt><decl><type><name>Student</name></type> <name>student</name> <init>= <expr><operator>new</operator> <call><name>Student</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>enrolledStudents</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>      
+				}</block></then></if>
+			}</block> <catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+				
+		}</block> <catch>catch<parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		<return>return <expr><name>enrolledStudents</name></expr>;</return>
+	}</block></function>
+	
+ 	<comment type="line">// Given a student this function returns all the current courses taken by that student</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>getCurrentCoursesOfStudent</name> <parameter_list>(<param><decl><type><name>Student</name></type> <name>student</name></decl></param>)</parameter_list> <block>{
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>enrolledCourses</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>UIN</name> <init>= <expr><call><name><name>student</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"UIN"},  </comment>
+<comment type="line">//				table = "studentenrollment", </comment>
+<comment type="line">//				column = {"UIN"}, </comment>
+<comment type="line">//				isSource = true)</comment>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeSelect</name> <init>= <expr><literal type="string">"SELECT studentenrollment.OfferID "</literal> <operator>+</operator>  
+								<literal type="string">"FROM university.studentenrollment JOIN coursesoffered JOIN semester "</literal> <operator>+</operator>
+								<literal type="string">"Where studentenrollment.UIN = ? "</literal> <operator>+</operator>
+								<literal type="string">"AND studentenrollment.OfferID = coursesoffered.OfferID "</literal> <operator>+</operator> 
+								<literal type="string">"AND coursesoffered.SemesterID = semester.SemesterID "</literal> <operator>+</operator>
+								<literal type="string">"AND semester.IsCurrent = 1;"</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+			
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<comment type="line">//Retrieve by column name</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				        <decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"OfferID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				        <decl_stmt><decl><type><name>CourseOffered</name></type> <name>studentCourse</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+				 		
+				 		<try>try <block>{
+				 			<expr_stmt><expr><name>studentCourse</name> <operator>=</operator> <operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				 		}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+				 			<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				 		}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+				 			<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				 		}</block></catch></try>
+				         
+				 		<expr_stmt><expr><call><name><name>enrolledCourses</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>studentCourse</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>      
+				}</block></then></if>
+			}</block> <catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+				
+		}</block> <catch>catch<parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		<return>return <expr><name>enrolledCourses</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// A synchronized function to enroll students in a course in a Firct Come First Served basis.</comment>
+	<comment type="line">// This ensure the database integrity that values(like seats remaining) read are the same while enrolling</comment>
+	<comment type="line">// and do not change in(i.e. the course is not filled up) in the middle of an enrollment.</comment>
+	<function><type><specifier>public</specifier> <specifier>synchronized</specifier> <name>boolean</name></type> <name>enrollStudents</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isStudentEnrolled</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>UIN</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// Step 1: Check if student is already enrolled for this course</comment>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isStudentCurrentlyEnrolled</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>isStudentEnrolled</name></name><argument_list>(<argument><expr><name>UIN</name></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><name>isStudentCurrentlyEnrolled</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"The student is already enrolled"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else<block>{
+			<comment type="line">// Step 2: if student is not enrolled, check whether there are any seats left.</comment>
+			<decl_stmt><decl><type><name>boolean</name></type> <name>isSeatAvailable</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>isSeatAvailable</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<if>if<condition>(<expr><name>isSeatAvailable</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Seats not available."</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></then> <else>else<block>{
+				
+				<comment type="line">// Step 3: If student is not enrolled currently AND </comment>
+				<comment type="line">// if a seat is available, Enroll the student</comment>
+				
+				<decl_stmt><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+				
+				<try>try <block>{
+					<expr_stmt><expr><name>offeredCourse</name> <operator>=</operator> <operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+				
+				<decl_stmt><decl><type><name>Course</name></type> <name>course</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getCourse</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name>String</name></type> <name>courseName</name> <init>= <expr><call><name><name>course</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name>int</name></type> <name>semID</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getSemesterID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+				<decl_stmt><decl><type><name>String</name></type> <name>tableName</name> <init>= <expr><name>courseName</name> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>semID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt> 
+			
+				
+<comment type="line">//				@DBAnnotation (</comment>
+<comment type="line">//						variable = {"UIN","offerID"},  </comment>
+<comment type="line">//						table = "studentenrollment", </comment>
+<comment type="line">//						column = {"UIN","OfferID"}, </comment>
+<comment type="line">//						isSource = false)</comment>
+				
+				<decl_stmt><decl><type><name>String</name></type> <name>SQLCourseExamsInsert</name> <init>= <expr><literal type="string">"INSERT INTO %s (StudentUIN,StudentEnrollmentID) VALUES(?,?) ;"</literal></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><name>SQLCourseExamsInsert</name> <operator>=</operator> <call><name><name>String</name><operator>.</operator><name>format</name></name><argument_list>(<argument><expr><name>SQLCourseExamsInsert</name></expr></argument>, <argument><expr><name>tableName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>String</name></type> <name>SQLStudentEnrollInsert</name> <init>= <expr><literal type="string">"INSERT INTO studentenrollment(UIN,OfferID,Grade) VALUES(?,?,?) ;"</literal></expr></init></decl>;</decl_stmt>
+				
+				
+				
+				<try>try <block>{
+					<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<try>try <block>{
+						<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+						 
+							<decl_stmt><decl><type><name>String</name></type> <name><name>key</name><index>[]</index></name> <init>= <expr><block>{ <expr><literal type="string">"EnrollmentID"</literal></expr> }</block></expr></init></decl>;</decl_stmt>
+							<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLStudentEnrollInsert</name></expr></argument>,<argument><expr><name>key</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"grade"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"Grade"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">3</literal></expr></argument>, <argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							
+							<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+							
+							<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>getGeneratedKeys</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+							<decl_stmt><decl><type><name>int</name></type> <name>generatedEnrollmentID</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+							<comment type="line">// To get the database auto-generated EnrollmentID of</comment>
+							<comment type="line">// the student enrollment just inserted</comment>
+							<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+								<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"generatedEnrollmentID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"EnrollmentID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><name>generatedEnrollmentID</name><operator>=</operator> <call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							}</block></then></if>
+							
+							<expr_stmt><expr><name>statement</name> <operator>=</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLCourseExamsInsert</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<comment type="line">// statement.setString(1, tableName);</comment>
+							<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"generatedEnrollmentID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"EnrollmentID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>generatedEnrollmentID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+							
+							<decl_stmt><decl><type><name>boolean</name></type> <name>seatAdded</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>addOneSeatFilledToCourseOffered</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+							<if>if<condition>(<expr><name>seatAdded</name> <operator>=</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+								<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+								<expr_stmt><expr><name>isStudentEnrolled</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+							}</block></then> <else>else <block>{
+								<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							}</block></else></if>
+							
+						}</block></then></if>	
+					}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></catch></try>
+
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+			}</block></else></if>	
+		}</block></else></if>
+		<return>return <expr><name>isStudentEnrolled</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// Updates the grades of all the students in a course</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>updateAllStudentGrade</name><parameter_list>(<param><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>studentGrades</name></decl></param>, <param><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradeUpdated</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>Set</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>keys</name> <init>= <expr><call><name><name>studentGrades</name><operator>.</operator><name>keySet</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>Iterator</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>keyIterator</name> <init>= <expr><call><name><name>keys</name><operator>.</operator><name>iterator</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<while>while <condition>(<expr><call><name><name>keyIterator</name><operator>.</operator><name>hasNext</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+			<decl_stmt><decl><type><name>Student</name></type> <name>student</name> <init>= <expr><call><name><name>keyIterator</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>int</name></type> <name>UIN</name> <init>= <expr><call><name><name>student</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>studentGrades</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>GradeSystem</name></type> <name>gradesys</name> <init>= <expr><operator>new</operator> <call><name>GradeSystem</name><argument_list>(<argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>boolean</name></type> <name>isgradePresent</name> <init>= <expr><call><name><name>gradesys</name><operator>.</operator><name>isGradePresent</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<if>if <condition>(<expr><name>isgradePresent</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Grade Not present"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></then> <else>else <block>{
+				<decl_stmt><decl><type><name>StudentEnrollment</name></type> <name>enrollStudent</name> <init>= <expr><operator>new</operator> <call><name>StudentEnrollment</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>,<argument><expr><name>offerID</name></expr></argument>,<argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name>boolean</name></type> <name>updateStudentGrade</name> <init>= <expr><call><name><name>enrollStudent</name><operator>.</operator><name>updateStudentGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+				<if>if<condition>(<expr><name>updateStudentGrade</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Student "</literal> <operator>+</operator> <call><name><name>student</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call> <operator>+</operator> <literal type="string">"'s grade not updated"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></then> <else>else <block>{
+					<expr_stmt><expr><name>isGradeUpdated</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+				}</block></else></if>
+			
+			}</block></else></if>
+		}</block></while>
+		
+		<return>return <expr><name>isGradeUpdated</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// Updates the grade of a single student</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>updateStudentGrade</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradeUpdated</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>UIN</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>GradeSystem</name></type> <name>gradesys</name> <init>= <expr><operator>new</operator> <call><name>GradeSystem</name><argument_list>(<argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isgradePresent</name> <init>= <expr><call><name><name>gradesys</name><operator>.</operator><name>isGradePresent</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if <condition>(<expr><name>isgradePresent</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Grade Not present"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else <block>{
+			
+		
+		<comment type="line">// Step 1: Check if student is already enrolled for this course</comment>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isStudentCurrentlyEnrolled</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>isStudentEnrolled</name></name><argument_list>(<argument><expr><name>UIN</name></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><name>isStudentCurrentlyEnrolled</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"The student is not enrolled"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else<block>{
+			
+			<decl_stmt><decl><type><name>int</name></type> <name>enrollmentID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getStudentEnrollmentID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>	
+			<comment type="line">// Step 2: If student is enrolled currently, update their grade.</comment>
+			
+<comment type="line">//			@DBAnnotation (</comment>
+<comment type="line">//					variable = {"grade","enrollmentID"},  </comment>
+<comment type="line">//					table = "studentenrollment", </comment>
+<comment type="line">//					column = {"Grade","EnrollmentID"}, </comment>
+<comment type="line">//					isSource = false)</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLStudentEnrollInsert</name> <init>= <expr><literal type="string">"UPDATE `studentenrollment` SET `Grade`=? WHERE `EnrollmentID`=?;"</literal></expr></init></decl>;</decl_stmt>
+			
+			<try>try <block>{
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<try>try <block>{
+					<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					 
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLStudentEnrollInsert</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"grade"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"Grade"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"enrollmentID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"EnrollmentID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>enrollmentID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>isGradeUpdated</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></then></if>	
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+		}</block></else></if>
+		}</block></else></if>
+	
+		<return>return <expr><name>isGradeUpdated</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// To retrive the enrollment id for a student</comment>
+	<function><type><specifier>private</specifier> <name>int</name></type> <name>getStudentEnrollmentID</name><parameter_list>()</parameter_list> <block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>enrollmentID</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>UIN</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"UIN","offerID","enrollmentID"},  </comment>
+<comment type="line">//				table = "studentenrollment", </comment>
+<comment type="line">//				column = {"UIN","OfferID","EnrollmentID"}, </comment>
+<comment type="line">//				isSource = true)</comment>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLStudentEnrollSelect</name> <init>= <expr><literal type="string">"Select EnrollmentID FROM studentenrollment WHERE UIN = ? AND OfferID = ?;"</literal></expr></init></decl>;</decl_stmt>
+		
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+			
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLStudentEnrollSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"enrollmentID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"EnrollmentID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				        <expr_stmt><expr><name>enrollmentID</name> <operator>=</operator> <call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"EnrollmentID"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>      
+					<expr_stmt><expr><call><name><name>this</name><operator>.</operator><name>setEnrollmentID</name></name><argument_list>(<argument><expr><name>enrollmentID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></then></if>
+			}</block>
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+				
+		}</block>
+		<catch>catch<parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		<return>return <expr><name>enrollmentID</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// Unregisters a student from the student enrollment table</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>unregisterStudent</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>studentUnregistered</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>UIN</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// Step 1: Check if student is enrolled for this course</comment>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isStudentCurrentlyEnrolled</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>isStudentEnrolled</name></name><argument_list>(<argument><expr><name>UIN</name></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><name>isStudentCurrentlyEnrolled</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"The student is not enrolled"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else<block>{
+			
+			<comment type="line">// Step 2: If enroll, delete the student record</comment>
+			<decl_stmt><decl><type><name>int</name></type> <name>enrollmentID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getStudentEnrollmentID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<decl_stmt><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+			
+			<try>try <block>{
+				<expr_stmt><expr><name>offeredCourse</name> <operator>=</operator> <operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+			
+			<decl_stmt><decl><type><name>Course</name></type> <name>course</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getCourse</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>courseName</name> <init>= <expr><call><name><name>course</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>int</name></type> <name>semID</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getSemesterID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<decl_stmt><decl><type><name>String</name></type> <name>tableName</name> <init>= <expr><name>courseName</name> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>semID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt> 
+		
+			
+<comment type="line">//			@DBAnnotation (</comment>
+<comment type="line">//					variable = {"EnrollmentID","UIN"},  </comment>
+<comment type="line">//					table = {"studentenrollment","tableName"}, </comment>
+<comment type="line">//					column = {"UIN","OfferID","All"}, </comment>
+<comment type="line">//					isSource = true)</comment>
+			
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLCourseExamsDelete</name> <init>= <expr><literal type="string">"DELETE FROM %s WHERE `StudentUIN`=?;"</literal></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><name>SQLCourseExamsDelete</name> <operator>=</operator> <call><name><name>String</name><operator>.</operator><name>format</name></name><argument_list>(<argument><expr><name>SQLCourseExamsDelete</name></expr></argument>, <argument><expr><name>tableName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLStudentEnrollDelete</name> <init>= <expr><literal type="string">"DELETE FROM `studentenrollment` WHERE `EnrollmentID`=?;"</literal></expr></init></decl>;</decl_stmt>
+			
+			<try>try <block>{
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<try>try <block>{
+					<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					 
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLCourseExamsDelete</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<comment type="line">//statement.setString(1, tableName);</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						
+						<expr_stmt><expr><name>statement</name> <operator>=</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLStudentEnrollDelete</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"enrollmentID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"EnrollmentID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>enrollmentID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>boolean</name></type> <name>removed</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>removeOneSeatFromCourseOffered</name></name><argument_list>(<argument><expr><name>offeredCourse</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<if>if<condition>(<expr><name>removed</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+							<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><name>studentUnregistered</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+						}</block></then> <else>else <block>{
+							<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						}</block></else></if>
+						
+					}</block></then></if>	
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+		}</block></else></if>
+		
+		<return>return <expr><name>studentUnregistered</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// Checks whether the student is enrolled or not</comment>
+	<function><type><specifier>private</specifier> <name>boolean</name></type> <name>isStudentEnrolled</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>,<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isStudentEnrolled</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"UIN","offerID"},  </comment>
+<comment type="line">//				table = "studentenrollment", </comment>
+<comment type="line">//				column = {"UIN","OfferID"}, </comment>
+<comment type="line">//				isSource = true)</comment>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLStudentEnrollSelect</name> <init>= <expr><literal type="string">"Select UIN FROM studentenrollment WHERE UIN = ? AND OfferID = ?;"</literal></expr></init></decl>;</decl_stmt>
+		
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+			
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLStudentEnrollSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<comment type="line">//Retrieve by column name</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"UIN"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				        <decl_stmt><decl><type><name>int</name></type> <name>tableUIN</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"UIN"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				         
+				        <if>if <condition>(<expr><name>UIN</name> <operator>==</operator> <name>tableUIN</name></expr>)</condition><then><block>{
+				        	<expr_stmt><expr><name>isStudentEnrolled</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+				        }</block></then></if>
+					}</block></while>      
+				}</block></then></if>
+			}</block>
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+				
+		}</block>
+		<catch>catch<parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		
+		<return>return <expr><name>isStudentEnrolled</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// Checks whether a seat is available for the course or not</comment>
+	<function><type><specifier>private</specifier> <name>boolean</name></type> <name>isSeatAvailable</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isSeatAvailable</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"offerID"},  </comment>
+<comment type="line">//				table = "coursesoffered", </comment>
+<comment type="line">//				column = {"OfferID"}, </comment>
+<comment type="line">//				isSource = true)</comment>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLStudentEnrollSelect</name> <init>= <expr><literal type="string">"Select OfferID FROM coursesoffered "</literal> <operator>+</operator>
+										<literal type="string">"WHERE SeatsFilled &lt; TotalCapacity "</literal> <operator>+</operator>
+										<literal type="string">"AND OfferID = ?;"</literal></expr></init></decl>;</decl_stmt>
+		
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+			
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLStudentEnrollSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<comment type="line">//Retrieve by column name</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"tableOfferID"</literal></expr></argument>, <argument><expr><literal type="string">"studentenrollment"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				        <decl_stmt><decl><type><name>int</name></type> <name>tableOfferID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"OfferID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				         
+				        <if>if <condition>(<expr><name>offerID</name> <operator>==</operator> <name>tableOfferID</name></expr>)</condition><then><block>{
+				        	<expr_stmt><expr><name>isSeatAvailable</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+				        }</block></then></if>
+					}</block></while>      
+				}</block></then></if>
+			}</block>
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+				
+		}</block>
+		<catch>catch<parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		
+		<return>return <expr><name>isSeatAvailable</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// To update the number of seats for the mentioned course in the course offered table</comment>
+	<comment type="line">// by increasing the number by one when a student is unregistered.</comment>
+	<function><type><specifier>private</specifier>  <name>boolean</name></type> <name>removeOneSeatFromCourseOffered</name><parameter_list>(<param><decl><type><name>CourseOffered</name></type> <name>courseOffered</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></expr></argument></throws><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>seatRemoved</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					<decl_stmt><decl><type><name>int</name></type> <name>currentlyFilled</name> <init>= <expr><operator>-</operator><literal type="number">1</literal></expr></init></decl>;</decl_stmt>
+<comment type="line">//					@DBAnnotation (</comment>
+<comment type="line">//							variable = {"offerID"},  </comment>
+<comment type="line">//							table = "coursesoffered", </comment>
+<comment type="line">//							column = {"OfferID"}, </comment>
+<comment type="line">//							isSource = true)</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLcoursesOfferedSelect</name> <init>= <expr><literal type="string">"Select * FROM coursesoffered WHERE OfferID= ?;"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLcoursesOfferedSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"coursesoffered"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"coursesoffered"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>currentlyFilled</name> <operator>=</operator> <call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"SeatsFilled"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>currentlyFilled</name> <operator>-=</operator> <literal type="number">1</literal></expr>;</expr_stmt>
+<comment type="line">//						rs.updateInt(5, currentlyFilled);</comment>
+<comment type="line">//						Database.commitTransaction(conn);</comment>
+<comment type="line">//						seatRemoved = true;</comment>
+						
+					}</block></then>
+					<else>else<block>{
+						<throw>throw <expr><operator>new</operator> <call><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name><argument_list>()</argument_list></call></expr>;</throw>
+					}</block></else></if>
+					
+					<decl_stmt><decl><type><name>String</name></type> <name>updateStatement</name> <init>= <expr><literal type="string">"UPDATE university.coursesoffered "</literal>
+							<operator>+</operator> <literal type="string">"SET SeatsFilled= ? "</literal>
+							<operator>+</operator> <literal type="string">"WHERE OfferID= ? ;"</literal></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><name>statement</name> <operator>=</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>updateStatement</name></expr></argument>, <argument><expr><name><name>ResultSet</name><operator>.</operator><name>CONCUR_UPDATABLE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"currentlyFilled"</literal></expr></argument>, <argument><expr><literal type="string">"coursesoffered"</literal></expr></argument>, <argument><expr><literal type="string">"CurrentlyFilled"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>currentlyFilled</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"coursesoffered"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><call><name><name>this</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>seatRemoved</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+				}</block></then></if>						
+					
+			}</block> <catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding course offering"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+			
+		<return>return <expr><name>seatRemoved</name></expr> ;</return>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list><block>{
+		<comment type="line">// Test getAllGradesOfStudent function</comment>
+<comment type="line">//		try {</comment>
+<comment type="line">//			Student student = new Student(1);</comment>
+<comment type="line">//		} catch (People.PersonDoesNotExistException e) {</comment>
+<comment type="line">//			e.printStackTrace();</comment>
+<comment type="line">//		}</comment>
+<comment type="line">//		StudentEnrollment enrolledStud = new StudentEnrollment(345678,1);</comment>
+<comment type="line">//		HashMap&lt;CourseOffered, String&gt; grades = StudentEnrollment.getAllGradesOfStudent(student);</comment>
+<comment type="line">//		for(CourseOffered offeredCourse: grades.keySet() ){</comment>
+<comment type="line">//			int offerID = offeredCourse.getOfferID();</comment>
+<comment type="line">//			String grade = grades.get(offeredCourse);</comment>
+<comment type="line">//			System.out.println("Course: "+ offerID + " Grade: " + grade);</comment>
+<comment type="line">//		}</comment>
+<comment type="line">//		</comment>
+<comment type="line">//		// Test getStudentsAllCourses function</comment>
+<comment type="line">//		ArrayList&lt;CourseOffered&gt; courses = StudentEnrollment.getStudentsAllCourses(student);</comment>
+<comment type="line">//		for(CourseOffered offeredCourse: courses){</comment>
+<comment type="line">//			int offerID = offeredCourse.getOfferID();</comment>
+<comment type="line">//			System.out.println("Course: "+ offerID);			</comment>
+<comment type="line">//		}</comment>
+		
+		<comment type="line">// Test getStudentsInCourse function</comment>
+<comment type="line">//		int offerID = 345678;</comment>
+<comment type="line">//		CourseOffered offeredCourse = null;</comment>
+<comment type="line">//		try {</comment>
+<comment type="line">//			offeredCourse = new CourseOffered(offerID);</comment>
+<comment type="line">//		} catch (Course.CourseDoesNotExistException</comment>
+<comment type="line">//				| CourseOffered.CourseOfferingDoesNotExistException e) {</comment>
+<comment type="line">//			e.printStackTrace();</comment>
+<comment type="line">//		}</comment>
+<comment type="line">//		</comment>
+<comment type="line">//		// Test getStudentsInCourse function</comment>
+<comment type="line">//		ArrayList&lt;Student&gt; students = StudentEnrollment.getStudentsInCourse(offeredCourse);</comment>
+<comment type="line">//		for(Student stud: students){</comment>
+<comment type="line">//			int UIN = stud.getUIN();</comment>
+<comment type="line">//			System.out.println("Student: "+ UIN);			</comment>
+<comment type="line">//		}</comment>
+		
+		<comment type="line">// Test getStudentsAllCourses function</comment>
+<comment type="line">//		ArrayList&lt;CourseOffered&gt; courses = StudentEnrollment.getCurrentCoursesOfStudent(student);</comment>
+<comment type="line">//		for(CourseOffered offeredCourse: courses){</comment>
+<comment type="line">//			int offerID = offeredCourse.getOfferID();</comment>
+<comment type="line">//			System.out.println("Course: "+ offerID);			</comment>
+<comment type="line">//		}</comment>
+		
+		<comment type="line">// To enroll student</comment>
+<comment type="line">//		StudentEnrollment enrolledStud = new StudentEnrollment(345678,4);</comment>
+<comment type="line">//		boolean enrolled =  enrolledStud.enrollStudents();</comment>
+<comment type="line">//		if (enrolled == true){</comment>
+<comment type="line">//			System.out.println("Student Enrolled");</comment>
+<comment type="line">//		} else {</comment>
+<comment type="line">//			System.out.println("Student Not Enrolled");</comment>
+<comment type="line">//		}</comment>
+		
+		<comment type="line">// To unregister students</comment>
+<comment type="line">//		StudentEnrollment enrolledStud = new StudentEnrollment(345678,4);</comment>
+<comment type="line">//		boolean enrolled =  enrolledStud.unregisterStudent();</comment>
+<comment type="line">//		if (enrolled == true){</comment>
+<comment type="line">//			System.out.println("Student Unregistered");</comment>
+<comment type="line">//		} else {</comment>
+<comment type="line">//			System.out.println("Student Still Registered");</comment>
+<comment type="line">//		}</comment>
+	
+		<comment type="line">// Update Grades</comment>
+<comment type="line">//		StudentEnrollment enrolledStud = new StudentEnrollment(2, 123456, "C");</comment>
+<comment type="line">//		boolean updated =  enrolledStud.updateStudentGrade();</comment>
+<comment type="line">//		if (updated == true){</comment>
+<comment type="line">//			System.out.println("Student Grade Updated");</comment>
+<comment type="line">//		} else {</comment>
+<comment type="line">//			System.out.println("Student Grade Not Updated");</comment>
+<comment type="line">//		}</comment>
+		
+		
+		<comment type="line">// To update multiple student's grades</comment>
+<comment type="line">//		int offerID = 345678;</comment>
+<comment type="line">//		CourseOffered offeredCourse = null;</comment>
+<comment type="line">//		try {</comment>
+<comment type="line">//			offeredCourse = new CourseOffered(offerID);</comment>
+<comment type="line">//		} catch (Course.CourseDoesNotExistException</comment>
+<comment type="line">//				| CourseOffered.CourseOfferingDoesNotExistException e) {</comment>
+<comment type="line">//			e.printStackTrace();</comment>
+<comment type="line">//		}</comment>
+<comment type="line">//		HashMap&lt;Student,String&gt; studentGrades = new HashMap&lt;Student,String&gt;();</comment>
+<comment type="line">//		student = new Student(1);</comment>
+<comment type="line">//		studentGrades.put(student, "B");</comment>
+<comment type="line">//		student = new Student(2);</comment>
+<comment type="line">//		studentGrades.put(student, "A");</comment>
+<comment type="line">//		</comment>
+<comment type="line">//		boolean updated =  StudentEnrollment.updateAllStudentGrade(studentGrades, offeredCourse);</comment>
+<comment type="line">//		if (updated == true){</comment>
+<comment type="line">//			System.out.println("Students Grades Updated");</comment>
+<comment type="line">//		} else {</comment>
+<comment type="line">//			System.out.println("Students Grades Not Updated");</comment>
+<comment type="line">//		}</comment>
+		
+	}</block></function>
+	
+}</block></class>
+</unit>

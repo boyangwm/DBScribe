@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\frontend\WaitListMonitorDeptUI.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>frontend</name></name>;</package>
+
+
+<comment type="block" format="javadoc">/****************@author Simant Purohit*********************************/</comment>
+
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionEvent</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionListener</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>DefaultComboBoxModel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>DefaultListModel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JComboBox</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JLabel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JList</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JPanel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JScrollPane</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JTextPane</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>event</name><operator>.</operator><name>ListSelectionEvent</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>event</name><operator>.</operator><name>ListSelectionListener</name></name>;</import>
+
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Admin</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Course</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseOffered</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseSchedule</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Department</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>People</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Student</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>WaitList</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>People</name><operator>.</operator><name>PersonDoesNotExistException</name></name>;</import>
+
+
+
+<class><specifier>public</specifier> class <name>WaitListMonitorDeptUI</name> <super><extends>extends <name>JPanel</name></extends></super> <block>{
+	
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JScrollPane</name></type> <name>waitListStudents</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name><name>JList</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>waitListStudentsJList</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JScrollPane</name></type> <name>emailedStudents</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name><name>JList</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>emailedStudentsJList</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name><name>JComboBox</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>courseOfferSelectForWaitListCombo</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTextPane</name></type> <name>courseOfferDetailsText</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTextPane</name></type> <name>textPane_1</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTextPane</name></type> <name>textPane_2</name></decl>;</decl_stmt>
+	
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>Admin</name></type> <name>admin</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>Department</name></type> <name>adminDepartment</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>WaitListMonitorDeptUI</name></type> <name>waitLListMonitor</name></decl>;</decl_stmt>
+	
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>WaitListMonitorDeptUI</name></type> <name>getInstance</name><parameter_list>(<param><decl><type><name>Admin</name></type> <name>a</name></decl></param>)</parameter_list><block>{
+		<try>try <block>{
+			<expr_stmt><expr><name>waitLListMonitor</name> <operator>=</operator> <operator>new</operator> <call><name>WaitListMonitorDeptUI</name><argument_list>(<argument><expr><name>a</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<return>return <expr><name>waitLListMonitor</name></expr>;</return>
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<return>return <expr><literal type="null">null</literal></expr>;</return>
+		}</block></catch></try>
+		
+	}</block></function>
+
+	
+	<constructor><specifier>private</specifier> <name>WaitListMonitorDeptUI</name><parameter_list>(<param><decl><type><name>Admin</name></type> <name>a</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name></expr></argument></throws> <block>{
+		<expr_stmt><expr><name>admin</name> <operator>=</operator> <name>a</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name>adminDepartment</name> <operator>=</operator> <operator>new</operator> <call><name>Department</name><argument_list>(<argument><expr><call><name><name>admin</name><operator>.</operator><name>getDeptID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>waitListStudents</name> <operator>=</operator> <operator>new</operator> <call><name>JScrollPane</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name>waitListStudentsJList</name>  <operator>=</operator> <operator>new</operator> <call><name><name>JList</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>waitListStudentsJList</name><operator>.</operator><name>addListSelectionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ListSelectionListener</name></super><argument_list>()</argument_list> <block>{
+			
+			<comment type="line">//@Override</comment>
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>valueChanged</name><parameter_list>(<param><decl><type><name>ListSelectionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<if>if<condition>(<expr><call><name><name>waitListStudentsJList</name><operator>.</operator><name>getSelectedIndex</name></name><argument_list>()</argument_list></call><operator>&lt;</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+					<return>return;</return>
+				}</block></then></if>
+				
+				<decl_stmt><decl><type><name>String</name></type> <name>s</name> <init>= <expr><call><name><name>waitListStudentsJList</name><operator>.</operator><name>getSelectedValue</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>s</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><name>s</name> <operator>=</operator> <call><name><name>s</name><operator>.</operator><name>substring</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><call><name><name>s</name><operator>.</operator><name>indexOf</name></name><argument_list>(<argument><expr><literal type="char">'-'</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>int</name></type> <name>uin</name> <init>= <expr><call><name><name>Integer</name><operator>.</operator><name>parseInt</name></name><argument_list>(<argument><expr><name>s</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+				<try>try <block>{
+					<decl_stmt><decl><type><name>Student</name></type> <name>stud</name> <init>= <expr><operator>new</operator> <call><name>Student</name><argument_list>(<argument><expr><name>uin</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>textPane_1</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"Student name: "</literal><operator>+</operator><call><name><name>stud</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"\nGPA: "</literal><operator>+</operator><call><name><name>stud</name><operator>.</operator><name>getGPA</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>People</name><operator>.</operator><name>PersonDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<comment type="line">// TODO Auto-generated catch block</comment>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+				
+				
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><call><name><name>waitListStudents</name><operator>.</operator><name>getViewport</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>setView</name><argument_list>(<argument><expr><name>waitListStudentsJList</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>setLayout</name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>setBounds</name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>, <argument><expr><literal type="number">10</literal></expr></argument>, <argument><expr><literal type="number">800</literal></expr></argument>, <argument><expr><literal type="number">600</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>waitListStudents</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>, <argument><expr><literal type="number">59</literal></expr></argument>, <argument><expr><literal type="number">181</literal></expr></argument>, <argument><expr><literal type="number">217</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>waitListStudents</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>emailedStudents</name> <operator>=</operator> <operator>new</operator> <call><name>JScrollPane</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name>emailedStudentsJList</name> <operator>=</operator> <operator>new</operator> <call><name><name>JList</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>emailedStudentsJList</name><operator>.</operator><name>addListSelectionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ListSelectionListener</name></super><argument_list>()</argument_list> <block>{
+			
+			<comment type="line">//@Override</comment>
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>valueChanged</name><parameter_list>(<param><decl><type><name>ListSelectionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<if>if<condition>(<expr><call><name><name>emailedStudentsJList</name><operator>.</operator><name>getSelectedIndex</name></name><argument_list>()</argument_list></call><operator>&lt;</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+					<return>return;</return>
+				}</block></then></if>
+				
+				<decl_stmt><decl><type><name>String</name></type> <name>s</name> <init>= <expr><call><name><name>emailedStudentsJList</name><operator>.</operator><name>getSelectedValue</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><name>s</name> <operator>=</operator> <call><name><name>s</name><operator>.</operator><name>substring</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><call><name><name>s</name><operator>.</operator><name>indexOf</name></name><argument_list>(<argument><expr><literal type="char">'-'</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>int</name></type> <name>uin</name> <init>= <expr><call><name><name>Integer</name><operator>.</operator><name>parseInt</name></name><argument_list>(<argument><expr><name>s</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+				<try>try <block>{
+					<decl_stmt><decl><type><name>Student</name></type> <name>stud</name> <init>= <expr><operator>new</operator> <call><name>Student</name><argument_list>(<argument><expr><name>uin</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>textPane_2</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">"Student name: "</literal><operator>+</operator><call><name><name>stud</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"\nGPA: "</literal><operator>+</operator><call><name><name>stud</name><operator>.</operator><name>getGPA</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>People</name><operator>.</operator><name>PersonDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<comment type="line">// TODO Auto-generated catch block</comment>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+				
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>emailedStudentsJList</name><operator>.</operator><name>setSelectedIndex</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>emailedStudents</name><operator>.</operator><name>getViewport</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>setView</name><argument_list>(<argument><expr><name>emailedStudentsJList</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>emailedStudents</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">570</literal></expr></argument>, <argument><expr><literal type="number">59</literal></expr></argument>, <argument><expr><literal type="number">181</literal></expr></argument>, <argument><expr><literal type="number">217</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>emailedStudents</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>courseOfferSelectForWaitListCombo</name> <operator>=</operator> <operator>new</operator> <call><name><name>JComboBox</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>courseOfferSelectForWaitListCombo</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><operator>(</operator><name>Integer</name><operator>)</operator><call><name><name>courseOfferSelectForWaitListCombo</name><operator>.</operator><name>getSelectedItem</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+				<decl_stmt><decl><type><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>waitList</name> <init>= <expr><operator>new</operator> <call><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<for>for<control>(<init><decl><type><name>Student</name></type> <name>s</name><range>:<expr><call><name><name>WaitList</name><operator>.</operator><name>getStudentsOnWaitList</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></range></decl></init>)</control><block>{
+					<expr_stmt><expr><call><name><name>waitList</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"- "</literal><operator>+</operator><call><name><name>s</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></for>
+				
+				<expr_stmt><expr><call><name><name>waitListStudentsJList</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>waitList</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+				<decl_stmt><decl><type><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>emailedList</name> <init>= <expr><operator>new</operator> <call><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<for>for<control>(<init><decl><type><name>Student</name></type> <name>s</name><range>:<expr><call><name><name>WaitList</name><operator>.</operator><name>getStudentsOnEmailList</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></range></decl></init>)</control><block>{
+					<expr_stmt><expr><call><name><name>emailedList</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"- "</literal><operator>+</operator><call><name><name>s</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></for>
+				
+				<expr_stmt><expr><call><name><name>emailedStudentsJList</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>emailedList</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+				<comment type="line">//setting the text box for details of the coures</comment>
+				<try>try <block>{
+					<decl_stmt><decl><type><name>CourseOffered</name></type> <name>co</name> <init>= <expr><operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>String</name></type> <name>s</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><name>s</name><operator>+=</operator><literal type="string">"Course Name:"</literal><operator>+</operator><call><name><name>co</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>s</name><operator>+=</operator><literal type="string">"\nClassroom Location:"</literal><operator>+</operator><call><name><name>co</name><operator>.</operator><name>getClassRoomLocation</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>s</name><operator>+=</operator><literal type="string">"\nClasstroom Name:"</literal><operator>+</operator><call><name><name>co</name><operator>.</operator><name>getClassRoomName</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>s</name><operator>+=</operator><literal type="string">"\nTimings:"</literal><operator>+</operator><call><name><name>co</name><operator>.</operator><name>getTiming</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>s</name><operator>+=</operator><literal type="string">"\nTaught by professor:"</literal><operator>+</operator><call><name><name>co</name><operator>.</operator><name>getProfessorName</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>courseOfferDetailsText</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><name>s</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<comment type="line">// TODO Auto-generated catch block</comment>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<comment type="line">// TODO Auto-generated catch block</comment>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+				
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>courseOfferSelectForWaitListCombo</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">306</literal></expr></argument>, <argument><expr><literal type="number">59</literal></expr></argument>, <argument><expr><literal type="number">147</literal></expr></argument>, <argument><expr><literal type="number">20</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>courseOfferSelectForWaitListCombo</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblStudentsOnWait</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Students on Wait List"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblStudentsOnWait</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>, <argument><expr><literal type="number">34</literal></expr></argument>, <argument><expr><literal type="number">181</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>lblStudentsOnWait</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblStudentsEmailedTo</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Students emailed to register"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblStudentsEmailedTo</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">570</literal></expr></argument>, <argument><expr><literal type="number">34</literal></expr></argument>, <argument><expr><literal type="number">181</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>lblStudentsEmailedTo</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>courseOfferDetailsText</name> <operator>=</operator> <operator>new</operator> <call><name>JTextPane</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>courseOfferDetailsText</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">261</literal></expr></argument>, <argument><expr><literal type="number">99</literal></expr></argument>, <argument><expr><literal type="number">250</literal></expr></argument>, <argument><expr><literal type="number">177</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>courseOfferDetailsText</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>textPane_1</name> <operator>=</operator> <operator>new</operator> <call><name>JTextPane</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>textPane_1</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>, <argument><expr><literal type="number">313</literal></expr></argument>, <argument><expr><literal type="number">181</literal></expr></argument>, <argument><expr><literal type="number">131</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>textPane_1</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>textPane_2</name> <operator>=</operator> <operator>new</operator> <call><name>JTextPane</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>textPane_2</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">570</literal></expr></argument>, <argument><expr><literal type="number">313</literal></expr></argument>, <argument><expr><literal type="number">181</literal></expr></argument>, <argument><expr><literal type="number">131</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>textPane_2</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblSelectCourseOffering</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Select course offering"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>lblSelectCourseOffering</name><operator>.</operator><name>setBounds</name></name><argument_list>(<argument><expr><literal type="number">327</literal></expr></argument>, <argument><expr><literal type="number">34</literal></expr></argument>, <argument><expr><literal type="number">130</literal></expr></argument>, <argument><expr><literal type="number">14</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>add</name><argument_list>(<argument><expr><name>lblSelectCourseOffering</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>initializeWaitListMonitor</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>Thread</name></type> <name>refreshWaitList</name> <init>= <expr><operator>new</operator> <call><name>Thread</name><argument_list>(<argument><expr><operator>new</operator> <call><name>MonitorWaitList</name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>refreshWaitList</name><operator>.</operator><name>start</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+	}</block></constructor>
+	
+	<function><type><specifier>public</specifier> <specifier>synchronized</specifier> <name>void</name></type> <name>initializeWaitListMonitor</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>model</name> <init>= <expr><operator>new</operator> <call><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseSchedule</name></argument>&gt;</argument_list></name></type> <name>coursesOffered</name> <init>= <expr><call><name><name>CourseSchedule</name><operator>.</operator><name>getAllScheduledCourses</name></name><argument_list>(<argument><expr><name>adminDepartment</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<for>for<control>(<init><decl><type><name>CourseSchedule</name></type> <name>cs</name><range>: <expr><name>coursesOffered</name></expr></range></decl></init>)</control><block>{
+			<expr_stmt><expr><call><name><name>model</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><call><name><name>cs</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></for>
+		<expr_stmt><expr><call><name><name>courseOfferSelectForWaitListCombo</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>model</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<if>if<condition>(<expr><call><name><name>model</name><operator>.</operator><name>getSize</name></name><argument_list>()</argument_list></call><operator>&gt;</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+			<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>model</name><operator>.</operator><name>getElementAt</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<decl_stmt><decl><type><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>waitList</name> <init>= <expr><operator>new</operator> <call><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<for>for<control>(<init><decl><type><name>Student</name></type> <name>s</name><range>:<expr><call><name><name>WaitList</name><operator>.</operator><name>getStudentsOnWaitList</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></range></decl></init>)</control><block>{
+				<expr_stmt><expr><call><name><name>waitList</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"- "</literal><operator>+</operator><call><name><name>s</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></for>
+			
+			<expr_stmt><expr><call><name><name>waitListStudentsJList</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>waitList</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			
+			<decl_stmt><decl><type><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>emailedList</name> <init>= <expr><operator>new</operator> <call><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<for>for<control>(<init><decl><type><name>Student</name></type> <name>s</name><range>:<expr><call><name><name>WaitList</name><operator>.</operator><name>getStudentsOnEmailList</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></range></decl></init>)</control><block>{
+				<expr_stmt><expr><call><name><name>emailedList</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"- "</literal><operator>+</operator><call><name><name>s</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></for>
+			
+			<expr_stmt><expr><call><name><name>emailedStudentsJList</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>emailedList</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then></if>
+		
+		
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <specifier>synchronized</specifier> <name>void</name></type> <name>reInitializeWaitList</name><parameter_list>()</parameter_list><block>{
+		<if>if<condition>(<expr><call><name><name>courseOfferSelectForWaitListCombo</name><operator>.</operator><name>getModel</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>getSize</name><argument_list>()</argument_list></call><operator>&gt;</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+			<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><operator>(</operator><name>Integer</name><operator>)</operator><call><name><name>courseOfferSelectForWaitListCombo</name><operator>.</operator><name>getSelectedItem</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<decl_stmt><decl><type><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>waitList</name> <init>= <expr><operator>new</operator> <call><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<for>for<control>(<init><decl><type><name>Student</name></type> <name>s</name><range>:<expr><call><name><name>WaitList</name><operator>.</operator><name>getStudentsOnWaitList</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></range></decl></init>)</control><block>{
+				<expr_stmt><expr><call><name><name>waitList</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"- "</literal><operator>+</operator><call><name><name>s</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></for>
+			
+			<expr_stmt><expr><call><name><name>waitListStudentsJList</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>waitList</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			
+			<decl_stmt><decl><type><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>emailedList</name> <init>= <expr><operator>new</operator> <call><name><name>DefaultListModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<for>for<control>(<init><decl><type><name>Student</name></type> <name>s</name><range>:<expr><call><name><name>WaitList</name><operator>.</operator><name>getStudentsOnEmailList</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></range></decl></init>)</control><block>{
+				<expr_stmt><expr><call><name><name>emailedList</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><call><name><name>s</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">"- "</literal><operator>+</operator><call><name><name>s</name><operator>.</operator><name>getName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></for>
+			
+			<expr_stmt><expr><call><name><name>emailedStudentsJList</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>emailedList</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then></if>
+	}</block></function>
+	
+	<class><specifier>private</specifier> class <name>MonitorWaitList</name> <super><implements>implements <name>Runnable</name></implements></super><block>{
+
+		<comment type="line">//@Override</comment>
+		<function><type><specifier>public</specifier> <name>void</name></type> <name>run</name><parameter_list>()</parameter_list> <block>{
+			<while>while<condition>(<expr><literal type="boolean">true</literal></expr>)</condition><block>{
+				<expr_stmt><expr><call><name>reInitializeWaitList</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<try>try <block>{
+					<expr_stmt><expr><call><name><name>Thread</name><operator>.</operator><name>sleep</name></name><argument_list>(<argument><expr><literal type="number">5000</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>InterruptedException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<comment type="line">// TODO Auto-generated catch block</comment>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+			}</block></while>
+		}</block></function>
+		
+	}</block></class>
+}</block></class>
+</unit>

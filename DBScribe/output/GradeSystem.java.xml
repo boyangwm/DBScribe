@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\GradeSystem.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+
+<comment type="line">//import java.lang.annotation.ElementType;</comment>
+<comment type="line">//import java.lang.annotation.Retention;</comment>
+<comment type="line">//import java.lang.annotation.RetentionPolicy;</comment>
+<comment type="line">//import java.lang.annotation.Target;</comment>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+
+<class><specifier>public</specifier> class <name>GradeSystem</name> <block>{
+
+	<decl_stmt><decl><type><name>String</name></type> <name>grade</name></decl>;</decl_stmt> <comment type="line">// A+, A, A-, B+, B, B-, C</comment>
+	<decl_stmt><decl><type><name>int</name></type> <name>gradeLevel</name></decl>;</decl_stmt> <comment type="line">// 1, 2, 3, 4, 5, 6, 7</comment>
+
+<comment type="line">//	@Target({ElementType.LOCAL_VARIABLE})</comment>
+<comment type="line">//	@Retention(RetentionPolicy.RUNTIME)</comment>
+<comment type="line">//	public @interface DBAnnotation {</comment>
+<comment type="line">//	 String[] variable () default "";</comment>
+<comment type="line">//	 String[] table () default "";</comment>
+<comment type="line">//	 String[] column () default "";</comment>
+<comment type="line">//	 boolean[] isSource () default false; </comment>
+<comment type="line">//	}</comment>
+<comment type="line">//	</comment>
+	<function><type><specifier>public</specifier> <name>String</name></type> <name>getGrade</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>grade</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setGrade</name><parameter_list>(<param><decl><type><name>String</name></type> <name>grade</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>grade</name></name> <operator>=</operator> <name>grade</name></expr>;</expr_stmt>
+	}</block></function>
+
+	
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getGradeLevel</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>gradeLevel</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setGradeLevel</name><parameter_list>(<param><decl><type><name>int</name></type> <name>gradeLevel</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>gradeLevel</name></name> <operator>=</operator> <name>gradeLevel</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<comment type="line">// Constructor</comment>
+	<constructor><specifier>public</specifier> <name>GradeSystem</name><parameter_list>(<param><decl><type><name>String</name></type> <name>grade</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>grade</name></name> <operator>=</operator> <name>grade</name></expr>;</expr_stmt>
+	}</block></constructor>
+	
+	<comment type="line">// Constructor</comment>
+	<constructor><specifier>public</specifier> <name>GradeSystem</name><parameter_list>(<param><decl><type><name>String</name></type> <name>grade</name></decl></param>,<param><decl><type><name>int</name></type> <name>gradeLevel</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>grade</name></name> <operator>=</operator> <name>grade</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>gradeLevel</name></name> <operator>=</operator> <name>gradeLevel</name></expr>;</expr_stmt>
+	}</block></constructor>
+	
+	<comment type="line">// To insert a new typr of grade to the grade system </comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>insertNewGrade</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>newGradeInserted</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>gradeLevel</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getGradeLevel</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradePresent</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>isGradePresent</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><name>isGradePresent</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"This grade is already present"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else<block>{
+<comment type="line">//			@DBAnnotation (</comment>
+<comment type="line">//					variable = {"grade","gradeLevel"},  </comment>
+<comment type="line">//					table = "gradingsystem", </comment>
+<comment type="line">//					column = {"Grade","GradeLevel"}, </comment>
+<comment type="line">//					isSource = false)</comment>
+			
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeInsert</name> <init>= <expr><literal type="string">"INSERT INTO gradingsystem VALUES(?,?);"</literal></expr></init></decl>;</decl_stmt>
+			
+			<try>try <block>{
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<try>try <block>{
+					<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeInsert</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"grade"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"Grade"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"gradeLevel"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"GradeLevel"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>newGradeInserted</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></then></if>	
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+		}</block></else></if>
+		
+				
+		
+		<return>return <expr><name>newGradeInserted</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// This function checks whether a grade is present or not</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>isGradePresent</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradePresent</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = "tableGrade",  </comment>
+<comment type="line">//				table = "gradingsystem", </comment>
+<comment type="line">//				column = "Grade", </comment>
+<comment type="line">//				isSource = true)</comment>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeSelect</name> <init>= <expr><literal type="string">"SELECT Grade FROM gradingsystem;"</literal></expr></init></decl>;</decl_stmt>
+		
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<while>while <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"tableGrade"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"Grade"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>tableGrade</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"Grade"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<if>if<condition>(<expr><call><name><name>tableGrade</name><operator>.</operator><name>equals</name></name><argument_list>(<argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+							<expr_stmt><expr><name>isGradePresent</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+							<break>break;</break>
+						}</block></then></if>
+					}</block></while>
+				}</block></then></if>	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		<return>return <expr><name>isGradePresent</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// Checks whether a grade level is present or not</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>isGradeLevelPresent</name><parameter_list>(<param><decl><type><name>int</name></type> <name>gradeLevel</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradeLevelPresent</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">//int gradeLevel = this.getGradeLevel();</comment>
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = "tableGradeLevel",  </comment>
+<comment type="line">//				table = "gradingsystem", </comment>
+<comment type="line">//				column = "GradeLevel", </comment>
+<comment type="line">//				isSource = true)</comment>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeSelect</name> <init>= <expr><literal type="string">"SELECT GradeLevel FROM gradingsystem;"</literal></expr></init></decl>;</decl_stmt>
+		
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<while>while <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"tableGradeLevel"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"GradeLevel"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>tableGradeLevel</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"GradeLevel"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<if>if<condition>(<expr><name>tableGradeLevel</name> <operator>==</operator> <name>gradeLevel</name></expr>)</condition><then><block>{
+							<expr_stmt><expr><name>isGradeLevelPresent</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+							<break>break;</break>
+						}</block></then></if>
+					}</block></while>
+				}</block></then></if>	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		<return>return <expr><name>isGradeLevelPresent</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// Deletes a grade from the gradesystem table</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>deleteGrade</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradeDeleted</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradePresent</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>isGradePresent</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><name>isGradePresent</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"This grade is not present"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else<block>{
+<comment type="line">//			@DBAnnotation (</comment>
+<comment type="line">//					variable = "grade",  </comment>
+<comment type="line">//					table = "gradingsystem", </comment>
+<comment type="line">//					column = "Grade", </comment>
+<comment type="line">//					isSource = false)</comment>
+			
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLGradedDelete</name> <init>= <expr><literal type="string">"DELETE FROM gradingsystem WHERE Grade = ?;"</literal></expr></init></decl>;</decl_stmt>
+			
+			<try>try <block>{
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<try>try <block>{
+					<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradedDelete</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"grade"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"Grade"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>isGradeDeleted</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></then></if>	
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+		}</block></else></if>
+
+		
+		<return>return <expr><name>isGradeDeleted</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// Modifies a grade in the gradesystem table</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>modifyGrade</name><parameter_list>(<param><decl><type><name>String</name></type> <name>newGrade</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradeModified</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradePresent</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>isGradePresent</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><name>isGradePresent</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"This grade is not present"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else<block>{
+<comment type="line">//			@DBAnnotation (</comment>
+<comment type="line">//					variable = "newGrade",  </comment>
+<comment type="line">//					table = "gradingsystem", </comment>
+<comment type="line">//					column = "Grade", </comment>
+<comment type="line">//					isSource = false)</comment>
+			
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeUpdate</name> <init>= <expr><literal type="string">"UPDATE gradingsystem SET Grade = ? WHERE Grade = ? ;"</literal></expr></init></decl>;</decl_stmt>
+			
+			<try>try <block>{
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<try>try <block>{
+					<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeUpdate</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"grade"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"Grade"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"newGrade"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"Grade"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>newGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>isGradeModified</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></then></if>	
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+		}</block></else></if>
+
+		<return>return <expr><name>isGradeModified</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// Modifies a grade level in the gradesystem table</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>modifyGradeLevel</name><parameter_list>(<param><decl><type><name>int</name></type> <name>newGradeLevel</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradeLevelModified</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>gradeLevel</name> <init>= <expr><name><name>this</name><operator>.</operator><name>gradeLevel</name></name></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isOldGradeLevelPresent</name> <init>= <expr><call><name>isGradeLevelPresent</name><argument_list>(<argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isNewGradeLevelPresent</name> <init>= <expr><call><name>isGradeLevelPresent</name><argument_list>(<argument><expr><name>newGradeLevel</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><name>isOldGradeLevelPresent</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"This Old Grade Level is not present"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else<block>{
+			<if>if<condition>(<expr><name>isNewGradeLevelPresent</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">" new Grade Level is not present"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></then> <else>else <block>{
+<comment type="line">//				@DBAnnotation (</comment>
+<comment type="line">//						variable = "newGradeLevel",  </comment>
+<comment type="line">//						table = "gradingsystem", </comment>
+<comment type="line">//						column = "GradeLevel", </comment>
+<comment type="line">//						isSource = false)</comment>
+				
+				<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeUpdate</name> <init>= <expr><literal type="string">"UPDATE gradingsystem SET GradeLevel = ? WHERE GradeLevel = ? ;"</literal></expr></init></decl>;</decl_stmt>
+				
+				<try>try <block>{
+					<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<try>try <block>{
+						<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+							<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeUpdate</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							
+							<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>newGradeLevel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><name>isGradeLevelModified</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+						}</block></then></if>	
+					}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></catch></try>
+
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+			}</block></else></if>
+
+		}</block></else></if>
+			
+		<return>return <expr><name>isGradeLevelModified</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// Get the grade level when given a grade</comment>
+	<function><type><specifier>public</specifier> <name>GradeSystem</name></type> <name>getGradeLevelForGrade</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradePresent</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>isGradePresent</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt> 
+		<if>if<condition>(<expr><name>isGradePresent</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Grade "</literal> <operator>+</operator> <name>grade</name> <operator>+</operator> <literal type="string">" is not present"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else <block>{
+<comment type="line">//			@DBAnnotation (</comment>
+<comment type="line">//					variable = "grade",  </comment>
+<comment type="line">//					table = "gradingsystem", </comment>
+<comment type="line">//					column = "Grade", </comment>
+<comment type="line">//					isSource = true)</comment>
+			
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeSelect</name> <init>= <expr><literal type="string">"SELECT GradeLevel FROM gradingsystem WHERE Grade = ?;"</literal></expr></init></decl>;</decl_stmt>
+			
+			<try>try <block>{
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<try>try <block>{
+					<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"grade"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"Grade"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>grade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<while>while <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+							<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"gradeLevel"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"GradeLevel"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<decl_stmt><decl><type><name>int</name></type> <name>gradeLevel</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"GradeLevel"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<expr_stmt><expr><call><name><name>this</name><operator>.</operator><name>setGradeLevel</name></name><argument_list>(<argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						}</block></while>
+					}</block></then></if>	
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block></else></if>
+		
+		<return>return <expr><name>this</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// Get the grade when given a grade level </comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>GradeSystem</name></type> <name>getGradeForGradeLevel</name><parameter_list>(<param><decl><type><name>int</name></type> <name>gradeLevel</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>GradeSystem</name></type> <name>gradeObject</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isGradeLevelPresent</name> <init>= <expr><call><name>isGradeLevelPresent</name><argument_list>(<argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt> 
+		<if>if<condition>(<expr><name>isGradeLevelPresent</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Grade Level "</literal> <operator>+</operator> <name>gradeLevel</name> <operator>+</operator> <literal type="string">" is not present"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else <block>{
+<comment type="line">//			@DBAnnotation (</comment>
+<comment type="line">//					variable = "gradeLevel",  </comment>
+<comment type="line">//					table = "gradingsystem", </comment>
+<comment type="line">//					column = "GradeLevel", </comment>
+<comment type="line">//					isSource = true)</comment>
+			
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeSelect</name> <init>= <expr><literal type="string">"SELECT Grade FROM gradingsystem WHERE GradeLevel = ?;"</literal></expr></init></decl>;</decl_stmt>
+			
+			<try>try <block>{
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<try>try <block>{
+					<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"gradeLevel"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"GradeLevel"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<while>while <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+							<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"grade"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"Grade"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<decl_stmt><decl><type><name>String</name></type> <name>grade</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"Grade"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<expr_stmt><expr><name>gradeObject</name> <operator>=</operator> <operator>new</operator> <call><name>GradeSystem</name><argument_list>(<argument><expr><name>grade</name></expr></argument>,<argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						}</block></while>
+					}</block></then></if>	
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block></else></if>
+		
+		<return>return <expr><name>gradeObject</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// Get the maximum grade level in the university grading system</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>int</name></type> <name>getMaxGradeLevel</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>maxGradeLevel</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+		
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = "gradeLevel",  </comment>
+<comment type="line">//				table = "gradingsystem", </comment>
+<comment type="line">//				column = "GradeLevel", </comment>
+<comment type="line">//				isSource = true)</comment>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLGradeSelect</name> <init>= <expr><literal type="string">"SELECT max(GradeLevel) FROM gradingsystem;"</literal></expr></init></decl>;</decl_stmt>
+		
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLGradeSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<while>while <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"maxGradeLevel"</literal></expr></argument>, <argument><expr><literal type="string">"gradingsystem"</literal></expr></argument>, <argument><expr><literal type="string">"max(GradeLevel)"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>maxGradeLevel</name> <operator>=</operator> <call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>
+				}</block></then></if>	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+
+		<return>return <expr><name>maxGradeLevel</name></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list><block>{
+		
+	}</block></function>
+
+}</block></class>
+</unit>

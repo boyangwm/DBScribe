@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\frontend\manageDeptCourses.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>frontend</name></name>;</package>
+
+
+<comment type="block" format="javadoc">/****************@author Simant Purohit*********************************/</comment>
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>DefaultComboBoxModel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JOptionPane</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JTabbedPane</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JPanel</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JLabel</name></name>;</import>
+
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>GridLayout</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JTextField</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JComboBox</name></name>;</import>
+<import>import <name><name>javax</name><operator>.</operator><name>swing</name><operator>.</operator><name>JButton</name></name>;</import>
+
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Admin</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Course</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseOffered</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseSchedule</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>DBAnnotation</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Department</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Professor</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Course</name><operator>.</operator><name>CourseAlreadyExistsException</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name>;</import>
+<import>import <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name><operator>.</operator><name>Professor</name><operator>.</operator><name>ProfessorDoesNotExistException</name></name>;</import>
+
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionListener</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>awt</name><operator>.</operator><name>event</name><operator>.</operator><name>ActionEvent</name></name>;</import>
+
+
+
+
+<class><specifier>public</specifier> class <name>manageDeptCourses</name> <super><extends>extends <name>JTabbedPane</name></extends></super> <block>{
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>Admin</name></type> <name>admin</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>Department</name></type> <name>adminDepartment</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>manageDeptCourses</name></type> <name>deptCoursesTab</name></decl>;</decl_stmt>
+	
+	
+	<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTextField</name></type> <name>textField</name></decl>;</decl_stmt>
+	
+	<comment type="line">//-----update COURSE variables-------------//</comment>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JTextField</name></type> <name>textField_1</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name><name>JComboBox</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>allCoursesCombo</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JButton</name></type> <name>btnConfirmUpdate</name></decl>;</decl_stmt>
+	
+	<comment type="line">//-------------UPDATE COURSE OFFERING VARIABLES------------------//</comment>
+	<decl_stmt><decl><type><specifier>private</specifier> <name><name>JComboBox</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>updateOfferIDCombo</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name><name>JComboBox</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>updateOfferProfessorCombo</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>JButton</name></type> <name>btnUpdateOffer</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseSchedule</name></argument>&gt;</argument_list></name></type> <name>allDeptCoursesOffered</name></decl>;</decl_stmt>
+	
+
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>manageDeptCourses</name></type> <name>getInstance</name><parameter_list>(<param><decl><type><name>Admin</name></type> <name>a</name></decl></param>)</parameter_list><block>{
+		<try>try <block>{
+			<expr_stmt><expr><name>deptCoursesTab</name> <operator>=</operator> <operator>new</operator> <call><name>manageDeptCourses</name><argument_list>(<argument><expr><name>a</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<return>return <expr><name>deptCoursesTab</name></expr>;</return>
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<return>return <expr><literal type="null">null</literal></expr>;</return>
+		}</block></catch></try>
+	}</block></function>
+	
+	<constructor><specifier>private</specifier> <name>manageDeptCourses</name><parameter_list>(<param><decl><type><name>Admin</name></type> <name>a</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name></expr></argument></throws> <block>{
+		
+		<comment type="line">//-------------ADD A COURSE CODE----------//</comment>
+		<expr_stmt><expr><name><name>manageDeptCourses</name><operator>.</operator><name>admin</name></name> <operator>=</operator> <name>a</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>manageDeptCourses</name><operator>.</operator><name>adminDepartment</name></name> <operator>=</operator> <operator>new</operator> <call><name>Department</name><argument_list>(<argument><expr><call><name><name>admin</name><operator>.</operator><name>getDeptID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>addACourse</name> <init>= <expr><operator>new</operator> <call><name>JPanel</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name>addTab</name><argument_list>(<argument><expr><literal type="string">"Add a Course"</literal></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><name>addACourse</name></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>addACourse</name><operator>.</operator><name>setLayout</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>GridLayout</name><argument_list>(<argument><expr><literal type="number">3</literal></expr></argument>, <argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblCourseName</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Course Name"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>addACourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblCourseName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>textField</name> <operator>=</operator> <operator>new</operator> <call><name>JTextField</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>addACourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>textField</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>textField</name><operator>.</operator><name>setColumns</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblNewLabel</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Course Department"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>addACourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblNewLabel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblDepartment</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><call><name><name>adminDepartment</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>addACourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblDepartment</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblNewLabel_1</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Confirm Changes"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>addACourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblNewLabel_1</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JButton</name></type> <name>btnNewButton</name> <init>= <expr><operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Add course"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>btnNewButton</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name>addCourse</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>textField</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>addACourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>btnNewButton</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<comment type="line">//-------------END ADD COURSE-------------//</comment>
+		
+		
+		<comment type="line">//------------UPDATE COURSE CODE---------//</comment>
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>updateCourse</name> <init>= <expr><operator>new</operator> <call><name>JPanel</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name>addTab</name><argument_list>(<argument><expr><literal type="string">"Update a course"</literal></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><name>updateCourse</name></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>updateCourse</name><operator>.</operator><name>setLayout</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>GridLayout</name><argument_list>(<argument><expr><literal type="number">4</literal></expr></argument>, <argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblSelectCourse</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Select Course"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>updateCourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblSelectCourse</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>allCoursesCombo</name> <operator>=</operator> <operator>new</operator> <call><name><name>JComboBox</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>allCoursesCombo</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>textField_1</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>btnConfirmUpdate</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+				<try>try <block>{
+					<decl_stmt><decl><type><name>Course</name></type> <name>courseSelected</name> <init>= <expr><operator>new</operator> <call><name>Course</name><argument_list>(<argument><expr><operator>(</operator><name>String</name><operator>)</operator><call><name><name>allCoursesCombo</name><operator>.</operator><name>getSelectedItem</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"cName"</literal></expr></argument>, <argument><expr><literal type="string">"courses"</literal></expr></argument>, <argument><expr><literal type="string">"CourseName"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>String</name></type> <name>cName</name> <init>= <expr><call><name><name>courseSelected</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>textField_1</name><operator>.</operator><name>setText</name></name><argument_list>(<argument><expr><name>cName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<comment type="line">// TODO Auto-generated catch block</comment>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>updateCourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>allCoursesCombo</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblSelectedCourseName</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Selected Course Name"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>updateCourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblSelectedCourseName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>textField_1</name> <operator>=</operator> <operator>new</operator> <call><name>JTextField</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>textField_1</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>updateCourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>textField_1</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>textField_1</name><operator>.</operator><name>setColumns</name></name><argument_list>(<argument><expr><literal type="number">10</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblSelectedCourseDepartment</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Selected Course Department"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>updateCourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblSelectedCourseDepartment</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblDepartment_1</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><call><name><name>adminDepartment</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>updateCourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblDepartment_1</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblUpdateWithAbove</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Update with above values"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>updateCourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblUpdateWithAbove</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>btnConfirmUpdate</name> <operator>=</operator> <operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Confirm update"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnConfirmUpdate</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name>updateCourse</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>DepartmentAdminUI</name><operator>.</operator><name>initializeAllTabs</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>textField_1</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>btnConfirmUpdate</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnConfirmUpdate</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>updateCourse</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>btnConfirmUpdate</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		
+		<comment type="line">//--------------UPDATE COURSE OFFERING CODE----------------//</comment>
+		<decl_stmt><decl><type><name>JPanel</name></type> <name>updateCourseOffering</name> <init>= <expr><operator>new</operator> <call><name>JPanel</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name>addTab</name><argument_list>(<argument><expr><literal type="string">"Update Course Offering"</literal></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><name>updateCourseOffering</name></expr></argument>, <argument><expr><literal type="null">null</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>updateCourseOffering</name><operator>.</operator><name>setLayout</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>GridLayout</name><argument_list>(<argument><expr><literal type="number">3</literal></expr></argument>, <argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>, <argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblSelectOfferId</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Select Offer ID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>updateCourseOffering</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblSelectOfferId</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>updateOfferIDCombo</name> <operator>=</operator> <operator>new</operator> <call><name><name>JComboBox</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>updateOfferIDCombo</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>updateOfferProfessorCombo</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>btnUpdateOffer</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+				<try>try <block>{
+					<decl_stmt><decl><type><name>CourseOffered</name></type> <name>co</name> <init>= <expr><operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><operator>(</operator><name>Integer</name><operator>)</operator><call><name><name>updateOfferIDCombo</name><operator>.</operator><name>getSelectedItem</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>profModel</name> <init>= <expr><operator>new</operator> <call><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name></type> <name>deptProfessor</name> <init>= <expr><call><name><name>Professor</name><operator>.</operator><name>getAllProfInADept</name></name><argument_list>(<argument><expr><call><name><name>adminDepartment</name><operator>.</operator><name>getDepartmentID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<for>for<control>(<init><decl><type><name>Professor</name></type> <name>p</name><range>:<expr><name>deptProfessor</name></expr></range></decl></init>)</control><block>{
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"prof"</literal></expr></argument>, <argument><expr><literal type="string">"People"</literal></expr></argument>, <argument><expr><literal type="string">"UserName"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>prof</name> <init>= <expr><call><name><name>p</name><operator>.</operator><name>getUserName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>profModel</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><name>prof</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></for>
+					<expr_stmt><expr><call><name><name>updateOfferProfessorCombo</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>profModel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"professorName"</literal></expr></argument>, <argument><expr><literal type="string">"People"</literal></expr></argument>, <argument><expr><literal type="string">"UserName"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>String</name></type> <name>professorName</name> <init>= <expr><call><name><name>co</name><operator>.</operator><name>getProfessor</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>getUserName</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>updateOfferProfessorCombo</name><operator>.</operator><name>setSelectedIndex</name></name><argument_list>(<argument><expr><call><name>getProfessorIndex</name><argument_list>(<argument><expr><name>professorName</name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Professor</name><operator>.</operator><name>ProfessorDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Failed to initialize list"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Failed to initialize list"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Failed to initialize list"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+								
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>updateCourseOffering</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>updateOfferIDCombo</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblProfessor</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Professor"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>updateCourseOffering</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblProfessor</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>updateOfferProfessorCombo</name> <operator>=</operator> <operator>new</operator> <call><name><name>JComboBox</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>updateOfferProfessorCombo</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>updateCourseOffering</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>updateOfferProfessorCombo</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>JLabel</name></type> <name>lblLabel</name> <init>= <expr><operator>new</operator> <call><name>JLabel</name><argument_list>(<argument><expr><literal type="string">"Confirm update"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>updateCourseOffering</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>lblLabel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<expr_stmt><expr><name>btnUpdateOffer</name> <operator>=</operator> <operator>new</operator> <call><name>JButton</name><argument_list>(<argument><expr><literal type="string">"Update CourseOffering"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnUpdateOffer</name><operator>.</operator><name>addActionListener</name></name><argument_list>(<argument><expr><operator>new</operator> <class><super><name>ActionListener</name></super><argument_list>()</argument_list> <block>{
+			<function><type><specifier>public</specifier> <name>void</name></type> <name>actionPerformed</name><parameter_list>(<param><decl><type><name>ActionEvent</name></type> <name>arg0</name></decl></param>)</parameter_list> <block>{
+				<try>try <block>{
+					<decl_stmt><decl><type><name>CourseOffered</name></type> <name>co</name> <init>= <expr><operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><operator>(</operator><name>Integer</name><operator>)</operator><call><name><name>updateOfferIDCombo</name><operator>.</operator><name>getSelectedItem</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>Professor</name></type> <name>professor</name> <init>= <expr><operator>new</operator> <call><name>Professor</name><argument_list>(<argument><expr><operator>(</operator><name>String</name><operator>)</operator><call><name><name>updateOfferProfessorCombo</name><operator>.</operator><name>getSelectedItem</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>boolean</name></type> <name>updated</name> <init>= <expr><call><name><name>co</name><operator>.</operator><name>updateCourseOffering</name></name><argument_list>(<argument><expr><name>professor</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<if>if<condition>(<expr><name>updated</name></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Update is successfull"</literal></expr></argument>, <argument><expr><literal type="string">"Success"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>DepartmentAdminUI</name><operator>.</operator><name>initializeAllTabs</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						
+					}</block></then>
+					<else>else
+						<block type="pseudo"><expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Update was unsuccessfull"</literal></expr></argument>, <argument><expr><literal type="string">"Failure"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt></block></else></if>
+					
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<comment type="line">// TODO Auto-generated catch block</comment>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<comment type="line">// TODO Auto-generated catch block</comment>
+					<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+			}</block></function>
+		}</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>btnUpdateOffer</name><operator>.</operator><name>setEnabled</name></name><argument_list>(<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>updateCourseOffering</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>btnUpdateOffer</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<comment type="line">//initialization functions</comment>
+		<expr_stmt><expr><call><name>initializeCourseList</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>initializeCourseOfferingUpdateTab</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+	}</block></constructor>
+	
+	<function><type><specifier>private</specifier> <name>void</name></type> <name>addCourse</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>String</name></type> <name>courseName</name> <init>= <expr><call><name><name>textField</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><operator>!</operator><call><name>checkStringForCourseName</name><argument_list>(<argument><expr><name>courseName</name></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Please enter course name with two or three uppercase character followed by a number"</literal>
+					<operator>+</operator> <literal type="string">" greater than 100 less than 1000"</literal></expr></argument>, <argument><expr><literal type="string">"Error in course name"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<return>return;</return>
+		}</block></then></if>
+		
+		
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Department</name></type> <name>d</name> <init>= <expr><name>adminDepartment</name></expr></init></decl>;</decl_stmt>
+			<if>if<condition>(<expr><call><name><name>Course</name><operator>.</operator><name>addCourse</name></name><argument_list>(<argument><expr><name>courseName</name></expr></argument>, <argument><expr><name>d</name></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+				<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Course added successfully"</literal></expr></argument>, <argument><expr><literal type="string">"Success"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+			<else>else<block>{
+				<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Course not added, unknown error occurred"</literal></expr></argument>, <argument><expr><literal type="string">"Failure"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></else></if>
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseAlreadyExistsException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Course with the same name and department already exists"</literal></expr></argument>, <argument><expr><literal type="string">"Duplicate course"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<return>return;</return>
+		}</block></catch></try>
+		
+		<expr_stmt><expr><call><name><name>DepartmentAdminUI</name><operator>.</operator><name>initializeAllTabs</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>private</specifier> <name>void</name></type> <name>updateCourse</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>String</name></type> <name>courseNameNew</name> <init>= <expr><call><name><name>textField_1</name><operator>.</operator><name>getText</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<comment type="line">//showMessage(courseNameNew, "New");</comment>
+		<decl_stmt><decl><type><name>String</name></type> <name>courseNameOld</name> <init>= <expr><operator>(</operator><name>String</name><operator>)</operator><call><name><name>allCoursesCombo</name><operator>.</operator><name>getSelectedItem</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Course</name></type> <name>courseOld</name> <init>= <expr><operator>new</operator> <call><name>Course</name><argument_list>(<argument><expr><name>courseNameOld</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<if>if<condition>(<expr><operator>!</operator><call><name>checkStringForCourseName</name><argument_list>(<argument><expr><name>courseNameNew</name></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+				<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Please enter course name with two or three uppercase character followed by a number"</literal>
+						<operator>+</operator> <literal type="string">" greater than 100 less than 1000"</literal></expr></argument>, <argument><expr><literal type="string">"Error in course name"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<return>return;</return>
+			}</block></then></if>
+			
+			<decl_stmt><decl><type><name>Department</name></type> <name>d</name> <init>= <expr><name>adminDepartment</name></expr></init></decl>;</decl_stmt>
+			<if>if<condition>(<expr><call><name><name>courseOld</name><operator>.</operator><name>updateCourse</name></name><argument_list>(<argument><expr><call><name><name>courseNameNew</name><operator>.</operator><name>toString</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><name>d</name></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+				<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Course updated successfully"</literal></expr></argument>, <argument><expr><literal type="string">"Success"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></then>
+			<else>else<block>{
+				<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Course not updated, unknown error occurred"</literal></expr></argument>, <argument><expr><literal type="string">"Failure"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></else></if>
+			
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name>showMessage</name><argument_list>(<argument><expr><literal type="string">"Course deos not exist"</literal></expr></argument>, <argument><expr><literal type="string">"Failure"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>initializeData</name><parameter_list>()</parameter_list><block>{
+		<expr_stmt><expr><call><name>initializeCourseList</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name>initializeCourseOfferingUpdateTab</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+	}</block></function>
+	
+	<function><type><specifier>private</specifier> <name>void</name></type> <name>initializeCourseList</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>model</name> <init>= <expr><operator>new</operator> <call><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Course</name></argument>&gt;</argument_list></name></type> <name>courses</name> <init>= <expr><call><name><name>Course</name><operator>.</operator><name>getCoursesOfDepartment</name></name><argument_list>(<argument><expr><name>adminDepartment</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<for>for<control>(<init><decl><type><name>Course</name></type> <name>c</name> <range>: <expr><name>courses</name></expr></range></decl></init>)</control><block>{
+			<expr_stmt><expr><call><name><name>model</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><call><name><name>c</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></for>
+		<expr_stmt><expr><call><name><name>allCoursesCombo</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>model</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<if>if<condition>(<expr><call><name><name>model</name><operator>.</operator><name>getSize</name></name><argument_list>()</argument_list></call><operator>&gt;</operator><literal type="number">0</literal></expr>)</condition><then>
+			<block type="pseudo"><expr_stmt><expr><call><name><name>allCoursesCombo</name><operator>.</operator><name>setSelectedIndex</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt></block></then></if>
+	}</block></function>
+	
+	<function><type><specifier>private</specifier> <name>void</name></type> <name>initializeCourseOfferingUpdateTab</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>model</name> <init>= <expr><operator>new</operator> <call><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name>allDeptCoursesOffered</name> <operator>=</operator> <call><name><name>CourseSchedule</name><operator>.</operator><name>getAllScheduledCourses</name></name><argument_list>(<argument><expr><name>adminDepartment</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<for>for<control>(<init><decl><type><name>CourseSchedule</name></type> <name>cs</name><range>:<expr><name>allDeptCoursesOffered</name></expr></range></decl></init>)</control><block>{
+			
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"oID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<decl_stmt><decl><type><name>int</name></type> <name>oID</name> <init>= <expr><call><name><name>cs</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>model</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><name>oID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></for>
+		<expr_stmt><expr><call><name><name>updateOfferIDCombo</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>model</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<if>if<condition>(<expr><call><name><name>allDeptCoursesOffered</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call><operator>&gt;</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+			<try>try <block>{
+				<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"oID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>int</name></type> <name>oID</name> <init>= <expr><call><name><name>allDeptCoursesOffered</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><literal type="number">0</literal></expr></argument>)</argument_list></call><operator>.</operator><call><name>getOfferID</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name>CourseOffered</name></type> <name>co</name> <init>= <expr><operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name>oID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>profModel</name> <init>= <expr><operator>new</operator> <call><name><name>DefaultComboBoxModel</name><argument_list type="template">&lt;<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name></type> <name>deptProfessor</name> <init>= <expr><call><name><name>Professor</name><operator>.</operator><name>getAllProfInADept</name></name><argument_list>(<argument><expr><call><name><name>adminDepartment</name><operator>.</operator><name>getDepartmentID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<for>for<control>(<init><decl><type><name>Professor</name></type> <name>p</name><range>:<expr><name>deptProfessor</name></expr></range></decl></init>)</control><block>{
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"prof"</literal></expr></argument>, <argument><expr><literal type="string">"People"</literal></expr></argument>, <argument><expr><literal type="string">"UserName"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>String</name></type> <name>prof</name> <init>= <expr><call><name><name>p</name><operator>.</operator><name>getUserName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>profModel</name><operator>.</operator><name>addElement</name></name><argument_list>(<argument><expr><name>prof</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></for>
+				<expr_stmt><expr><call><name><name>updateOfferProfessorCombo</name><operator>.</operator><name>setModel</name></name><argument_list>(<argument><expr><name>profModel</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+				<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"professorName"</literal></expr></argument>, <argument><expr><literal type="string">"People"</literal></expr></argument>, <argument><expr><literal type="string">"UserName"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>String</name></type> <name>professorName</name> <init>= <expr><call><name><name>co</name><operator>.</operator><name>getProfessor</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>getUserName</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>updateOfferProfessorCombo</name><operator>.</operator><name>setSelectedIndex</name></name><argument_list>(<argument><expr><call><name>getProfessorIndex</name><argument_list>(<argument><expr><name>professorName</name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+				
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Professor</name><operator>.</operator><name>ProfessorDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Failed to initialize professor list"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+		}</block></then></if>
+		
+	}</block></function>
+	
+	<function><type><specifier>private</specifier> <name>int</name></type> <name>getProfessorIndex</name><parameter_list>(<param><decl><type><name>String</name></type> <name>professorName</name></decl></param>)</parameter_list><block>{
+		<for>for<control>(<init><decl><type><name>int</name></type> <name>i</name><init>=<expr><literal type="number">0</literal></expr></init></decl>;</init> <condition><expr><name>i</name><operator>&lt;</operator><call><name><name>updateOfferProfessorCombo</name><operator>.</operator><name>getItemCount</name></name><argument_list>()</argument_list></call></expr> ;</condition><incr><expr><name>i</name><operator>++</operator></expr></incr>)</control><block>{
+			<if>if<condition>(<expr><call><name><name>professorName</name><operator>.</operator><name>equals</name></name><argument_list>(<argument><expr><operator>(</operator><name>String</name><operator>)</operator><call><name><name>updateOfferProfessorCombo</name><operator>.</operator><name>getItemAt</name></name><argument_list>(<argument><expr><name>i</name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+				<return>return <expr><name>i</name></expr>;</return>
+			}</block></then></if>
+		}</block></for>
+		
+		<return>return <expr><literal type="number">0</literal></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>showMessage</name><parameter_list>(<param><decl><type><name>String</name></type> <name>message</name></decl></param>, <param><decl><type><name>String</name></type> <name>title</name></decl></param>)</parameter_list>
+    <block>{
+        <expr_stmt><expr><call><name><name>JOptionPane</name><operator>.</operator><name>showMessageDialog</name></name><argument_list>(<argument><expr><literal type="null">null</literal></expr></argument>, <argument><expr><name>message</name></expr></argument>, <argument><expr><name>title</name></expr></argument>, <argument><expr><name><name>JOptionPane</name><operator>.</operator><name>INFORMATION_MESSAGE</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+    }</block></function>
+	
+	<function><type><specifier>private</specifier>  <name>boolean</name></type> <name>checkStringForCourseName</name><parameter_list>(<param><decl><type><name>String</name></type> <name>s</name></decl></param>)</parameter_list><block>{
+		<return>return <expr><call><name><name>s</name><operator>.</operator><name>matches</name></name><argument_list>(<argument><expr><literal type="string">"[A-Z]{2,3}[1-9][0-9]{2}"</literal></expr></argument>)</argument_list></call></expr>;</return>
+	}</block></function>
+		
+}</block></class>
+</unit>

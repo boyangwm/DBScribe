@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\Professor.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>DriverManager</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+
+<import>import <name><name>com</name><operator>.</operator><name>mysql</name><operator>.</operator><name>jdbc</name><operator>.</operator><name>Statement</name></name>;</import>
+
+<comment type="block" format="javadoc">/**
+ * @author Akshay
+ * 
+ */</comment>
+
+<comment type="block" format="javadoc">/*************** PROFESSOR.JAVA CLASS WAS WRITTEN BY AKSHAY THIRKATEH ********************************/</comment>
+
+<class><specifier>public</specifier> class <name>Professor</name> <super><extends>extends <name>Employee</name></extends></super> <block>{
+
+	<comment type="line">// prof constructor takes in name, username and dept ID</comment>
+	<constructor><specifier>public</specifier> <name>Professor</name><parameter_list>(<param><decl><type><name>String</name></type> <name>name</name></decl></param>, <param><decl><type><name>String</name></type> <name>userName</name></decl></param>, <param><decl><type><name>int</name></type> <name>deptID</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>(<argument><expr><name>name</name></expr></argument>, <argument><expr><name>userName</name></expr></argument>, <argument><expr><name>deptID</name></expr></argument>, <argument><expr><literal type="number">2</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	}</block></constructor>
+
+	<comment type="line">//this is a professor class constructor which passes the UIN and initializes the details</comment>
+	<constructor><specifier>public</specifier> <name>Professor</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name><name>Student</name><operator>.</operator><name>AccessDeniedException</name></name></expr></argument>, <argument><expr><name>PersonDoesNotExistException</name></expr></argument></throws> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//calls the super class</comment>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>check</name> <init>= <expr><call><name>checkIfProfessor</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//checking if the UIN is a professor </comment>
+
+		<if>if <condition>(<expr><operator>!</operator><name>check</name></expr>)</condition><then> <block>{
+			<throw>throw <expr><operator>new</operator> <call><name><name>Student</name><operator>.</operator><name>AccessDeniedException</name></name><argument_list>()</argument_list></call></expr>;</throw><comment type="line">//if its not a professor then throw an exception</comment>
+		}</block></then></if>
+
+	}</block></constructor>
+	<comment type="block">/*calls the professor constructor with the username*/</comment>
+	<constructor><specifier>public</specifier> <name>Professor</name><parameter_list>(<param><decl><type><name>String</name></type> <name>userName</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>(<argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	}</block></constructor>
+
+	<comment type="block">/*prof adding to the database
+	 * 
+	 * pass the name and the dept to the function
+	 * 
+	 * return type is boolean
+	 * 
+	 * */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>addProfToDb</name><parameter_list>(<param><decl><type><name>String</name></type> <name>name</name></decl></param>, <param><decl><type><name>Department</name></type> <name>dept</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isAdded</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>returnedUIN</name></decl>;</decl_stmt>
+
+		<if>if <condition>(<expr><name>dept</name> <operator>==</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+			<throw>throw <expr><operator>new</operator> <call><name>NullPointerException</name><argument_list>()</argument_list></call></expr>;</throw><comment type="line">//if the object is null then throw an exception</comment>
+		}</block></then></if>
+
+		<if>if <condition>(<expr><call><name><name>name</name><operator>.</operator><name>equals</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>)</condition><then> <block>{
+			<throw>throw <expr><operator>new</operator> <call><name>NullPointerException</name><argument_list>()</argument_list></call></expr>;</throw><comment type="line">//if the name is empty then throw an exception</comment>
+		}</block></then></if>
+
+		<try>try <block>{
+			<expr_stmt><expr><name>returnedUIN</name> <operator>=</operator> <call><name>addIntoDatabase</name><argument_list>(<argument><expr><name>name</name></expr></argument>, <argument><expr><name>dept</name></expr></argument>, <argument><expr><literal type="number">2</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//add into the database</comment>
+			<if>if <condition>(<expr><name>returnedUIN</name> <operator>!=</operator> <operator>-</operator><literal type="number">1</literal></expr>)</condition><then> <block>{<comment type="line">//check the returned UIN</comment>
+
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>returnedUIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+				<expr_stmt><expr><name>isAdded</name> <operator>=</operator> <call><name><name>Employee</name><operator>.</operator><name>addEmployee</name></name><argument_list>(<argument><expr><name>returnedUIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//add to employee</comment>
+
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//commit</comment>
+			}</block></then></if>
+		}</block>
+		<comment type="line">//catch</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name><name>People</name><operator>.</operator><name>loginDetailsnotAdded</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<comment type="line">// TODO Auto-generated catch block</comment>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+
+		<return>return <expr><name>isAdded</name></expr>;</return>
+
+	}</block></function>
+
+	<comment type="line">// CHECKING IF THE PERSON WHOS UIN IS INPUT IS A PROFESSOR OR NOT</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>checkIfProfessor</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>ifProfessor</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLPeopleSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><name>SQLPeopleSelect</name> <operator>=</operator> <literal type="string">"Select PositionID From People where UIN=?;"</literal></expr>;</expr_stmt><comment type="line">//write query</comment>
+
+				}</block></then></if>
+
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmtForSelect</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLPeopleSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the values</comment>
+
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+				<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+					<comment type="line">//if the resultset exists</comment>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"peopleRetrievedPositionID"</literal></expr></argument>, <argument><expr><literal type="string">"people"</literal></expr></argument>, <argument><expr><literal type="string">"PositionID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>peopleRetrievedPositionID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"PositionID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN:"</literal> <operator>+</operator> <name>UIN</name> <operator>+</operator> <literal type="string">" Position ID:"</literal><operator>+</operator> <name>peopleRetrievedPositionID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+					<if>if <condition>(<expr><name>peopleRetrievedPositionID</name> <operator>==</operator> <literal type="number">2</literal></expr>)</condition><then> <block>{<comment type="line">//check the position ID</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Professor UIN exists"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>ifProfessor</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></then>
+
+					<else>else <block>{
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN exists, but it is not a professor"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>ifProfessor</name> <operator>=</operator> <literal type="boolean">false</literal></expr>;</expr_stmt>
+
+					}</block></else></if>
+
+				}</block></then>
+
+				<else>else <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN does not exist"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>ifProfessor</name> <operator>=</operator> <literal type="boolean">false</literal></expr>;</expr_stmt>
+
+				}</block></else></if>
+
+			}</block>
+			<comment type="line">//catch block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<return>return <expr><name>ifProfessor</name></expr>;</return>
+			}</block></catch></try>
+
+		}</block>
+		<comment type="line">//catch blcok</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+		here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+		}</block></finally></try>
+
+		<return>return <expr><name>ifProfessor</name></expr>;</return>
+	}</block></function>
+	<comment type="block">/*this function mainly checks if the username beongs to the professor or not*/</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>checkIfProfessor</name><parameter_list>(<param><decl><type><name>String</name></type> <name>userName</name></decl></param>)</parameter_list> <block>{
+
+		<if>if<condition>(<expr><name>userName</name><operator>==</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+
+		<if>if<condition>(<expr><call><name><name>userName</name><operator>.</operator><name>length</name></name><argument_list>()</argument_list></call><operator>==</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">// get the connection</comment>
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLProfSelect</name> <init>= <expr><literal type="string">""</literal></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><name>SQLProfSelect</name> <operator>=</operator> <literal type="string">"Select PositionID From People where Username=?;"</literal></expr>;</expr_stmt><comment type="line">//write the query</comment>
+				}</block></then></if>
+
+				<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>stmtForSelect</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLProfSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><call><name><name>stmtForSelect</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the values</comment>
+
+				<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmtForSelect</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+				<if>if <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"peopleRetrievedPositionID"</literal></expr></argument>, <argument><expr><literal type="string">"people"</literal></expr></argument>, <argument><expr><literal type="string">"PositionID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>peopleRetrievedPositionID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"PositionID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//retreive the position ID</comment>
+
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Username:"</literal> <operator>+</operator> <name>userName</name> <operator>+</operator> <literal type="string">" Position ID:"</literal><operator>+</operator> <name>peopleRetrievedPositionID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<comment type="block">/*
+					 * Checking if the position ID id of a professor i.e 2,
+					 * UIN exists for students professors, admins TA and
+					 * virtually every person existing in the university Check
+					 * if the position ID of the passed UIN is of a professor.
+					 */</comment>
+
+					<if>if <condition>(<expr><name>peopleRetrievedPositionID</name> <operator>==</operator> <literal type="number">2</literal></expr>)</condition><then> <block>{
+						<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+					}</block></then> <else>else <block>{
+						<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+					}</block></else></if>
+
+				}</block></then>
+
+				<else>else <block>{
+
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"username does not exist"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+
+				}</block></else></if>
+
+			}</block>
+			<comment type="line">//catch block </comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch></try>
+
+		}</block>
+
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+	}</block></function>
+
+
+	<comment type="line">// retrieval of the details of the professor by UIN</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>Professor</name></type> <name>retrieveProfDetailsByUIN</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>check</name> <init>= <expr><call><name>checkIfProfessor</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//checking if the UIN is a professor</comment>
+
+		<if>if <condition>(<expr><name>check</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then> <block>{
+			<comment type="line">// retireveDetailsByUIN(12);</comment>
+			<decl_stmt><decl><type><name>Professor</name></type> <name>professor</name></decl>;</decl_stmt><comment type="line">//set the class object</comment>
+			<try>try <block>{
+				<expr_stmt><expr><name>professor</name> <operator>=</operator> <operator>new</operator> <call><name>Professor</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//send the UIN to the constructor</comment>
+				<return>return <expr><name>professor</name></expr>;</return>
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>PersonDoesNotExistException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>Student</name><operator>.</operator><name>AccessDeniedException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block></then>
+
+		<else>else <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"There exists no professor with that UIN"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<return>return <expr><literal type="null">null</literal></expr>;</return>
+		}</block></else></if>
+
+		<return>return <expr><literal type="null">null</literal></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// retrieve the details of the professor when a username is passed</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>Professor</name></type> <name>retrieveProfDetailsByUserName</name><parameter_list>(<param><decl><type><name>String</name></type> <name>userName</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>check</name> <init>= <expr><call><name>checkIfProfessor</name><argument_list>(<argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//check if its a professor</comment>
+
+		<if>if <condition>(<expr><name>check</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then> <block>{
+			<decl_stmt><decl><type><name>Professor</name></type> <name>professor</name> <init>= <expr><operator>new</operator> <call><name>Professor</name><argument_list>(<argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//set it as a object</comment>
+			<comment type="line">// System.out.println(professor.getUIN());</comment>
+			<return>return <expr><name>professor</name></expr>;</return>
+
+		}</block></then> <else>else <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"There exists no professor with that username"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<return>return <expr><literal type="null">null</literal></expr>;</return>
+		}</block></else></if>
+
+	}</block></function>
+
+	<comment type="line">// Delete a professor by passing a uin</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>deleteProfFromDbUsingUIN</name><parameter_list>(<param><decl><type><name>int</name></type> <name>UIN</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>check</name> <init>= <expr><call><name>checkIfProfessor</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//CHECK IF ITS A PROFESSOR</comment>
+
+		<if>if <condition>(<expr><name>check</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then> <block>{
+			<expr_stmt><expr><call><name>deleteFromDatabaseByUIN</name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//delete from database in the people table</comment>
+			<expr_stmt><expr><call><name><name>Employee</name><operator>.</operator><name>deleteFromDatabaseByUIN</name></name><argument_list>(<argument><expr><name>UIN</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//delete from the employee table too</comment>
+
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"There exists no professor with that UIN"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+
+	}</block></function>
+
+	<comment type="line">// prof deletion by username</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>deleteProfFromDbUsingUserName</name><parameter_list>(<param><decl><type><name>String</name></type> <name>userName</name></decl></param>)</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isDeleted</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>check</name> <init>= <expr><call><name>checkIfProfessor</name><argument_list>(<argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//CHECK IF ITS A PROFESSOR</comment>
+
+		<if>if <condition>(<expr><name>check</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then> <block>{
+			<expr_stmt><expr><call><name>deleteFromDatabaseByUserName</name><argument_list>(<argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//delete from database in the people table</comment>
+			<expr_stmt><expr><name>isDeleted</name> <operator>=</operator> <call><name><name>Employee</name><operator>.</operator><name>deleteFromDatabaseByUserName</name></name><argument_list>(<argument><expr><name>userName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//delete from the employee table too</comment>
+		}</block></then> <else>else <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"There exists no professor with that username"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if>
+
+		<return>return <expr><name>isDeleted</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>String</name></type> <name>toString</name><parameter_list>()</parameter_list> <block>{
+
+		<return>return <expr><call><name>getUIN</name><argument_list>()</argument_list></call> <operator>+</operator> <literal type="string">" "</literal> <operator>+</operator> <call><name>getUserName</name><argument_list>()</argument_list></call> <operator>+</operator> <literal type="string">" "</literal> <operator>+</operator> <call><name>getName</name><argument_list>()</argument_list></call> <operator>+</operator> <literal type="string">" "</literal>
+				<operator>+</operator> <call><name>getDeptID</name><argument_list>()</argument_list></call> <operator>+</operator> <literal type="string">" "</literal> <operator>+</operator> <call><name>getPositionID</name><argument_list>()</argument_list></call></expr>;</return>
+
+	}</block></function>
+
+	<comment type="block">/*getting all the professors in a department when passed a dept ID*/</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name></type> <name>getAllProfInADept</name><parameter_list>(<param><decl><type><name>int</name></type> <name>departmentID</name></decl></param>)</parameter_list>
+			<throws>throws <argument><expr><name>ProfessorDoesNotExistException</name></expr></argument></throws> <block>{
+		<comment type="line">// if(Professor == null)</comment>
+		<comment type="line">// throw new NullPointerException();</comment>
+
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name></type> <name>ProfOfOneDept</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//initialize the prof arraylist</comment>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<decl_stmt><decl><type><name>Department</name></type> <name>dept</name> <init>= <expr><operator>new</operator> <call><name>Department</name><argument_list>(<argument><expr><name>departmentID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the dept object</comment>
+
+					<comment type="line">// Retrieve all the professors from one department</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>ProfessorSelect</name> <init>= <expr><literal type="string">"Select *"</literal>
+							<operator>+</operator> <literal type="string">" FROM people"</literal>
+							<operator>+</operator> <literal type="string">" WHERE DepartmentID= ? and PositionID=2"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>ProfessorSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>departmentID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the dept ID</comment>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<while>while <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedProfUserNames"</literal></expr></argument>, <argument><expr><literal type="string">"people"</literal></expr></argument>, <argument><expr><literal type="string">"Username"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>retreivedProfUserNames</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"Username"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+						<decl_stmt><decl><type><name>Professor</name></type> <name>prof</name> <init>= <expr><operator>new</operator> <call><name>Professor</name><argument_list>(<argument><expr><name>retreivedProfUserNames</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>ProfOfOneDept</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>prof</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//add it to the arraylist</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>prof</name><operator>.</operator><name>toString</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>
+
+				}</block></then></if>
+
+			}</block>
+			<comment type="line">//catch block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error fetching all the professors of the department "</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch>
+			<comment type="line">//catch block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error fetching the department "</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch></try>
+
+
+			<return>return <expr><name>ProfOfOneDept</name></expr>;</return>
+		}</block>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+															here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+		}</block></finally></try>
+
+	}</block></function>
+
+	<comment type="block">/*get all professors in a dept when passed a dept name*/</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name></type> <name>getAllProfInADept</name><parameter_list>(<param><decl><type><name>String</name></type> <name>DepartmentName</name></decl></param>)</parameter_list>
+			<throws>throws <argument><expr><name>ProfessorDoesNotExistException</name></expr></argument></throws> <block>{
+		<comment type="line">// if(Professor == null)</comment>
+		<comment type="line">// throw new NullPointerException();</comment>
+
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name></type> <name>ProfOfOneDept</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//initialize the araaylist</comment>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<decl_stmt><decl><type><name>int</name></type> <name>retreivedDepartmentID</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+
+					<try>try <block>{
+						<decl_stmt><decl><type><name>String</name></type> <name>getDeptID</name> <init>= <expr><literal type="string">"Select DepartmentID"</literal>
+								<operator>+</operator> <literal type="string">" FROM department"</literal>
+								<operator>+</operator> <literal type="string">" WHERE DepartmentName= ?"</literal></expr></init></decl>;</decl_stmt>
+
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>getDeptID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>DepartmentName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//set the dept ID</comment>
+						<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs1</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+						<if>if <condition>(<expr><call><name><name>rs1</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then> <block>{
+
+							<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedDepartmentID"</literal></expr></argument>, <argument><expr><literal type="string">"department"</literal></expr></argument>, <argument><expr><literal type="string">"DepartmentID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><name>retreivedDepartmentID</name> <operator>=</operator> <call><name><name>rs1</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"DepartmentID"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//retrieve the dept ID</comment>
+
+						}</block></then> <else>else <block>{
+
+							<throw>throw <expr><operator>new</operator> <call><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name><argument_list>()</argument_list></call></expr>;</throw><comment type="line">//throw an exception</comment>
+						}</block></else></if>
+
+					}</block>
+					<comment type="line">//catch block</comment>
+					<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name>
+						<operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error finding the department name "</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+					}</block></catch>
+					<comment type="line">//catch block</comment>
+					<catch>catch <parameter_list>(<param><decl><type><name><name>Department</name><operator>.</operator><name>DepartmentDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error fetching the department "</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+					}</block></catch></try>
+
+					<comment type="line">// Retrieve all the professors from one department</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SemesterSelect</name> <init>= <expr><literal type="string">"Select *"</literal>
+							<operator>+</operator> <literal type="string">" FROM people"</literal>
+							<operator>+</operator> <literal type="string">" WHERE DepartmentID= ? and PositionID=2"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement1</name> <init>= <expr><call><name><name>conn</name>
+							<operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SemesterSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement1</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>retreivedDepartmentID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement1</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<while>while <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedProfUserNames"</literal></expr></argument>, <argument><expr><literal type="string">"people"</literal></expr></argument>, <argument><expr><literal type="string">"Username"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>retreivedProfUserNames</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"Username"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+						<decl_stmt><decl><type><name>Professor</name></type> <name>prof</name> <init>= <expr><operator>new</operator> <call><name>Professor</name><argument_list>(<argument><expr><name>retreivedProfUserNames</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>ProfOfOneDept</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>prof</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//add the professor objects to te arraylist</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>prof</name><operator>.</operator><name>toString</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>
+
+				}</block></then></if>
+
+			}</block>
+			<comment type="line">//catch the SQL exception</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error fetching all the professors of the department "</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch></try>
+
+			<return>return <expr><name>ProfOfOneDept</name></expr>;</return>
+		}</block>
+
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+		}</block></finally></try>
+
+	}</block></function>
+
+	<comment type="block">/*get all professors from the people table*/</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name></type> <name>getAllProf</name><parameter_list>()</parameter_list> <block>{
+
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name></type> <name>allProfs</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Professor</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//initialize the arraylist</comment>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+
+					<comment type="line">// Retrieve all the professors from one department</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>ProfessorSelect</name> <init>= <expr><literal type="string">"Select *"</literal>
+							<operator>+</operator> <literal type="string">" FROM people"</literal> <operator>+</operator> <literal type="string">" WHERE PositionID=2"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>ProfessorSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//execute the query</comment>
+
+					<while>while <condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"retreivedProfUserNames"</literal></expr></argument>, <argument><expr><literal type="string">"people"</literal></expr></argument>, <argument><expr><literal type="string">"Username"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>retreivedProfUserNames</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"Username"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//retieve the username</comment>
+
+						<decl_stmt><decl><type><name>Professor</name></type> <name>prof</name> <init>= <expr><operator>new</operator> <call><name>Professor</name><argument_list>(<argument><expr><name>retreivedProfUserNames</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>allProfs</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>prof</name></expr></argument>)</argument_list></call></expr>;</expr_stmt><comment type="line">//add it to the arraylist the professor objects</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>prof</name><operator>.</operator><name>getUserName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>
+
+				}</block></then></if>
+
+			}</block>
+			<comment type="line">//catch block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error fetching all the professors"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			}</block></catch></try>
+
+
+			<return>return <expr><name>allProfs</name></expr>;</return>
+		}</block>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+		}</block></finally></try>
+
+	}</block></function>
+
+	<comment type="line">//update the professor username</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>updateProfUserName</name><parameter_list>(<param><decl><type><name>String</name></type> <name>userName</name></decl></param>)</parameter_list> <block>{
+
+		<if>if<condition>(<expr><name>userName</name><operator>==</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+
+		<if>if<condition>(<expr><call><name><name>userName</name><operator>.</operator><name>length</name></name><argument_list>()</argument_list></call><operator>==</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isUpdated</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+
+			<try>try <block>{
+
+				<decl_stmt><decl><type><name>boolean</name></type> <name>ifAddedInLogin</name> <init>= <expr><call><name><name>People</name><operator>.</operator><name>updateUserNameIntoLoginTable</name></name><argument_list>(<argument><expr><name>userName</name></expr></argument>, <argument><expr><call><name><name>this</name><operator>.</operator><name>getUserName</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//update in login table</comment>
+				<if>if <condition>(<expr><name>ifAddedInLogin</name></expr>)</condition><then>
+					<block type="pseudo"><expr_stmt><expr><name>isUpdated</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt></block></then></if>
+
+			}</block>
+			<comment type="line">//catch the exception</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding/updating to database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block>
+		<comment type="line">//catch the exception</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+														here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isUpdated</name></expr>;</return>
+
+	}</block></function>
+
+	<comment type="line">//update the professor name</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>updateProfName</name><parameter_list>(<param><decl><type><name>String</name></type> <name>name</name></decl></param>)</parameter_list> <block>{
+
+		<if>if<condition>(<expr><name>name</name><operator>==</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+
+		<if>if<condition>(<expr><call><name><name>name</name><operator>.</operator><name>length</name></name><argument_list>()</argument_list></call><operator>==</operator><literal type="number">0</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isUpdated</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+
+			<try>try <block>{
+
+				<decl_stmt><decl><type><name>boolean</name></type> <name>ifUpdatedInPeople</name> <init>= <expr><call><name><name>People</name><operator>.</operator><name>updateNameIntoPeopleTable</name></name><argument_list>(<argument><expr><name>name</name></expr></argument>, <argument><expr><call><name><name>this</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//update into the people table</comment>
+				<if>if <condition>(<expr><name>ifUpdatedInPeople</name></expr>)</condition><then>
+					<block type="pseudo"><expr_stmt><expr><name>isUpdated</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt></block></then></if>
+
+			}</block>
+			<comment type="line">//catch block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding/updating to database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block>
+		<comment type="line">//catch block</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+		<comment type="block">/*The code thats placed in the finally block gets executed no matter what. But 
+													here the finally block does not contain any general statements*/</comment>
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isUpdated</name></expr>;</return>
+
+	}</block></function>
+
+	<comment type="line">//update the prof dept</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>updateProfDept</name><parameter_list>(<param><decl><type><name>int</name></type> <name>deptID</name></decl></param>)</parameter_list> <block>{
+
+		<comment type="line">// how to check if the dept ID is not existing</comment>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isUpdated</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//get the connection</comment>
+
+			<try>try <block>{
+
+				<decl_stmt><decl><type><name>boolean</name></type> <name>ifUpdatedInPeople</name> <init>= <expr><call><name><name>People</name><operator>.</operator><name>updateDeptIntoPeopleTable</name></name><argument_list>(<argument><expr><name>deptID</name></expr></argument>, <argument><expr><call><name><name>this</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt><comment type="line">//update the dept</comment>
+				<if>if <condition>(<expr><name>ifUpdatedInPeople</name></expr>)</condition><then>
+					<block type="pseudo"><expr_stmt><expr><name>isUpdated</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt></block></then></if>
+
+			}</block>
+			<comment type="line">//catch block</comment>
+			<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding/updating to database"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block>
+		<comment type="line">//catch block</comment>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Connection failed"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		}</block></catch>
+
+		<finally>finally <block>{
+
+			<comment type="line">// System.out.println("retrieved");</comment>
+		}</block></finally></try>
+
+		<return>return <expr><name>isUpdated</name></expr>;</return>
+
+	}</block></function>
+
+	<comment type="line">//new exceptions added that can be thrown </comment>
+	<class><specifier>public</specifier> <specifier>static</specifier> class <name>ProfessorDoesNotExistException</name> <super><extends>extends <name>Exception</name></extends></super> <block>{
+		<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><specifier>private</specifier> <name>String</name></type> <name>message</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+
+		<constructor><specifier>public</specifier> <name>ProfessorDoesNotExistException</name><parameter_list>()</parameter_list> <block>{
+			<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>message</name></name> <operator>=</operator> <literal type="string">"Professor does not exist"</literal></expr>;</expr_stmt>
+		}</block></constructor>
+
+		<constructor><specifier>public</specifier> <name>ProfessorDoesNotExistException</name><parameter_list>(<param><decl><type><name>String</name></type> <name>message</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>message</name></name> <operator>=</operator> <name>message</name></expr>;</expr_stmt>
+		}</block></constructor>
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>toString</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>getMessage</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+	}</block></class>
+
+	<comment type="block">/*
+	 * All professor functions add, update, retrieve are specified in the this class
+	 * 
+	 * local main class is used for testing functions and specific executions
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list> <block>{
+
+	}</block></function>
+
+
+	<comment type="line">//incorrect</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>updateTitleGT50</name><parameter_list>(<param><decl><type><name>String</name></type> <name>id</name></decl></param>)</parameter_list><block>{
+		<try>try <block>{
+
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><operator>(</operator><name>Connection</name><operator>)</operator> <call><name><name>DriverManager</name><operator>.</operator><name>getConnection</name></name><argument_list>(
+					<argument><expr><literal type="string">"jdbc:mysql://localhost:3306/MOCK_DATA2"</literal></expr></argument>,
+					<argument><expr><literal type="string">"root"</literal></expr></argument>, <argument><expr><literal type="string">"boyang"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>Statement</name></type> <name>stmt</name> <init>= <expr><operator>(</operator><name>Statement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>createStatement</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>query</name> <init>= <expr><literal type="string">"select age FROM MOCK_DATA3000 where id = "</literal> <operator>+</operator> <name>id</name></expr></init></decl>;</decl_stmt>	
+			<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>(<argument><expr><name>query</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<comment type="line">//while(rs.next()){</comment>
+
+			<decl_stmt><decl><type><name>int</name></type> <name>age</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"age"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"age"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA3000"</literal></expr></argument>,<argument><expr><literal type="string">"age"</literal></expr></argument>,<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+
+			<assert>assert<expr><operator>(</operator><name>age</name> <operator>&gt;</operator> <literal type="number">50</literal><operator>)</operator></expr>;</assert>
+			<decl_stmt><decl><type><name>int</name></type> <name>title</name> <init>= <expr><literal type="number">4</literal></expr></init></decl>;</decl_stmt>   <comment type="line">// 3, correct </comment>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"title"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA3000"</literal></expr></argument>,<argument><expr><literal type="string">"title"</literal></expr></argument>,<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+			<decl_stmt><decl><type><name>String</name></type> <name>updateS</name> <init>= <expr><literal type="string">"UPDATE PERSON SET title = ?  WHERE id = ?"</literal></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>preparedStmt</name> <init>=  <expr><operator>(</operator><name>PreparedStatement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>updateS</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>title</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>id</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>conn</name><operator>.</operator><name>close</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+		}</block>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"exception"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	}</block></function>
+
+
+	<comment type="line">//correct</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>updateTitleTwo</name><parameter_list>(<param><decl><type><name>String</name></type> <name>id</name></decl></param>)</parameter_list><block>{
+		<try>try <block>{
+
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><operator>(</operator><name>Connection</name><operator>)</operator> <call><name><name>DriverManager</name><operator>.</operator><name>getConnection</name></name><argument_list>(
+					<argument><expr><literal type="string">"jdbc:mysql://localhost:3306/MOCK_DATA2"</literal></expr></argument>,
+					<argument><expr><literal type="string">"root"</literal></expr></argument>, <argument><expr><literal type="string">"boyang"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>Statement</name></type> <name>stmt</name> <init>= <expr><operator>(</operator><name>Statement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>createStatement</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>query</name> <init>= <expr><literal type="string">"select age FROM MOCK_DATA3000 where id = "</literal> <operator>+</operator> <name>id</name></expr></init></decl>;</decl_stmt>	
+			<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>(<argument><expr><name>query</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<comment type="line">//while(rs.next()){</comment>
+
+
+
+			<decl_stmt><decl><type><name>double</name></type> <name>age</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"age"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"age"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA3000"</literal></expr></argument>,<argument><expr><literal type="string">"age"</literal></expr></argument>,<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<assert>assert<expr><operator>(</operator><name>age</name> <operator>&lt;</operator> <literal type="number">35</literal><operator>)</operator></expr>;</assert>
+			<decl_stmt><decl><type><name>int</name></type> <name>title</name> <init>= <expr><literal type="number">1</literal></expr></init></decl>;</decl_stmt>   <comment type="line">// 1, correct </comment>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"title"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA3000"</literal></expr></argument>,<argument><expr><literal type="string">"title"</literal></expr></argument>,<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+			<decl_stmt><decl><type><name>String</name></type> <name>updateS</name> <init>= <expr><literal type="string">"UPDATE PERSON SET title = ?  WHERE id = ?"</literal></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>preparedStmt</name> <init>=  <expr><operator>(</operator><name>PreparedStatement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>updateS</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>title</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>id</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>conn</name><operator>.</operator><name>close</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+		}</block>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"exception"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	}</block></function>
+
+
+
+	<comment type="line">//incorrect</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>updateSalaryGT50</name><parameter_list>(<param><decl><type><name>String</name></type> <name>id</name></decl></param>)</parameter_list><block>{
+		<try>try <block>{
+
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><operator>(</operator><name>Connection</name><operator>)</operator> <call><name><name>DriverManager</name><operator>.</operator><name>getConnection</name></name><argument_list>(
+					<argument><expr><literal type="string">"jdbc:mysql://localhost:3306/MOCK_DATA2"</literal></expr></argument>,
+					<argument><expr><literal type="string">"root"</literal></expr></argument>, <argument><expr><literal type="string">"boyang"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>Statement</name></type> <name>stmt</name> <init>= <expr><operator>(</operator><name>Statement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>createStatement</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>query</name> <init>= <expr><literal type="string">"select age FROM MOCK_DATA3000 where id = "</literal> <operator>+</operator> <name>id</name></expr></init></decl>;</decl_stmt>	
+			<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>(<argument><expr><name>query</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<comment type="line">//while(rs.next()){</comment>
+
+			<decl_stmt><decl><type><name>int</name></type> <name>age</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"age"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"age"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA3000"</literal></expr></argument>,<argument><expr><literal type="string">"age"</literal></expr></argument>,<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+
+			<assert>assert<expr><operator>(</operator><name>age</name> <operator>&gt;</operator> <literal type="number">50</literal><operator>)</operator></expr>;</assert>
+			<decl_stmt><decl><type><name>int</name></type> <name>baseSalary</name> <init>= <expr><literal type="number">4000</literal></expr></init></decl>;</decl_stmt>   <comment type="line">// 7000, correct </comment>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"baseSalary"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA3000"</literal></expr></argument>,<argument><expr><literal type="string">"baseSalary"</literal></expr></argument>,<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+			<decl_stmt><decl><type><name>String</name></type> <name>updateS</name> <init>= <expr><literal type="string">"UPDATE PERSON SET title = ?  WHERE id = ?"</literal></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>preparedStmt</name> <init>=  <expr><operator>(</operator><name>PreparedStatement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>updateS</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>baseSalary</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>id</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>conn</name><operator>.</operator><name>close</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+		}</block>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"exception"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	}</block></function>
+
+
+	<comment type="line">//correct</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>updateSalary4000</name><parameter_list>(<param><decl><type><name>String</name></type> <name>id</name></decl></param>)</parameter_list><block>{
+		<try>try <block>{
+
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><operator>(</operator><name>Connection</name><operator>)</operator> <call><name><name>DriverManager</name><operator>.</operator><name>getConnection</name></name><argument_list>(
+					<argument><expr><literal type="string">"jdbc:mysql://localhost:3306/MOCK_DATA2"</literal></expr></argument>,
+					<argument><expr><literal type="string">"root"</literal></expr></argument>, <argument><expr><literal type="string">"boyang"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>Statement</name></type> <name>stmt</name> <init>= <expr><operator>(</operator><name>Statement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>createStatement</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>query</name> <init>= <expr><literal type="string">"select age FROM MOCK_DATA3000 where id = "</literal> <operator>+</operator> <name>id</name></expr></init></decl>;</decl_stmt>	
+			<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>(<argument><expr><name>query</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<comment type="line">//while(rs.next()){</comment>
+
+
+
+			<decl_stmt><decl><type><name>double</name></type> <name>age</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"age"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"age"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA3000"</literal></expr></argument>,<argument><expr><literal type="string">"age"</literal></expr></argument>,<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<assert>assert<expr><operator>(</operator><name>age</name> <operator>&lt;</operator> <literal type="number">32</literal><operator>)</operator></expr>;</assert>
+			<decl_stmt><decl><type><name>int</name></type> <name>baseSalary</name> <init>= <expr><literal type="number">4000</literal></expr></init></decl>;</decl_stmt>   <comment type="line">// 4000, correct </comment>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"baseSalary"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA3000"</literal></expr></argument>,<argument><expr><literal type="string">"baseSalary"</literal></expr></argument>,<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+			<decl_stmt><decl><type><name>String</name></type> <name>updateS</name> <init>= <expr><literal type="string">"UPDATE PERSON SET basicSalary = ?  WHERE id = ?"</literal></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>preparedStmt</name> <init>=  <expr><operator>(</operator><name>PreparedStatement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>updateS</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>baseSalary</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>id</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>conn</name><operator>.</operator><name>close</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+		}</block>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"exception"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	}</block></function>
+
+
+
+}</block></class>
+</unit>

@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\CourseExamStructure.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+<comment type="line">//import java.lang.annotation.ElementType;</comment>
+<comment type="line">//import java.lang.annotation.Retention;</comment>
+<comment type="line">//import java.lang.annotation.RetentionPolicy;</comment>
+<comment type="line">//import java.lang.annotation.Target;</comment>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>HashMap</name></name>;</import>
+
+<class><specifier>public</specifier> class <name>CourseExamStructure</name> <block>{
+	<decl_stmt><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name>String</name></type> <name>examName</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><name>int</name></type> <name>examTotal</name></decl>;</decl_stmt> <comment type="line">// Total Marks for that exam</comment>
+	
+<comment type="line">//	@Target({ElementType.LOCAL_VARIABLE})</comment>
+<comment type="line">//	@Retention(RetentionPolicy.RUNTIME)</comment>
+<comment type="line">//	public @interface DBAnnotation {</comment>
+<comment type="line">//	 String[] variable () default "";</comment>
+<comment type="line">//	 String[] table () default "";</comment>
+<comment type="line">//	 String[] column () default "";</comment>
+<comment type="line">//	 boolean[] isSource () default false; </comment>
+<comment type="line">//	}</comment>
+	
+	<function><type><specifier>public</specifier> <name>CourseOffered</name></type> <name>getOfferedCourse</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>offeredCourse</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setOfferedCourse</name><parameter_list>(<param><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>offeredCourse</name></name> <operator>=</operator> <name>offeredCourse</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>String</name></type> <name>getExamName</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>examName</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setExamName</name><parameter_list>(<param><decl><type><name>String</name></type> <name>examName</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>examName</name></name> <operator>=</operator> <name>examName</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getExamTotal</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>examTotal</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setExamTotal</name><parameter_list>(<param><decl><type><name>int</name></type> <name>examTotal</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>examTotal</name></name> <operator>=</operator> <name>examTotal</name></expr>;</expr_stmt>
+	}</block></function>
+	
+	
+	<constructor><specifier>public</specifier> <name>CourseExamStructure</name><parameter_list>()</parameter_list> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+	}</block></constructor>
+
+	<comment type="line">// Constructor</comment>
+	<constructor><specifier>public</specifier> <name>CourseExamStructure</name><parameter_list>(<param><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name></decl></param>, <param><decl><type><name>String</name></type> <name>examName</name></decl></param>, <param><decl><type><name>int</name></type> <name>examTotal</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>offeredCourse</name></name> <operator>=</operator> <name>offeredCourse</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>examName</name></name> <operator>=</operator> <name>examName</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>examTotal</name></name> <operator>=</operator> <name>examTotal</name></expr>;</expr_stmt>
+	}</block></constructor>
+	
+	<comment type="line">// Constructor</comment>
+	<constructor><specifier>public</specifier> <name>CourseExamStructure</name><parameter_list>(<param><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name></decl></param>, <param><decl><type><name>String</name></type> <name>examName</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>offeredCourse</name></name> <operator>=</operator> <name>offeredCourse</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>examName</name></name> <operator>=</operator> <name>examName</name></expr>;</expr_stmt>
+		<comment type="line">// this.examTotal = getTotalMarksForExam(examName);</comment>
+		
+		<decl_stmt><decl><type><name>Course</name></type> <name>course</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getCourse</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>String</name></type> <name>courseName</name> <init>= <expr><call><name><name>course</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name><init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>semID</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getSemesterID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>String</name></type> <name>tableName</name> <init>= <expr><name>courseName</name> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>semID</name></expr></argument>)</argument_list></call> <operator>+</operator> <literal type="string">"Structure"</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isExamPresent</name> <init>= <expr><call><name>isExamPresent</name><argument_list>(<argument><expr><name>tableName</name></expr></argument>,<argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if <condition>(<expr><name>isExamPresent</name> <operator>==</operator> <literal type="boolean">false</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Exam Not Present. Please try again."</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else <block>{
+		
+			<decl_stmt><decl><type><name>String</name></type> <name>SQLExamStructureSelect</name> <init>= <expr><literal type="string">"Select TotalMarks FROM %s WHERE ExamName = ?;"</literal></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><name>SQLExamStructureSelect</name> <operator>=</operator> <call><name><name>String</name><operator>.</operator><name>format</name></name><argument_list>(<argument><expr><name>SQLExamStructureSelect</name></expr></argument>, <argument><expr><name>tableName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<try>try <block>{
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<try>try <block>{
+					<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					 
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLExamStructureSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+	<comment type="line">//					statement.setString(1, tableName);</comment>
+						<comment type="line">//DBAnnotation.annoate("examName", tableName, "ExamName", false);</comment>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+							<comment type="line">//DBAnnotation.annoate("examTotal", tableName, "TotalMarks", true);</comment>
+							<expr_stmt><expr><name><name>this</name><operator>.</operator><name>examTotal</name></name> <operator>=</operator> <call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"TotalMarks"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						}</block></while>
+					}</block></then></if>	
+				}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></catch></try>
+	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+		
+		}</block></else></if>
+		
+	}</block></constructor>
+	
+	<comment type="line">// Called by createCourseExamTable function to create a table to record the </comment>
+	<comment type="line">// Course Structure</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>createCourseExamStructureTable</name><parameter_list>(<param><decl><type><name>String</name></type> <name>courseName</name></decl></param>, <param><decl><type><name>int</name></type> <name>offerID</name></decl></param>,<param><decl><type><name>int</name></type> <name>semID</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>tableAdded</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+<comment type="line">//		Course course = offeredCourse.getCourse();</comment>
+<comment type="line">//		String courseName = course.getCourseName();</comment>
+<comment type="line">//		int offerID= offeredCourse.getOfferID();</comment>
+<comment type="line">//		int semID = offeredCourse.getSemesterID();</comment>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>tableName</name> <init>= <expr><name>courseName</name> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>semID</name></expr></argument>)</argument_list></call> <operator>+</operator> <literal type="string">"Structure"</literal></expr></init></decl>;</decl_stmt> 
+		
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"tableName"},  </comment>
+<comment type="line">//				table = "courseExamStructureTable", </comment>
+<comment type="line">//				column = {"Username","Password"}, </comment>
+<comment type="line">//				isSource = false)</comment>
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLExamStructureCreate</name> <init>= <expr><literal type="string">"CREATE TABLE %s (ExamName varchar(20), TotalMarks int(12),PRIMARY KEY (ExamName)) ;"</literal></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name>SQLExamStructureCreate</name> <operator>=</operator> <call><name><name>String</name><operator>.</operator><name>format</name></name><argument_list>(<argument><expr><name>SQLExamStructureCreate</name></expr></argument>, <argument><expr><name>tableName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLExamStructureCreate</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<comment type="line">//statement.setString(1, tableName);</comment>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>tableAdded</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+				}</block></then></if>	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	 
+		<return>return <expr><name>tableAdded</name></expr>;</return>
+	}</block></function>
+	
+	
+	<comment type="line">// To retrive the total marks for an exam. </comment>
+<comment type="line">//	public static int getTotalMarksForExam(String examName){</comment>
+<comment type="line">//		int totalMarks=0;</comment>
+<comment type="line">//		</comment>
+<comment type="line">//		return totalMarks;</comment>
+<comment type="line">//	}</comment>
+	
+	<comment type="line">// To add a new exam.</comment>
+	<comment type="line">// This function would internally call addNewExamColumn() of the CourseExam class to</comment>
+	<comment type="line">// add a new column in the CourseExams table for this new exam</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>addNewExam</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>examAdded</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name> <init>= <expr><name><name>this</name><operator>.</operator><name>offeredCourse</name></name></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>Course</name></type> <name>course</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getCourse</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>String</name></type> <name>courseName</name> <init>= <expr><call><name><name>course</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name><init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>semID</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getSemesterID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>tableName</name> <init>= <expr><name>courseName</name> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>semID</name></expr></argument>)</argument_list></call> <operator>+</operator> <literal type="string">"Structure"</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>examName</name> <init>= <expr><name><name>this</name><operator>.</operator><name>examName</name></name></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>examTotal</name> <init>= <expr><name><name>this</name><operator>.</operator><name>examTotal</name></name></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isExamPresent</name> <init>= <expr><call><name>isExamPresent</name><argument_list>(<argument><expr><name>tableName</name></expr></argument>,<argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if <condition>(<expr><name>isExamPresent</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Exam already present. Please try again."</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else <block>{
+			
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"examName","examTotal"},  </comment>
+<comment type="line">//				table = "tableName", </comment>
+<comment type="line">//				column = {"ExamName","TotalMarks"}, </comment>
+<comment type="line">//				isSource = false)</comment>
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLExamStructureCreate</name> <init>= <expr><literal type="string">"INSERT INTO %s (ExamName,TotalMarks) VALUES(?,?) ;"</literal></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name>SQLExamStructureCreate</name> <operator>=</operator> <call><name><name>String</name><operator>.</operator><name>format</name></name><argument_list>(<argument><expr><name>SQLExamStructureCreate</name></expr></argument>, <argument><expr><name>tableName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLExamStructureCreate</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+<comment type="line">//					statement.setString(1, tableName);</comment>
+					<comment type="line">//DBAnnotation.annoate("examName", tableName, "ExamName", false);</comment>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<comment type="line">//DBAnnotation.annoate("examTotal", tableName, "TotalMarks", false);</comment>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>examTotal</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>examAdded</name> <operator>=</operator> <call><name><name>CourseExams</name><operator>.</operator><name>addNewExamColumn</name></name><argument_list>(<argument><expr><name>this</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<if>if <condition>(<expr><name>examAdded</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></then>
+					<else>else<block>{
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></else></if>
+				}</block></then></if>	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		}</block></else></if> <comment type="line">// End of Else</comment>
+		<return>return <expr><name>examAdded</name></expr>;</return>
+	}</block></function>
+		
+	<comment type="line">// Checks whether this exam is already present.</comment>
+	<function><type><specifier>private</specifier> <name>boolean</name></type> <name>isExamPresent</name><parameter_list>(<param><decl><type><name>String</name></type> <name>tableName</name></decl></param>, <param><decl><type><name>String</name></type> <name>examName</name></decl></param>)</parameter_list> <block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isExamPresent</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+<comment type="line">//		</comment>
+<comment type="line">//		CourseOffered offeredCourse = this.offeredCourse;</comment>
+<comment type="line">//		Course course = offeredCourse.getCourse();</comment>
+<comment type="line">//		String courseName = course.getCourseName();</comment>
+<comment type="line">//		int offerID= offeredCourse.getOfferID();</comment>
+<comment type="line">//		int semID = offeredCourse.getSemesterID();</comment>
+<comment type="line">//		</comment>
+<comment type="line">//		String tableName = courseName + Integer.toString(offerID) + Integer.toString(semID) + "Structure";</comment>
+<comment type="line">//	</comment>
+		
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"tableExamName"},  </comment>
+<comment type="line">//				table = "tableName", </comment>
+<comment type="line">//				column = {"ExamName"}, </comment>
+<comment type="line">//				isSource = true)</comment>
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLExamStructureSelect</name> <init>= <expr><literal type="string">"Select ExamName FROM %s ;"</literal></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name>SQLExamStructureSelect</name> <operator>=</operator> <call><name><name>String</name><operator>.</operator><name>format</name></name><argument_list>(<argument><expr><name>SQLExamStructureSelect</name></expr></argument>, <argument><expr><name>tableName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+				 
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLExamStructureSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+<comment type="line">//					statement.setString(1, tableName);</comment>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<comment type="line">//DBAnnotation.annoate("tableExamName", tableName, "ExamName", true);</comment>
+						<decl_stmt><decl><type><name>String</name></type> <name>tableExamName</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"ExamName"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<if>if <condition>(<expr><call><name><name>tableExamName</name><operator>.</operator><name>equals</name></name><argument_list>(<argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+							<expr_stmt><expr><name>isExamPresent</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+						}</block></then></if>
+					}</block></while>
+				}</block></then></if>	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		<return>return <expr><name>isExamPresent</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// To modify the name of an exam.</comment>
+	<comment type="line">// It would internally call the function modifyExistingExamColumnName of the CourseExam </comment>
+	<comment type="line">// class to make the examnames consistent in both the tables</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>modifyExistingExamName</name><parameter_list>(<param><decl><type><name>String</name></type> <name>newExamName</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>nameModified</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name> <init>= <expr><name><name>this</name><operator>.</operator><name>offeredCourse</name></name></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>Course</name></type> <name>course</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getCourse</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>String</name></type> <name>courseName</name> <init>= <expr><call><name><name>course</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name><init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>semID</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getSemesterID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>tableName</name> <init>= <expr><name>courseName</name> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>semID</name></expr></argument>)</argument_list></call> <operator>+</operator> <literal type="string">"Structure"</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>examName</name> <init>= <expr><name><name>this</name><operator>.</operator><name>examName</name></name></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isExamPresent</name> <init>= <expr><call><name>isExamPresent</name><argument_list>(<argument><expr><name>tableName</name></expr></argument>,<argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isNewExamPresent</name> <init>= <expr><call><name>isExamPresent</name><argument_list>(<argument><expr><name>tableName</name></expr></argument>,<argument><expr><name>newExamName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<if>if <condition>(<expr><operator>(</operator><name>isExamPresent</name> <operator>==</operator> <literal type="boolean">true</literal><operator>)</operator> <operator>&amp;&amp;</operator> <operator>(</operator><name>isNewExamPresent</name> <operator>==</operator> <literal type="boolean">false</literal><operator>)</operator></expr>)</condition><then><block>{
+			
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"newExamName"},  </comment>
+<comment type="line">//				table = "tableName", </comment>
+<comment type="line">//				column = {"ExamName"}, </comment>
+<comment type="line">//				isSource = false)</comment>
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLExamStructureUpdate</name> <init>= <expr><literal type="string">"UPDATE %s SET ExamName = ? WHERE ExamName = ? ;"</literal></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name>SQLExamStructureUpdate</name> <operator>=</operator> <call><name><name>String</name><operator>.</operator><name>format</name></name><argument_list>(<argument><expr><name>SQLExamStructureUpdate</name></expr></argument>, <argument><expr><name>tableName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+				 
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLExamStructureUpdate</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+<comment type="line">//					statement.setString(1, tableName);</comment>
+					<comment type="line">//DBAnnotation.annoate("newExamName", tableName, "ExamName", false);</comment>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>newExamName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<comment type="line">//DBAnnotation.annoate("examName", tableName, "ExamName", false);</comment>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>boolean</name></type> <name>modifiedColumn</name> <init>= <expr><call><name><name>CourseExams</name><operator>.</operator><name>modifyExistingExamColumnName</name></name><argument_list>(<argument><expr><name>this</name></expr></argument>, <argument><expr><name>newExamName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<if>if <condition>(<expr><name>modifiedColumn</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>nameModified</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></then></if>
+					
+				}</block></then></if>	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		}</block></then> <else>else <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Old Exam name not present or New exam name already present. Please try again."</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if> <comment type="line">// End of Else</comment>
+		<return>return <expr><name>nameModified</name></expr>;</return>
+
+	}</block></function>	
+
+	<comment type="line">// To modify the total marks of an exam</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>modifyExistingExamTotalMarks</name><parameter_list>(<param><decl><type><name>int</name></type> <name>newTotalMarks</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>marksModified</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name> <init>= <expr><name><name>this</name><operator>.</operator><name>offeredCourse</name></name></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>Course</name></type> <name>course</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getCourse</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>String</name></type> <name>courseName</name> <init>= <expr><call><name><name>course</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name><init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>semID</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getSemesterID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>tableName</name> <init>= <expr><name>courseName</name> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>semID</name></expr></argument>)</argument_list></call> <operator>+</operator> <literal type="string">"Structure"</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>examName</name> <init>= <expr><name><name>this</name><operator>.</operator><name>examName</name></name></expr></init></decl>;</decl_stmt>
+		<comment type="line">//int examTotal = this.examTotal;</comment>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isExamPresent</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>isExamPresent</name></name><argument_list>(<argument><expr><name>tableName</name></expr></argument>,<argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if <condition>(<expr><name>isExamPresent</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+			
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"newTotalMarks"},  </comment>
+<comment type="line">//				table = "tableName", </comment>
+<comment type="line">//				column = {"TotalMarks"}, </comment>
+<comment type="line">//				isSource = false)</comment>
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLExamStructureUpdate</name> <init>= <expr><literal type="string">"UPDATE %s SET TotalMarks = ? WHERE ExamName = ? ;"</literal></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name>SQLExamStructureUpdate</name> <operator>=</operator> <call><name><name>String</name><operator>.</operator><name>format</name></name><argument_list>(<argument><expr><name>SQLExamStructureUpdate</name></expr></argument>, <argument><expr><name>tableName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+				 
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLExamStructureUpdate</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<comment type="line">//statement.setString(1, tableName);</comment>
+					<comment type="line">//DBAnnotation.annoate("newTotalMarks", tableName, "TotalMarks", false);</comment>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>newTotalMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<comment type="line">//DBAnnotation.annoate("examName", tableName, "ExamName", false);</comment>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>marksModified</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+				}</block></then></if>	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		}</block></then> <else>else <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Exam not present. Please try again."</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if> <comment type="line">// End of Else</comment>
+		<return>return <expr><name>marksModified</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// To delete an exam.</comment>
+	<comment type="line">// This function would internally call the function deleteExistingExamColumn of </comment>
+	<comment type="line">// the CourseExam class to make the tables consistent.</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>deleteExistingExam</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>examDeleted</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name> <init>= <expr><name><name>this</name><operator>.</operator><name>offeredCourse</name></name></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>Course</name></type> <name>course</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getCourse</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>String</name></type> <name>courseName</name> <init>= <expr><call><name><name>course</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name><init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>semID</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getSemesterID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>tableName</name> <init>= <expr><name>courseName</name> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>semID</name></expr></argument>)</argument_list></call> <operator>+</operator> <literal type="string">"Structure"</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>examName</name> <init>= <expr><name><name>this</name><operator>.</operator><name>examName</name></name></expr></init></decl>;</decl_stmt>
+		<comment type="line">//int examTotal = this.examTotal;</comment>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isExamPresent</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>isExamPresent</name></name><argument_list>(<argument><expr><name>tableName</name></expr></argument>,<argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if <condition>(<expr><name>isExamPresent</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+						
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"examName"},  </comment>
+<comment type="line">//				table = "tableName", </comment>
+<comment type="line">//				column = {"ExamName"}, </comment>
+<comment type="line">//				isSource = false)</comment>
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLExamStructureDelete</name> <init>= <expr><literal type="string">"DELETE FROM %s WHERE ExamName = ?  ;"</literal></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name>SQLExamStructureDelete</name> <operator>=</operator> <call><name><name>String</name><operator>.</operator><name>format</name></name><argument_list>(<argument><expr><name>SQLExamStructureDelete</name></expr></argument>, <argument><expr><name>tableName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLExamStructureDelete</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+<comment type="line">//					statement.setString(1, tableName);</comment>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"examName"</literal></expr></argument>, <argument><expr><name>tableName</name></expr></argument>, <argument><expr><literal type="string">"ExamName"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>boolean</name></type> <name>examColumnDeleted</name> <init>= <expr><call><name><name>CourseExams</name><operator>.</operator><name>deleteExistingExamColumn</name></name><argument_list>(<argument><expr><name>this</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<if>if<condition>(<expr><name>examColumnDeleted</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>examDeleted</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></then>
+					<else>else<block>{
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></else></if>
+				}</block></then></if>	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		}</block></then> <else>else <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Exam not present. Please try again."</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></else></if> <comment type="line">// End of Else</comment>
+		<return>return <expr><name>examDeleted</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// To view all the exams in the course</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>HashMap</name><argument_list type="template">&lt;<argument><name>String</name></argument>,<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>viewExams</name><parameter_list>(<param><decl><type><name>CourseOffered</name></type> <name>courseoffered</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>String</name></argument>,<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>allExams</name> <init>= <expr><operator>new</operator> <call><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>String</name></argument>,<argument><name>Integer</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>courseoffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+<comment type="line">//		try {</comment>
+<comment type="line">//			offeredCourse = new CourseOffered(offerID);</comment>
+<comment type="line">//		} catch (Course.CourseDoesNotExistException e1) {</comment>
+<comment type="line">//			e1.printStackTrace();</comment>
+<comment type="line">//		} catch (CourseOffered.CourseOfferingDoesNotExistException e1) {</comment>
+<comment type="line">//			e1.printStackTrace();</comment>
+<comment type="line">//		}</comment>
+		
+		<decl_stmt><decl><type><name>Course</name></type> <name>course</name> <init>= <expr><call><name><name>courseoffered</name><operator>.</operator><name>getCourse</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>String</name></type> <name>courseName</name> <init>= <expr><call><name><name>course</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>semID</name> <init>= <expr><call><name><name>courseoffered</name><operator>.</operator><name>getSemesterID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>tableName</name> <init>= <expr><name>courseName</name> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>semID</name></expr></argument>)</argument_list></call> <operator>+</operator> <literal type="string">"Structure"</literal></expr></init></decl>;</decl_stmt> 
+	
+<comment type="line">//		@DBAnnotation (</comment>
+<comment type="line">//				variable = {"examName","totalMarks"},  </comment>
+<comment type="line">//				table = "tableName", </comment>
+<comment type="line">//				column = {"ExamName","TotalMarks"}, </comment>
+<comment type="line">//				isSource = true)</comment>
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLExamSelect</name> <init>= <expr><literal type="string">"SELECT ExamName,TotalMarks FROM %s ;"</literal></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name>SQLExamSelect</name> <operator>=</operator> <call><name><name>String</name><operator>.</operator><name>format</name></name><argument_list>(<argument><expr><name>SQLExamSelect</name></expr></argument>, <argument><expr><name>tableName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+					<comment type="line">//System.out.println(tableName);</comment>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLExamSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+<comment type="line">//					statement.setString(1, tableName);</comment>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+									
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"examName"</literal></expr></argument>, <argument><expr><name>tableName</name></expr></argument>, <argument><expr><literal type="string">"ExamName"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>examName</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="string">"ExamName"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"totalMarks"</literal></expr></argument>, <argument><expr><name>tableName</name></expr></argument>, <argument><expr><literal type="string">"TotalMarks"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>totalMarks</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"TotalMarks"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>examName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<if>if<condition>(<expr><name>examName</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then>
+							<block type="pseudo"><expr_stmt><expr><call><name><name>allExams</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>examName</name></expr></argument>,<argument><expr><name>totalMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt></block></then></if>
+					}</block></while>
+				}</block></then></if>	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		<return>return <expr><name>allExams</name></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list><block>{
+	
+<comment type="line">//		int offerID = 345678;</comment>
+<comment type="line">//		String examName = "Assgn1";</comment>
+<comment type="line">//		</comment>
+<comment type="line">//		int totalMarks = 10; </comment>
+<comment type="line">//		CourseOffered offeredCourse = null;</comment>
+<comment type="line">//		try {</comment>
+<comment type="line">//			offeredCourse = new CourseOffered(offerID);</comment>
+<comment type="line">//		} catch (Course.CourseDoesNotExistException e) {</comment>
+<comment type="line">//			e.printStackTrace();</comment>
+<comment type="line">//		} catch (CourseOffered.CourseOfferingDoesNotExistException e) {</comment>
+<comment type="line">//			e.printStackTrace();</comment>
+<comment type="line">//		}</comment>
+<comment type="line">////		</comment>
+<comment type="line">//		@SuppressWarnings("unused")</comment>
+<comment type="line">//		CourseExamStructure examStruct = new CourseExamStructure(offeredCourse,examName,totalMarks);</comment>
+<comment type="line">////		</comment>
+		<comment type="line">// To add a new exam</comment>
+<comment type="line">//		boolean examAdded = examStruct.addNewExam();</comment>
+<comment type="line">//		if(examAdded == true){</comment>
+<comment type="line">//			System.out.println("Exam Added");</comment>
+<comment type="line">//		} else {</comment>
+<comment type="line">//			System.out.println("Exam Not Added");</comment>
+<comment type="line">//		}</comment>
+		
+<comment type="line">//		To test modifying the exam name</comment>
+<comment type="line">//		String newExamName = "Hw2";</comment>
+<comment type="line">//		boolean nameModified = examStruct.modifyExistingExamName(newExamName);</comment>
+<comment type="line">//		if(nameModified == true){</comment>
+<comment type="line">//			System.out.println("Exam Name Modified");</comment>
+<comment type="line">//		} else {</comment>
+<comment type="line">//			System.out.println("Exam Name Not Modified");</comment>
+<comment type="line">//		}</comment>
+		
+<comment type="line">//		To test deleting an exam </comment>
+<comment type="line">//		boolean examDeleted = examStruct.deleteExistingExam();</comment>
+<comment type="line">//		if(examDeleted == true){</comment>
+<comment type="line">//			System.out.println("Exam Deleted");</comment>
+<comment type="line">//		} else {</comment>
+<comment type="line">//			System.out.println("Exam Not Deleted");</comment>
+<comment type="line">//		}</comment>
+		
+<comment type="line">//		To test modifying the exam mks</comment>
+<comment type="line">//		int newExamMks = 20;</comment>
+<comment type="line">//		boolean mksModified = examStruct.modifyExistingExamTotalMarks(newExamMks);</comment>
+<comment type="line">//		if(mksModified == true){</comment>
+<comment type="line">//			System.out.println("Exam Mks Modified");</comment>
+<comment type="line">//		} else {</comment>
+<comment type="line">//			System.out.println("Exam Mks Not Modified");</comment>
+<comment type="line">//		}</comment>
+		
+	}</block></function>
+}</block></class>
+</unit>

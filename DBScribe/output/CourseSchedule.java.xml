@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\CourseSchedule.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+
+<comment type="block" format="javadoc">/****************@author Simant Purohit*********************************/</comment>
+
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Collections</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>HashMap</name></name>;</import>
+
+
+
+<class><specifier>public</specifier> class <name>CourseSchedule</name> <block>{
+	<decl_stmt><decl><type><specifier>private</specifier> <name>int</name></type> <name>offerID</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>int</name></type> <name>classroomID</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>int</name></type> <name>timeSlotID</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>Timeslots</name></type> <name>timeslot</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>Classroom</name></type> <name>classroom</name></decl>;</decl_stmt>
+	
+	<comment type="block" format="javadoc">/**
+	 * @return the offerID
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getOfferID</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>offerID</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @param offerID the offerID to set
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setOfferID</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>offerID</name></name> <operator>=</operator> <name>offerID</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @return the classroomID
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getClassroomID</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>classroomID</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @param classroomID the classroomID to set
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setClassroomID</name><parameter_list>(<param><decl><type><name>int</name></type> <name>classroomID</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>classroomID</name></name> <operator>=</operator> <name>classroomID</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @return the timeSlotID
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getTimeSlotID</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>timeSlotID</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @param timeSlotID the timeSlotID to set
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setTimeSlotID</name><parameter_list>(<param><decl><type><name>int</name></type> <name>timeSlotID</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>timeSlotID</name></name> <operator>=</operator> <name>timeSlotID</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @return the timeslot
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>Timeslots</name></type> <name>getTimeslot</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>timeslot</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @param timeslot the timeslot to set
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setTimeslot</name><parameter_list>(<param><decl><type><name>Timeslots</name></type> <name>timeslot</name></decl></param>)</parameter_list> <block>{
+		<if>if<condition>(<expr><name>timeslot</name> <operator>==</operator> <literal type="null">null</literal></expr>)</condition><then>
+			<block type="pseudo"><throw>throw <expr><operator>new</operator> <call><name>NullPointerException</name><argument_list>(<argument><expr><literal type="string">"Timeslot is null"</literal></expr></argument>)</argument_list></call></expr>;</throw></block></then></if>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>timeslot</name></name> <operator>=</operator> <name>timeslot</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @return the classroom
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>Classroom</name></type> <name>getClassroom</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>classroom</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block" format="javadoc">/**
+	 * @param classroom the classroom to set
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setClassroom</name><parameter_list>(<param><decl><type><name>Classroom</name></type> <name>classroom</name></decl></param>)</parameter_list> <block>{
+		<if>if<condition>(<expr><name>classroom</name> <operator>==</operator> <literal type="null">null</literal></expr>)</condition><then>
+			<block type="pseudo"><throw>throw <expr><operator>new</operator> <call><name>NullPointerException</name><argument_list>(<argument><expr><literal type="string">"Classroom object is null"</literal></expr></argument>)</argument_list></call></expr>;</throw></block></then></if>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>classroom</name></name> <operator>=</operator> <name>classroom</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<comment type="block">/*
+	 * Retrieves the course schedule for the specified course offer id
+	 * If the courseOffering is not current, it doesn't initialize the any value
+	 * Doesn't throw any exceptions as non-current course offerings do not have a schedule and that is acceptable 
+	 */</comment>
+	<constructor><specifier>public</specifier> <name>CourseSchedule</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>)</parameter_list><block>{		
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal> <operator>&amp;&amp;</operator> <call><name><name>CourseOffered</name><operator>.</operator><name>checkIfExists</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+					
+					<comment type="line">//Retrieve the current semester ID</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>scheduleSelect</name> <init>= <expr><literal type="string">"Select *"</literal>
+							<operator>+</operator> <literal type="string">" FROM courseschedule"</literal>
+							<operator>+</operator> <literal type="string">" WHERE offerID= ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>scheduleSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>offID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"OfferID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"classroomID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"ClassroomID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>classroomID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"ClassroomID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"timeSlotID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"TimeSlotID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>timeSlotID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"TImeSlotID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<decl_stmt><decl><type><name>Timeslots</name></type> <name>timeslot</name> <init>= <expr><operator>new</operator> <call><name>Timeslots</name><argument_list>(<argument><expr><name>timeSlotID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>Classroom</name></type> <name>classroom</name> <init>= <expr><operator>new</operator> <call><name>Classroom</name><argument_list>(<argument><expr><name>classroomID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name>setClassroom</name><argument_list>(<argument><expr><name>classroom</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name>setClassroomID</name><argument_list>(<argument><expr><name>classroomID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name>setOfferID</name><argument_list>(<argument><expr><name>offID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name>setTimeslot</name><argument_list>(<argument><expr><name>timeslot</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name>setTimeSlotID</name><argument_list>(<argument><expr><name>timeSlotID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						
+					}</block></then>
+					
+					<else>else<block>{
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Course with offerID:"</literal><operator>+</operator><name>offerID</name><operator>+</operator><literal type="string">" is NOT scheduled"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<comment type="line">//throw new IllegalArgumentException();</comment>
+					}</block></else></if>
+										
+					
+				}</block></then></if>
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error retreiving schedule"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+						
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+	}</block></constructor>
+	
+	<comment type="block">/*
+	 * Update the course schedule of the passed course offering, with the passed classroom and the passed time slot
+	 * Checks if the course offering is already scheduled, if not, it will not update the course schedule
+	 * Also checks if the classroom and the time slot requested are available, otherwise the updating will fail
+	 * Throws a course offering not current exception if the courseOffered passed is not a currently offered course
+	 * 
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>updateCourseSchedule</name><parameter_list>(<param><decl><type><name>CourseOffered</name></type> <name>courseoffered</name></decl></param>, <param><decl><type><name>Classroom</name></type> <name>classroom</name></decl></param>, <param><decl><type><name>Timeslots</name></type> <name>timeslots</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingNotCurrentException</name></name></expr></argument></throws><block>{
+		<if>if<condition>(<expr><name>courseoffered</name> <operator>==</operator> <literal type="null">null</literal> <operator>||</operator> <name>classroom</name> <operator>==</operator> <literal type="null">null</literal> <operator>||</operator> <name>timeslots</name> <operator>==</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+				
+		<comment type="line">//Check if the course offering is already scheduled</comment>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isAlreadyScheduled</name> <init>= <expr><call><name><name>courseoffered</name><operator>.</operator><name>checkIfScheduled</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isEmpty</name> <init>= <expr><call><name><name>Classroom</name><operator>.</operator><name>isEmpty</name></name><argument_list>(<argument><expr><name>classroom</name></expr></argument>, <argument><expr><name>timeslots</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><name>isAlreadyScheduled</name> <operator>&amp;&amp;</operator> <name>isEmpty</name></expr>)</condition><then><block>{
+			<try>try<block>{
+				<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+				<try>try<block>{
+					<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"timeSlotID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"TimeSlotID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>timeSlotID</name> <init>= <expr><call><name><name>timeslots</name><operator>.</operator><name>getTimeSlotID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"classroomID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"ClassroomID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>classroomID</name> <init>= <expr><call><name><name>classroom</name><operator>.</operator><name>getClassroomID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>						
+						<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>courseoffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<decl_stmt><decl><type><name>String</name></type> <name>scheduleInsert</name> <init>= <expr><literal type="string">"UPDATE courseschedule "</literal>
+								<operator>+</operator> <literal type="string">"SET TimeSlotID= ? , ClassroomID=? "</literal>
+								<operator>+</operator> <literal type="string">"WHERE OfferID= ?"</literal></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>scheduleInsert</name></expr></argument>, <argument><expr><name><name>ResultSet</name><operator>.</operator><name>CONCUR_UPDATABLE</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>timeSlotID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>classroomID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">3</literal></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+					}</block></then></if>
+				}</block>
+				
+				<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error updating schedule"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<comment type="line">//e.printStackTrace();</comment>
+					<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+				}</block></catch></try>
+				
+			}</block>
+			
+			<finally>finally<block>{
+			}</block></finally></try>
+			
+		}</block></then></if>
+		
+		<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+	}</block></function>
+	
+	<comment type="block">/*
+	 * Returns a Map of Course schedule id and the course schedule object for all the currently scheduled courses
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>, <argument><name>CourseSchedule</name></argument>&gt;</argument_list></name></type> <name>getHaspMapForSchedule</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>, <argument><name>CourseSchedule</name></argument>&gt;</argument_list></name></type> <name>cs</name> <init>= <expr><operator>new</operator> <call><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>, <argument><name>CourseSchedule</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<for>for<control>(<init><decl><type><name>CourseSchedule</name></type> <name>c</name><range>: <expr><call><name>getAllScheduledCourses</name><argument_list>()</argument_list></call></expr></range></decl></init>)</control><block>{
+			<expr_stmt><expr><call><name><name>cs</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><call><name><name>c</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><name>c</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></for>
+		
+		<return>return <expr><name>cs</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="block">/*
+	 * Returns a ArrayList of Course schedule object for all the currently scheduled course
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseSchedule</name></argument>&gt;</argument_list></name></type> <name>getAllScheduledCourses</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseSchedule</name></argument>&gt;</argument_list></name></type> <name>courseSchedule</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseSchedule</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name><init>= <expr><literal type="string">"Select *"</literal>
+							<operator>+</operator> <literal type="string">" FROM courseschedule natural join coursesoffered "</literal>
+							<operator>+</operator> <literal type="string">"ORDER BY TotalCapacity"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"coursesoffered"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"OfferID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>CourseSchedule</name></type> <name>cs</name> <init>= <expr><operator>new</operator> <call><name>CourseSchedule</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>courseSchedule</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>cs</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>
+					
+				}</block></then></if>
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error getting"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+			
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		
+		<return>return <expr><name>courseSchedule</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="block">/*
+	 * Returns a ArrayList of all the scheduled courses in the specified department
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseSchedule</name></argument>&gt;</argument_list></name></type> <name>getAllScheduledCourses</name><parameter_list>(<param><decl><type><name>Department</name></type> <name>department</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseSchedule</name></argument>&gt;</argument_list></name></type> <name>courseSchedule</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseSchedule</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if<condition>(<expr><name>department</name> <operator>==</operator> <literal type="null">null</literal></expr>)</condition><then>
+			<block type="pseudo"><return>return <expr><name>courseSchedule</name></expr>;</return></block></then></if>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>departmentName</name> <init>= <expr><call><name><name>department</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name><init>= <expr><literal type="string">"Select *"</literal>
+							<operator>+</operator> <literal type="string">" FROM courseschedule natural join coursesoffered "</literal>
+							<operator>+</operator> <literal type="string">"ORDER BY TotalCapacity"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"coursesoffered"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"OfferID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>CourseOffered</name></type> <name>co</name> <init>= <expr><operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"deptName"</literal></expr></argument>, <argument><expr><literal type="string">"department"</literal></expr></argument>, <argument><expr><literal type="string">"DepartmentName"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>deptName</name> <init>= <expr><call><name><name>co</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<if>if<condition>(<expr><call><name><name>deptName</name><operator>.</operator><name>equals</name></name><argument_list>(<argument><expr><name>departmentName</name></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+							<expr_stmt><expr><call><name><name>courseSchedule</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><operator>new</operator> <call><name>CourseSchedule</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						}</block></then></if>
+					}</block></while>
+					
+				}</block></then></if>
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error getting schedule for department"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+			
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		
+		<return>return <expr><name>courseSchedule</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="block">/*
+	 * Schedule the passed courseOffered course
+	 * The algorithm looks for a classroom with a empty time slot and schedules the course
+	 * If no class room is found, it will return false, indicating the course was not scheduled
+	 * Else it will schedule the course offering in the first empty classroom found
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>scheduleCourse</name><parameter_list>(<param><decl><type><name>CourseOffered</name></type> <name>courseOffered</name></decl></param>)</parameter_list><block>{
+		<comment type="line">//Check if the course is already scheduled</comment>
+		<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"xxxxxxxxxxxxxxxxINSIDE SCHEDULE COURSE FUNCTIONxxxxxxxxxxxxxx"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>Classroom</name></type> <name>c</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>Timeslots</name></type> <name>t</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>timeSlotType</name> <init>= <expr><literal type="number">1</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isScheduled</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<if>if<condition>(<expr><call><name>isScheduled</name><argument_list>(<argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Course is already scheduled"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<return>return <expr><name>isScheduled</name></expr>;</return>
+		}</block></then></if>
+		
+		<comment type="line">//Find a classroom with empty slot</comment>
+		<label><name>classroomFind</name>:</label><while>while<condition>(<expr><name>timeSlotType</name><operator>&lt;=</operator><literal type="number">2</literal></expr>)</condition><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"--------------------------------------------------------------"</literal>
+					<operator>+</operator> <literal type="string">"\n LOOKING FOR TIMESLOTS WITH TYPE:"</literal><operator>+</operator><name>timeSlotType</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			
+			<for>for<control>(<init><decl><type><name>ClassroomLocation</name></type> <name>location</name><range>:<expr><call><name><name>ClassroomLocation</name><operator>.</operator><name>values</name></name><argument_list>()</argument_list></call></expr></range></decl></init>)</control><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"-----------------------------------------------------------"</literal>
+						<operator>+</operator> <literal type="string">"\n LOOKING AT LOCATION:"</literal><operator>+</operator><call><name><name>location</name><operator>.</operator><name>toString</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+				<expr_stmt><expr><name>c</name> <operator>=</operator> <call><name><name>Classroom</name><operator>.</operator><name>getEmptyClassroom</name></name><argument_list>(<argument><expr><name>location</name></expr></argument>, <argument><expr><name>timeSlotType</name></expr></argument>, <argument><expr><call><name><name>courseOffered</name><operator>.</operator><name>getTotalCapacity</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<comment type="line">//System.out.println("Got classroom:"+c.getClassroomName().toString()+" at location:"+location.toString()+" repeat:"+c.getClassroomLocation().toString());</comment>
+				<if>if<condition>(<expr><name>c</name><operator>!=</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Returning classroom:"</literal><operator>+</operator><call><name><name>c</name><operator>.</operator><name>getClassroomName</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>toString</name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">" at location:"</literal><operator>+</operator><call><name><name>location</name><operator>.</operator><name>toString</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">" repeat:"</literal><operator>+</operator><call><name><name>c</name><operator>.</operator><name>getClassroomLocation</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>toString</name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<break>break <name>classroomFind</name>;</break>
+				}</block></then></if>
+			}</block></for>
+			
+			<expr_stmt><expr><name>timeSlotType</name><operator>++</operator></expr>;</expr_stmt>
+		}</block></while>
+		
+		<if>if<condition>(<expr><name>c</name><operator>==</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Cannot schedule this course, no empty class found"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<return>return <expr><name>isScheduled</name></expr>;</return>
+		}</block></then></if>
+		
+		<if>if<condition>(<expr><name>c</name><operator>!=</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><name>t</name> <operator>=</operator> <call><name><name>c</name><operator>.</operator><name>getEmptySlot</name></name><argument_list>(<argument><expr><name>timeSlotType</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>				
+			<comment type="line">//Schedule the course in the empty slot</comment>
+			<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>courseOffered</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>int</name></type> <name>classroomID</name> <init>= <expr><call><name><name>c</name><operator>.</operator><name>getClassroomID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>int</name></type> <name>timeslotID</name> <init>= <expr><call><name><name>t</name><operator>.</operator><name>getTimeSlotID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><name>isScheduled</name> <operator>=</operator> <call><name>addSchedule</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>, <argument><expr><name>classroomID</name></expr></argument>, <argument><expr><name>timeslotID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then></if>
+		
+		<return>return <expr><name>isScheduled</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block">/*
+	 * Similar to above function only input parameters are different
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>scheduleCourseUsingID</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>, <param><decl><type><name>int</name></type> <name>capacity</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>Classroom</name></type> <name>c</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>Timeslots</name></type> <name>t</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>timeSlotType</name> <init>= <expr><literal type="number">1</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>addFlag</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<if>if<condition>(<expr><call><name>isScheduled</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Course is already scheduled"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+		
+		<comment type="line">//Find a classroom with empty slot</comment>
+		<label><name>classroomFind</name>:</label><while>while<condition>(<expr><name>timeSlotType</name><operator>&lt;=</operator><literal type="number">2</literal></expr>)</condition><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"--------------------------------------------------------------"</literal>
+					<operator>+</operator> <literal type="string">"\n LOOKING FOR TIMESLOTS WITH TYPE:"</literal><operator>+</operator><name>timeSlotType</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			
+			<for>for<control>(<init><decl><type><name>ClassroomLocation</name></type> <name>location</name><range>:<expr><call><name><name>ClassroomLocation</name><operator>.</operator><name>values</name></name><argument_list>()</argument_list></call></expr></range></decl></init>)</control><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"-----------------------------------------------------------"</literal>
+						<operator>+</operator> <literal type="string">"\n LOOKING AT LOCATION:"</literal><operator>+</operator><call><name><name>location</name><operator>.</operator><name>toString</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+				<expr_stmt><expr><name>c</name> <operator>=</operator> <call><name><name>Classroom</name><operator>.</operator><name>getEmptyClassroom</name></name><argument_list>(<argument><expr><name>location</name></expr></argument>, <argument><expr><name>timeSlotType</name></expr></argument>, <argument><expr><name>capacity</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<comment type="line">//System.out.println("Got classroom:"+c.getClassroomName().toString()+" at location:"+location.toString()+" repeat:"+c.getClassroomLocation().toString());</comment>
+				<if>if<condition>(<expr><name>c</name><operator>!=</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Returning classroom:"</literal><operator>+</operator><call><name><name>c</name><operator>.</operator><name>getClassroomName</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>toString</name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">" at location:"</literal><operator>+</operator><call><name><name>location</name><operator>.</operator><name>toString</name></name><argument_list>()</argument_list></call><operator>+</operator><literal type="string">" repeat:"</literal><operator>+</operator><call><name><name>c</name><operator>.</operator><name>getClassroomLocation</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>toString</name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<break>break <name>classroomFind</name>;</break>
+				}</block></then></if>
+			}</block></for>
+			
+			<expr_stmt><expr><name>timeSlotType</name><operator>++</operator></expr>;</expr_stmt>
+		}</block></while>
+		
+		<if>if<condition>(<expr><name>c</name><operator>==</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Cannot schedule this course, no empty classroom found"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		}</block></then></if>
+		<if>if<condition>(<expr><name>c</name><operator>!=</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><name>t</name> <operator>=</operator> <call><name><name>c</name><operator>.</operator><name>getEmptySlot</name></name><argument_list>(<argument><expr><name>timeSlotType</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>				
+			<comment type="line">//Schedule the course in the empty slot</comment>
+			<decl_stmt><decl><type><name>int</name></type> <name>classroomID</name> <init>= <expr><call><name><name>c</name><operator>.</operator><name>getClassroomID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>int</name></type> <name>timeslotID</name> <init>= <expr><call><name><name>t</name><operator>.</operator><name>getTimeSlotID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><name>addFlag</name> <operator>=</operator> <call><name>addSchedule</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>, <argument><expr><name>classroomID</name></expr></argument>, <argument><expr><name>timeslotID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then></if>
+		
+		<return>return <expr><name>addFlag</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="block">/*
+	 * Checks if the course offering is scheduled or not	
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>isScheduled</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isScheduled</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<comment type="line">//Retrieve the current semester ID</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name> <init>= <expr><literal type="string">"Select *"</literal>
+							<operator>+</operator> <literal type="string">" FROM courseschedule"</literal>
+							<operator>+</operator> <literal type="string">" WHERE offerID= ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<expr_stmt><expr><name>isScheduled</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Course with offerID:"</literal><operator>+</operator><name>offerID</name><operator>+</operator><literal type="string">" is already scheduled"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></then>
+					
+					<else>else<block>{
+						<expr_stmt><expr><name>isScheduled</name> <operator>=</operator> <literal type="boolean">false</literal></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Course with offerID:"</literal><operator>+</operator><name>offerID</name><operator>+</operator><literal type="string">" is NOT scheduled"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></else></if>
+										
+					
+				}</block></then></if>
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error retreiving schedule"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+						
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		
+		<return>return <expr><name>isScheduled</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block">/*
+	 * This function is called by the earlier functions to schedule the coure offering
+	 */</comment>
+	<function><type><specifier>private</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>addSchedule</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>, <param><decl><type><name>int</name></type> <name>classroomID</name></decl></param>, <param><decl><type><name>int</name></type> <name>timeslotID</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>addFlag</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>offID</name> <init>= <expr><name>offerID</name></expr></init></decl>;</decl_stmt>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"classID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"ClassroomID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>classID</name> <init>= <expr><name>classroomID</name></expr></init></decl>;</decl_stmt>
+					
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"timeID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"TimeslotID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>timeID</name> <init>= <expr><name>timeslotID</name></expr></init></decl>;</decl_stmt>
+					
+					<decl_stmt><decl><type><name>String</name></type> <name>scheduleInsert</name> <init>= <expr><literal type="string">"Insert into courseschedule"</literal>
+							<operator>+</operator> <literal type="string">" (OfferID, TimeSlotID, ClassroomID)"</literal>
+							<operator>+</operator> <literal type="string">" Values(?,?,?)"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>scheduleInsert</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>offID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>timeID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">3</literal></expr></argument>, <argument><expr><name>classID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Adding course schedule with offerID:"</literal><operator>+</operator><name>offerID</name><operator>+</operator><literal type="string">" ClassroomID:"</literal><operator>+</operator><name>classroomID</name><operator>+</operator><literal type="string">" TimeslotID:"</literal><operator>+</operator><name>timeslotID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>addFlag</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+				}</block></then></if>
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding schedule"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+			
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+		
+		<return>return <expr><name>addFlag</name></expr>;</return>
+	}</block></function>
+	
+	
+	<comment type="block">/*
+	 * Schedules/reschedules all the current course offerings
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>scheduleAllCurrentCourses</name><parameter_list>()</parameter_list><block>{
+		<comment type="block">/*
+		 * Remove all the scheduled courses
+		 */</comment>
+		<expr_stmt><expr><call><name>deleteAllCourseSchedule</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		
+		<comment type="block">/*
+		 * Get all the current course offerings
+		 * Pick up one courseOffering at random
+		 * Find a classroom and an empty time slot for the offering
+		 * Schedule the courseOffering
+		 * Repeat the steps with other offerings
+		 */</comment>
+		
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>allCourses</name> <init>= <expr><call><name><name>CourseOffered</name><operator>.</operator><name>getAllCurrentlyOfferedCourses</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>Collections</name><operator>.</operator><name>shuffle</name></name><argument_list>(<argument><expr><name>allCourses</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<for>for<control>(<init><decl><type><name>CourseOffered</name></type> <name>co</name><range>:<expr><name>allCourses</name></expr></range></decl></init>)</control><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"\n\n\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</literal>
+					<operator>+</operator> <literal type="string">"\n--------------------------------------------------------------------------------------------------------------"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			
+			<expr_stmt><expr><call><name>scheduleCourse</name><argument_list>(<argument><expr><name>co</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"\n\n\n-----------------------------------------------------------------------------------------------------------"</literal>
+					<operator>+</operator> <literal type="string">"\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></for>
+		
+		<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	}</block></function>
+	
+	
+	<comment type="block">/*
+	 * Reschedule all the current course offerings for the specified department
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>scheduleAllCurrentCourses</name><parameter_list>(<param><decl><type><name>Department</name></type> <name>department</name></decl></param>)</parameter_list><block>{
+		<comment type="line">//Remove all the scheduled courses in the dept</comment>
+		
+		<expr_stmt><expr><call><name>deleteAllCourseSchedule</name><argument_list>(<argument><expr><name>department</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>		
+		
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>allCourses</name> <init>= <expr><call><name><name>department</name><operator>.</operator><name>getDepartmentCourseOffered</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<for>for<control>(<init><decl><type><name>CourseOffered</name></type> <name>co</name><range>:<expr><name>allCourses</name></expr></range></decl></init>)</control><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"\n\n\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</literal>
+					<operator>+</operator> <literal type="string">"\n--------------------------------------------------------------------------------------------------------------"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			
+			<expr_stmt><expr><call><name>scheduleCourse</name><argument_list>(<argument><expr><name>co</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"\n\n\n-----------------------------------------------------------------------------------------------------------"</literal>
+					<operator>+</operator> <literal type="string">"\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></for>
+		
+		<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	}</block></function>
+	
+	<comment type="block">/*
+	 * Deletes all the course schedule
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>deleteAllCourseSchedule</name><parameter_list>()</parameter_list><block>{
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<comment type="line">//Retrieve the current semester ID</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>courseScheduleDelete</name> <init>= <expr><literal type="string">"Delete"</literal>
+							<operator>+</operator> <literal type="string">" FROM courseschedule"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>courseScheduleDelete</name></expr></argument>, <argument><expr><name><name>ResultSet</name><operator>.</operator><name>CONCUR_UPDATABLE</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				    <decl_stmt><decl><type><name>int</name></type> <name>isDeleted</name><init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				    <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Deletd:"</literal><operator>+</operator><name>isDeleted</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				    <if>if<condition>(<expr><name>isDeleted</name> <operator>&gt;</operator> <literal type="number">0</literal></expr>)</condition><then><block>{
+				    	<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				    }</block></then></if>
+				    
+									
+				}</block></then></if>
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error deleting schedule"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>rollBackTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+						
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+	}</block></function>
+	
+	<comment type="block">/*
+	 * Deletes all the current course schedule for the course offering for the specified department 
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>deleteAllCourseSchedule</name><parameter_list>(<param><decl><type><name>Department</name></type> <name>department</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>deptCoursesOffering</name> <init>= <expr><call><name><name>department</name><operator>.</operator><name>getDepartmentCourseOffered</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<for>for<control>(<init><decl><type><name>CourseOffered</name></type> <name>co</name><range>:<expr><name>deptCoursesOffering</name></expr></range></decl></init>)</control><block>{
+			<expr_stmt><expr><call><name>deleteSingleSchedule</name><argument_list>(<argument><expr><call><name><name>co</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></for>
+	}</block></function>
+	
+	<comment type="block">/*
+	 * This function is used by deleteAlCourseSchedule function to delete course offerings one at a time
+	 */</comment>
+	<function><type><specifier>private</specifier> <specifier>static</specifier> <name>void</name></type> <name>deleteSingleSchedule</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>)</parameter_list><block>{
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					
+					<comment type="block">/*
+					 * Retrieve the current semester ID
+					 */</comment>
+					
+					<comment type="block">/*
+					 * Delete from table annotation
+					 */</comment>
+					<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"courseschedule"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>String</name></type> <name>courseScheduleDelete</name> <init>= <expr><literal type="string">"Delete"</literal>
+							<operator>+</operator> <literal type="string">" FROM courseschedule "</literal>
+							<operator>+</operator> <literal type="string">"WHERE OfferID = ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>courseScheduleDelete</name></expr></argument>, <argument><expr><name><name>ResultSet</name><operator>.</operator><name>CONCUR_UPDATABLE</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				    <decl_stmt><decl><type><name>int</name></type> <name>isDeleted</name><init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				    <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Deletd:"</literal><operator>+</operator><name>isDeleted</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				    <if>if<condition>(<expr><name>isDeleted</name> <operator>&gt;</operator> <literal type="number">0</literal></expr>)</condition><then><block>{
+				    	<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				    }</block></then></if>
+				    
+									
+				}</block></then></if>
+			}</block>
+			
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error deleting schedule"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+						
+		}</block>
+		
+		<finally>finally<block>{
+		}</block></finally></try>
+	}</block></function>
+	
+	<comment type="block">/*
+	 * Checks of another course is schedulable for the capacity mentioned
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>isAnotherCourseSchedulable</name><parameter_list>(<param><decl><type><name>int</name></type> <name>courseCapacity</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>timeSlotType</name> <init>= <expr><literal type="number">1</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>Classroom</name></type> <name>c</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+		<while>while<condition>(<expr><name>timeSlotType</name><operator>&lt;=</operator><literal type="number">2</literal></expr>)</condition><block>{
+			<for>for<control>(<init><decl><type><name>ClassroomLocation</name></type> <name>location</name><range>:<expr><call><name><name>ClassroomLocation</name><operator>.</operator><name>values</name></name><argument_list>()</argument_list></call></expr></range></decl></init>)</control><block>{
+				<expr_stmt><expr><name>c</name> <operator>=</operator> <call><name><name>Classroom</name><operator>.</operator><name>getEmptyClassroom</name></name><argument_list>(<argument><expr><name>location</name></expr></argument>, <argument><expr><name>timeSlotType</name></expr></argument>, <argument><expr><name>courseCapacity</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<if>if<condition>(<expr><name>c</name><operator>!=</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+					<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+				}</block></then></if>
+			}</block></for>
+			
+			<expr_stmt><expr><name>timeSlotType</name><operator>++</operator></expr>;</expr_stmt>
+		}</block></while>
+		
+		<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+		
+	}</block></function>
+	
+	
+<comment type="line">//	public static void main(String args[]) throws Course.CourseDoesNotExistException, CourseOffered.CourseOfferingDoesNotExistException{</comment>
+<comment type="line">//		//scheduleAllCurrentCourses();</comment>
+<comment type="line">//		try {</comment>
+<comment type="line">//			updateCourseSchedule(new CourseOffered(295), new Classroom(10), new Timeslots(31));</comment>
+<comment type="line">//		} catch (CourseOffered.CourseOfferingNotCurrentException e) {</comment>
+<comment type="line">//			// TODO Auto-generated catch block</comment>
+<comment type="line">//			e.printStackTrace();</comment>
+<comment type="line">//		}</comment>
+<comment type="line">//	}</comment>
+}</block></class>
+</unit>

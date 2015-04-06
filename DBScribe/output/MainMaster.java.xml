@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\MainMaster.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Scanner</name></name>;</import>
+
+
+<class><specifier>public</specifier> class <name>MainMaster</name> <block>{
+	
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list> <block>{
+		
+		<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"WELCOME TO UMAS"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name>Login</name></type> <name>user</name> <init>= <expr><call><name>authenticate</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<if>if <condition>(<expr><name>user</name><operator>!=</operator><literal type="null">null</literal></expr>)</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Welcome "</literal> <operator>+</operator> <call><name><name>user</name><operator>.</operator><name>getUsername</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			
+			<decl_stmt><decl><type><name>String</name></type> <name>username</name> <init>= <expr><call><name><name>user</name><operator>.</operator><name>getUsername</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>People</name></type> <name>person</name> <init>= <expr><operator>new</operator> <call><name>People</name><argument_list>(<argument><expr><name>username</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>int</name></type> <name>positionID</name> <init>= <expr><call><name><name>person</name><operator>.</operator><name>getPositionID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<if>if<condition>(<expr><name>positionID</name> <operator>==</operator> <literal type="number">1</literal></expr>)</condition><then><block>{ <comment type="line">//Admin</comment>
+				<expr_stmt><expr><call><name>adminFunctions</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then> <elseif>else <if>if<condition>(<expr><name>positionID</name> <operator>==</operator> <literal type="number">2</literal></expr>)</condition><then><block>{ <comment type="line">//Professor</comment>
+				<expr_stmt><expr><call><name>professorFunctions</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then></if></elseif> <elseif>else <if>if<condition>(<expr><name>positionID</name> <operator>==</operator> <literal type="number">3</literal></expr>)</condition><then><block>{ <comment type="line">//Student</comment>
+				<expr_stmt><expr><call><name>studentFunctions</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then></if></elseif> <elseif>else <if>if<condition>(<expr><name>positionID</name> <operator>==</operator> <literal type="number">4</literal></expr>)</condition><then><block>{ <comment type="line">//TA</comment>
+				<expr_stmt><expr><call><name>taFunctions</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then></if></elseif> <elseif>else <if>if<condition>(<expr><name>positionID</name> <operator>==</operator> <literal type="number">5</literal></expr>)</condition><then><block>{ <comment type="line">//Super Admin</comment>
+				<expr_stmt><expr><call><name>superAdminFunctions</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></then></if></elseif> <else>else <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Data Corrupt. No such positionID"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></else></if>
+			
+		}</block></then></if>
+	}</block></function>
+
+	<function><type><specifier>private</specifier> <specifier>static</specifier> <name>Login</name></type> <name>authenticate</name><parameter_list>()</parameter_list> <block>{
+		<decl_stmt><decl><type><name>Scanner</name></type> <name>in</name> <init>= <expr><operator>new</operator> <call><name>Scanner</name><argument_list>(<argument><expr><name><name>System</name><operator>.</operator><name>in</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isValidUser</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>boolean</name></type> <name>continueInput</name> <init>= <expr><literal type="boolean">true</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>Login</name></type> <name>user</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+		<do>do<block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Please Login"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Enter Username: "</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>username</name> <init>= <expr><call><name><name>in</name><operator>.</operator><name>nextLine</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Enter Password: "</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>password</name> <init>= <expr><call><name><name>in</name><operator>.</operator><name>nextLine</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><name>user</name> <operator>=</operator> <operator>new</operator> <call><name>Login</name><argument_list>(<argument><expr><name>username</name></expr></argument>, <argument><expr><call><name><name>password</name><operator>.</operator><name>toCharArray</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name>isValidUser</name> <operator>=</operator> <call><name><name>user</name><operator>.</operator><name>authenticate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<if>if<condition>(<expr><name>isValidUser</name> <operator>==</operator> <literal type="boolean">false</literal></expr> )</condition><then><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Invalid Username or Password. Try Again ? Y/N: "</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<decl_stmt><decl><type><name>String</name></type> <name>tryAgain</name> <init>= <expr><call><name><name>in</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<if>if<condition>(<expr><name>tryAgain</name> <operator>==</operator> <literal type="string">"n"</literal> <operator>||</operator> <name>tryAgain</name> <operator>==</operator> <literal type="string">"N"</literal></expr>)</condition><then><block>{
+					<expr_stmt><expr><name>continueInput</name> <operator>=</operator> <literal type="boolean">false</literal></expr>;</expr_stmt>
+					<expr_stmt><expr><name>user</name> <operator>=</operator> <literal type="null">null</literal></expr>;</expr_stmt>
+					<break>break;</break>
+				}</block></then></if>
+			}</block></then> <else>else <block>{
+				<comment type="line">// Get user object</comment>
+			}</block></else></if>
+		}</block> while <condition>(<expr><name>isValidUser</name> <operator>==</operator> <literal type="boolean">false</literal> <operator>||</operator> <name>continueInput</name> <operator>==</operator> <literal type="boolean">true</literal></expr>)</condition>;</do>
+		
+		<return>return <expr><name>user</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>private</specifier> <specifier>static</specifier> <name>int</name></type> <name>adminFunctions</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>option</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+	
+		<do>do<block>{
+			<expr_stmt><expr><name>option</name> <operator>=</operator> <literal type="number">0</literal></expr>;</expr_stmt>
+			<decl_stmt><decl><type><name>Scanner</name></type> <name>in</name> <init>= <expr><operator>new</operator> <call><name>Scanner</name><argument_list>(<argument><expr><name><name>System</name><operator>.</operator><name>in</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<switch>switch <condition>(<expr><name>option</name></expr>)</condition> <block>{
+	        <case>case <expr><literal type="number">1</literal></expr>:  <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	        		 
+	        		 
+	                 <break>break;</break>
+	        
+	        
+	        </case><case>case <expr><literal type="number">5</literal></expr>: <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"5. Exit"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	        </case><default>default: <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Invalid input. Enter again."</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	                 <break>break;</break>
+	    </default>}</block></switch>
+
+		}</block> while <condition>(<expr><name>option</name> <operator>!=</operator> <literal type="number">5</literal></expr>)</condition>;</do>
+		
+		<return>return <expr><name>option</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>private</specifier> <specifier>static</specifier> <name>int</name></type> <name>professorFunctions</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>option</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+
+		<do>do<block>{
+			<expr_stmt><expr><name>option</name> <operator>=</operator> <literal type="number">0</literal></expr>;</expr_stmt>
+			<decl_stmt><decl><type><name>Scanner</name></type> <name>in</name> <init>= <expr><operator>new</operator> <call><name>Scanner</name><argument_list>(<argument><expr><name><name>System</name><operator>.</operator><name>in</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<switch>switch <condition>(<expr><name>option</name></expr>)</condition> <block>{
+	        <case>case <expr><literal type="number">1</literal></expr>:  <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	        		 
+	        		 
+	                 <break>break;</break>
+	        
+	        
+	        </case><case>case <expr><literal type="number">5</literal></expr>: <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"5. Exit"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	        </case><default>default: <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Invalid input. Enter again."</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	                 <break>break;</break>
+	    </default>}</block></switch>
+
+		}</block> while <condition>(<expr><name>option</name> <operator>!=</operator> <literal type="number">5</literal></expr>)</condition>;</do>
+		
+		<return>return <expr><name>option</name></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>private</specifier> <specifier>static</specifier> <name>int</name></type> <name>studentFunctions</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>option</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+	
+		<do>do<block>{
+			<expr_stmt><expr><name>option</name> <operator>=</operator> <literal type="number">0</literal></expr>;</expr_stmt>
+			<decl_stmt><decl><type><name>Scanner</name></type> <name>in</name> <init>= <expr><operator>new</operator> <call><name>Scanner</name><argument_list>(<argument><expr><name><name>System</name><operator>.</operator><name>in</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<switch>switch <condition>(<expr><name>option</name></expr>)</condition> <block>{
+	        <case>case <expr><literal type="number">1</literal></expr>:  <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	        		 
+	        		 
+	                 <break>break;</break>
+	        
+	        
+	        </case><case>case <expr><literal type="number">5</literal></expr>: <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"5. Exit"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	        </case><default>default: <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Invalid input. Enter again."</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	                 <break>break;</break>
+	    </default>}</block></switch>
+
+		}</block> while <condition>(<expr><name>option</name> <operator>!=</operator> <literal type="number">5</literal></expr>)</condition>;</do>
+		
+		<return>return <expr><name>option</name></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>private</specifier> <specifier>static</specifier> <name>int</name></type> <name>taFunctions</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>option</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+		
+		<do>do<block>{
+			<expr_stmt><expr><name>option</name> <operator>=</operator> <literal type="number">0</literal></expr>;</expr_stmt>
+			<decl_stmt><decl><type><name>Scanner</name></type> <name>in</name> <init>= <expr><operator>new</operator> <call><name>Scanner</name><argument_list>(<argument><expr><name><name>System</name><operator>.</operator><name>in</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<switch>switch <condition>(<expr><name>option</name></expr>)</condition> <block>{
+	        <case>case <expr><literal type="number">1</literal></expr>:  <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	        		 
+	        		 
+	                 <break>break;</break>
+	        
+	        
+	        </case><case>case <expr><literal type="number">5</literal></expr>: <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"5. Exit"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	        </case><default>default: <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Invalid input. Enter again."</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	                 <break>break;</break>
+	    </default>}</block></switch>
+
+		}</block> while <condition>(<expr><name>option</name> <operator>!=</operator> <literal type="number">5</literal></expr>)</condition>;</do>
+		
+		<return>return <expr><name>option</name></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>private</specifier> <specifier>static</specifier> <name>int</name></type> <name>superAdminFunctions</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>option</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+		
+		<do>do<block>{
+			<expr_stmt><expr><name>option</name> <operator>=</operator> <literal type="number">0</literal></expr>;</expr_stmt>
+			<decl_stmt><decl><type><name>Scanner</name></type> <name>in</name> <init>= <expr><operator>new</operator> <call><name>Scanner</name><argument_list>(<argument><expr><name><name>System</name><operator>.</operator><name>in</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<switch>switch <condition>(<expr><name>option</name></expr>)</condition> <block>{
+	        <case>case <expr><literal type="number">1</literal></expr>:  <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">""</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	        		 
+	        		 
+	                 <break>break;</break>
+	        
+	        
+	        </case><case>case <expr><literal type="number">5</literal></expr>: <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"5. Exit"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	        </case><default>default: <expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Invalid input. Enter again."</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+	                 <break>break;</break>
+	    </default>}</block></switch>
+
+		}</block> while <condition>(<expr><name>option</name> <operator>!=</operator> <literal type="number">5</literal></expr>)</condition>;</do>
+		
+		<return>return <expr><name>option</name></expr>;</return>
+	}</block></function>
+	
+}</block></class>
+</unit>

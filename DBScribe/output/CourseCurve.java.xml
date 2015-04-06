@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\CourseCurve.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+
+<comment type="line">//import java.lang.annotation.ElementType;</comment>
+<comment type="line">//import java.lang.annotation.Retention;</comment>
+<comment type="line">//import java.lang.annotation.RetentionPolicy;</comment>
+<comment type="line">//import java.lang.annotation.Target;</comment>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Collections</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Comparator</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>HashMap</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Iterator</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>List</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>LinkedHashMap</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>LinkedList</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>List</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Set</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>Map</name><operator>.</operator><name>Entry</name></name>;</import>
+
+
+<class><specifier>public</specifier> class <name>CourseCurve</name> <block>{
+
+	<decl_stmt><decl><type><name>int</name></type> <name>offerID</name></decl>;</decl_stmt> <comment type="line">// CourseOffered offerID</comment>
+	<decl_stmt><decl><type><name><name>List</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>curvingCriteria</name></decl>;</decl_stmt> <comment type="line">// &lt;10,20,10&gt;</comment>
+	<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>courseCurve</name></decl>;</decl_stmt> <comment type="line">// &lt;Student,Grade&gt;</comment>
+	<decl_stmt><decl><type><name>CourseOffered</name></type> <name>courseoffered</name></decl>;</decl_stmt>
+	
+<comment type="line">//	@Target({ElementType.LOCAL_VARIABLE})</comment>
+<comment type="line">//	@Retention(RetentionPolicy.RUNTIME)</comment>
+<comment type="line">//	public @interface DBAnnotation {</comment>
+<comment type="line">//	 String variable () default "";</comment>
+<comment type="line">//	 String table () default "";</comment>
+<comment type="line">//	 String column () default "";</comment>
+<comment type="line">//	 boolean isSource () default false; </comment>
+<comment type="line">//	}</comment>
+	
+	<comment type="line">// Constructor. Takes offerID and curvingCriteria to create CourseCurve</comment>
+	<comment type="line">// object used to calculate curve</comment>
+	<constructor><specifier>public</specifier> <name>CourseCurve</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>, <param><decl><type><name><name>List</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>curvingCriteria</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>offerID</name></name> <operator>=</operator> <name>offerID</name></expr>;</expr_stmt>
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>curvingCriteria</name></name> <operator>=</operator> <name>curvingCriteria</name></expr>;</expr_stmt>
+		<try>try <block>{
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>courseoffered</name></name> <operator>=</operator> <operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name><name>this</name><operator>.</operator><name>offerID</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<comment type="line">// TODO Auto-generated catch block</comment>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<comment type="line">// TODO Auto-generated catch block</comment>
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	}</block></constructor>
+	
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getOfferID</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>offerID</name></expr>;</return>
+	}</block></function>
+	
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setOfferID</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>offerID</name></name> <operator>=</operator> <name>offerID</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name><name>List</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>getCurvingCriteria</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>curvingCriteria</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setCurvingCriteria</name><parameter_list>(<param><decl><type><name><name>List</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>curvingCriteria</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>curvingCriteria</name></name> <operator>=</operator> <name>curvingCriteria</name></expr>;</expr_stmt>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>String</name></argument>&gt;</argument_list></name></type> <name>getCourseCurve</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>courseCurve</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setCourseCurve</name><parameter_list>(<param><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>String</name></argument>&gt;</argument_list></name></type> <name>courseCurve</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>courseCurve</name></name> <operator>=</operator> <name>courseCurve</name></expr>;</expr_stmt>
+	}</block></function>
+	
+	<comment type="line">// To retrieve the total marks for the course</comment>
+	<function><type><specifier>private</specifier> <name>int</name></type> <name>getTotalCourseMarks</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>int</name></type> <name>totalCourseMarks</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+		
+		<try>try <block>{
+			<expr_stmt><expr><name>offeredCourse</name> <operator>=</operator> <operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e1</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>e1</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		<decl_stmt><decl><type><name>Course</name></type> <name>course</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getCourse</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>String</name></type> <name>courseName</name> <init>= <expr><call><name><name>course</name><operator>.</operator><name>getCourseName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>semID</name> <init>= <expr><call><name><name>offeredCourse</name><operator>.</operator><name>getSemesterID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>tableName</name> <init>= <expr><name>courseName</name> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call> <operator>+</operator> <call><name><name>Integer</name><operator>.</operator><name>toString</name></name><argument_list>(<argument><expr><name>semID</name></expr></argument>)</argument_list></call> <operator>+</operator> <literal type="string">"Structure"</literal></expr></init></decl>;</decl_stmt>
+		
+		
+		<decl_stmt><decl><type><name>String</name></type> <name>SQLExamStructureSelect</name> <init>= <expr><literal type="string">"Select sum(TotalMarks) As TotalMarks2 FROM %s;"</literal></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><name>SQLExamStructureSelect</name> <operator>=</operator> <call><name><name>String</name><operator>.</operator><name>format</name></name><argument_list>(<argument><expr><name>SQLExamStructureSelect</name></expr></argument>, <argument><expr><name>tableName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<try>try <block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try <block>{
+				<if>if <condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then> <block>{
+				 
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLExamStructureSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<comment type="line">//statement.setString(1, tableName);</comment>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"totalCourseMarks"</literal></expr></argument>,<argument><expr><name>tableName</name></expr></argument>,<argument><expr><literal type="string">"TotalMarks2"</literal></expr></argument>,<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>totalCourseMarks</name> <operator>=</operator> <call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"---------------------"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"totalCourseMarks: "</literal> <operator>+</operator> <name>totalCourseMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>
+				}</block></then></if>	
+			}</block> <catch>catch <parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		<return>return <expr><name>totalCourseMarks</name></expr>;</return>
+		
+	}</block></function>
+	
+	<comment type="line">// Get the total marks of all the exams for all students </comment>
+	<comment type="line">// Example: &lt;Student, 87&gt;</comment>
+	<function><type><specifier>private</specifier> <name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>getStudentTotalMarks</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>studentTotalMarks</name> <init>= <expr><operator>new</operator> <call><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>CourseExams</name></type> <name>exams</name> <init>= <expr><operator>new</operator> <call><name>CourseExams</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<expr_stmt><expr><name>studentTotalMarks</name> <operator>=</operator> <call><name><name>exams</name><operator>.</operator><name>getStudentMarks</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>getExamMarks</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		
+		<return>return <expr><name>studentTotalMarks</name></expr>;</return>
+		
+	}</block></function>
+	
+	<comment type="line">// Gets the percentage of the last student in the course</comment>
+	<function><type><specifier>public</specifier> <name>double</name></type> <name>getLastStudentPercent</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>double</name></type> <name>percent</name> <init>= <expr><literal type="number">0.0</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>studentTotalMarks</name> <init>= <expr><operator>new</operator> <call><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>CourseExams</name></type> <name>exams</name> <init>= <expr><operator>new</operator> <call><name>CourseExams</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>totalCourseMarks</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getTotalCourseMarks</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name>studentTotalMarks</name> <operator>=</operator> <call><name><name>exams</name><operator>.</operator><name>getStudentMarks</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>getExamMarks</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		
+		<decl_stmt><decl><type><name><name>LinkedHashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>sortedstudentTotalMarks</name> <init>= <expr><operator>(</operator><name><name>LinkedHashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>Double</name></argument>&gt;</argument_list></name><operator>)</operator> <call><name>sortHashMap</name><argument_list>(<argument><expr><name>studentTotalMarks</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>Set</name><argument_list type="template">&lt;<argument><name><name>Entry</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name></argument>&gt;</argument_list></name></type> <name>mapValues</name> <init>= <expr><call><name><name>sortedstudentTotalMarks</name><operator>.</operator><name>entrySet</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>mapLength</name> <init>= <expr><call><name><name>mapValues</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>Entry</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name><index>[]</index></type> <name>entry</name> <init>= <expr><operator>new</operator> <name><name>Entry</name><index>[<expr><name>mapLength</name></expr>]</index></name></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>mapValues</name><operator>.</operator><name>toArray</name></name><argument_list>(<argument><expr><name>entry</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<decl_stmt><decl><type><name>double</name></type> <name>totalmks</name> <init>= <expr><name><name>entry</name><index>[<expr><name>mapLength</name><operator>-</operator><literal type="number">1</literal></expr>]</index></name><operator>.</operator><call><name>getValue</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Mks: "</literal> <operator>+</operator> <name>totalmks</name> <operator>+</operator> <literal type="string">"totalCourseMarks: "</literal> <operator>+</operator> <name>totalCourseMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+<comment type="line">//		sortedstudentTotalMarks.entrySet().iterator().next();</comment>
+<comment type="line">//		@SuppressWarnings("unchecked")</comment>
+<comment type="line">//		List&lt;Student&gt; keys = (List&lt;Student&gt;) sortedstudentTotalMarks.keySet();</comment>
+<comment type="line">//		Student lastKey = keys.get(keys.size()-1);</comment>
+<comment type="line">//		double totalMarks = sortedstudentTotalMarks.get(lastKey);</comment>
+<comment type="line">//		</comment>
+		<expr_stmt><expr><name>percent</name> <operator>=</operator> <operator>(</operator><name>totalmks</name> <operator>/</operator> <name>totalCourseMarks</name><operator>)</operator> <operator>*</operator> <literal type="number">100</literal></expr>;</expr_stmt>
+		
+		<return>return <expr><name>percent</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// 3 ways to Calculate the Curve</comment>
+
+	<comment type="line">// HashMap&lt;String,Integer&gt; = HashMap&lt;Grade,Percentage of students in the grade&gt;</comment>
+	<comment type="line">// Example: &lt;30,40,30&gt; = Top 30% students would be given grade at level 1.</comment>
+	<comment type="line">// Next 40% students would be given grade  at level 2. </comment>
+	<comment type="line">// Last 30% students would be given grade  at level 3.</comment>
+	<comment type="line">// Grade levels are stored in the gradingsystem table.</comment>
+	<function><type><annotation>@<name>SuppressWarnings</name><argument_list>(<argument><expr><literal type="string">"null"</literal></expr></argument>)</argument_list></annotation>
+	<specifier>public</specifier> <specifier>static</specifier> <name>CourseCurve</name></type> <name>calculatePercentageCurve</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>, <param><decl><type><name><name>List</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>curvingCriteria</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>CourseCurve</name></type> <name>curve</name> <init>= <expr><operator>new</operator> <call><name>CourseCurve</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>,<argument><expr><name>curvingCriteria</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// STEP 1: Get total CourseMarks from CourseStructure Table</comment>
+		<comment type="line">// int totalCourseMarks = curve.getTotalCourseMarks();</comment>
+		
+		<comment type="line">// STEP 2: get totalMarks for each student from CourseExams' Table</comment>
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>studentTotalMarks</name> <init>= <expr><call><name><name>curve</name><operator>.</operator><name>getStudentTotalMarks</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// STEP 3: Sort the hashmap in descending order</comment>
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>sortedstudentTotalMarks</name> <init>= <expr><call><name>sortHashMap</name><argument_list>(<argument><expr><name>studentTotalMarks</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// STEP 4: Calculate curve for the courseOffered based on</comment>
+		<comment type="line">// the curvingCriteria selected by the professor </comment>
+		<comment type="line">//(30,40,30) = (9,12,9) / 30</comment>
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>courseCurve</name> <init>= <expr><operator>new</operator> <call><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>numberOfStudents</name> <init>= <expr><call><name><name>sortedstudentTotalMarks</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>numberOfGrades</name> <init>= <expr><call><name><name>curvingCriteria</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>studentsLeft</name> <init>= <expr><name>numberOfStudents</name></expr></init></decl>;</decl_stmt>
+		
+<comment type="line">//		System.out.println("numberOfStudents: " + numberOfStudents + " numberOfGrades: " + numberOfGrades + " studentsLeft: " + studentsLeft );</comment>
+		
+		
+		<decl_stmt><decl><type><name><name>Set</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>keys</name> <init>= <expr><call><name><name>sortedstudentTotalMarks</name><operator>.</operator><name>keySet</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>Iterator</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>keyIterator</name> <init>= <expr><call><name><name>keys</name><operator>.</operator><name>iterator</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<for>for <control>(<init><decl><type><name>int</name></type> <name>gradeLevel</name><init>=<expr><literal type="number">1</literal></expr></init></decl>;</init> <condition><expr><name>gradeLevel</name><operator>&lt;=</operator> <name>numberOfGrades</name></expr>;</condition><incr><expr><name>gradeLevel</name><operator>++</operator></expr></incr>)</control><block>{
+			<decl_stmt><decl><type><name>GradeSystem</name></type> <name>grade</name> <init>= <expr><call><name><name>GradeSystem</name><operator>.</operator><name>getGradeForGradeLevel</name></name><argument_list>(<argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>studentGrade</name> <init>= <expr><call><name><name>grade</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>double</name></type> <name>percentStudents</name> <init>= <expr><call><name><name>curvingCriteria</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>gradeLevel</name><operator>-</operator><literal type="number">1</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+<comment type="line">//			System.out.println("percentStudents " + percentStudents);</comment>
+<comment type="line">//			System.out.println("GradeLevel: " + gradeLevel);</comment>
+			<decl_stmt><decl><type><name>double</name></type> <name>value</name> <init>=  <expr><operator>(</operator><operator>(</operator><name>percentStudents</name><operator>/</operator><literal type="number">100</literal><operator>)</operator> <operator>*</operator> <name>numberOfStudents</name><operator>)</operator></expr></init></decl>;</decl_stmt>
+			<comment type="line">// System.out.println("Value: " + value);</comment>
+			<decl_stmt><decl><type><name>int</name></type> <name>students</name> <init>= <expr><call>(<name>int</name>)<argument_list>(<argument><expr><call><name><name>Math</name><operator>.</operator><name>ceil</name></name><argument_list>(<argument><expr><name>value</name></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+<comment type="line">//			System.out.println("Students: " + students);</comment>
+			<comment type="line">// For roundoff error</comment>
+			<if>if<condition>(<expr><name>students</name> <operator>&gt;</operator> <name>studentsLeft</name></expr>)</condition><then><block>{
+				<expr_stmt><expr><name>students</name> <operator>=</operator> <name>studentsLeft</name></expr>;</expr_stmt>
+<comment type="line">//				System.out.println("StudentsLeft-: " + studentsLeft);</comment>
+			}</block></then></if>
+			
+			<for>for<control>(<init><decl><type><name>int</name></type> <name>studentsAdded</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</init> <condition><expr><name>studentsAdded</name><operator>&lt;</operator><name>students</name></expr>;</condition><incr><expr><name>studentsAdded</name><operator>++</operator></expr></incr>)</control><block>{
+				<if>if<condition>(<expr><call><name><name>keyIterator</name><operator>.</operator><name>hasNext</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+					<decl_stmt><decl><type><name>Student</name></type> <name>student</name> <init>= <expr><call><name><name>keyIterator</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+<comment type="line">//					System.out.println("StudentUIN: " + student.getUIN());</comment>
+					<expr_stmt><expr><call><name><name>courseCurve</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>, <argument><expr><name>studentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>studentsLeft</name><operator>--</operator></expr>;</expr_stmt>
+<comment type="line">//					System.out.println("StudentsLeft: " + studentsLeft);</comment>
+				}</block></then></if>
+			}</block></for>
+		}</block></for>
+			
+		<expr_stmt><expr><call><name><name>curve</name><operator>.</operator><name>setCourseCurve</name></name><argument_list>(<argument><expr><name>courseCurve</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<return>return <expr><name>curve</name></expr>;</return>
+	}</block></function>
+
+	<comment type="line">// HashMap&lt;String,Integer&gt; = HashMap&lt;Grade,CutofPercentage&gt;</comment>
+	<comment type="line">// Example: &lt;90,75,60&gt; = Students with total mks at or above 90-100% would be given grade at level 1</comment>
+	<comment type="line">// Students with total mks between 75-89% would be given grade at level 2</comment>
+	<comment type="line">// Students with total mks between 60-74% would be given grade at level 3</comment>
+	<function><type><annotation>@<name>SuppressWarnings</name><argument_list>(<argument><expr><literal type="string">"null"</literal></expr></argument>)</argument_list></annotation>
+	<specifier>public</specifier> <specifier>static</specifier> <name>CourseCurve</name></type> <name>calculateAbsoluteCurve</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>, <param><decl><type><name><name>List</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>curvingCriteria</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>CourseCurve</name></type> <name>curve</name> <init>= <expr><operator>new</operator> <call><name>CourseCurve</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>,<argument><expr><name>curvingCriteria</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// STEP 1: If the criteria is &lt;90,75,60&gt; and there is a student with </comment>
+		<comment type="line">// less than 60% then that student will not get a grade. </comment>
+		<comment type="line">// This step checks whether the last criteria is less than the percent of the </comment>
+		<comment type="line">// last student in class</comment>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>size</name> <init>= <expr><call><name><name>curvingCriteria</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>lastCriteria</name> <init>= <expr><call><name><name>curvingCriteria</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>size</name><operator>-</operator><literal type="number">1</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>double</name></type> <name>lastStudentPercent</name> <init>= <expr><call><name><name>curve</name><operator>.</operator><name>getLastStudentPercent</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>floorlastStudentPercent</name><init>= <expr><operator>(</operator><name>int</name><operator>)</operator> <call><name><name>Math</name><operator>.</operator><name>floor</name></name><argument_list>(<argument><expr><name>lastStudentPercent</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+<comment type="line">//		System.out.println("lastCriteria: "+lastCriteria+" lastStudentPercent: " + lastStudentPercent + " \nfloorlastStudentPercent: " + floorlastStudentPercent);</comment>
+		<if>if<condition>(<expr><name>floorlastStudentPercent</name> <operator>&lt;</operator> <name>lastCriteria</name></expr> )</condition><then><block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"There are students below the last criteria. "</literal> <operator>+</operator> 
+								<literal type="string">"Reduce the last criteria or add one more with value less than "</literal> <operator>+</operator> <name>floorlastStudentPercent</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></then> <else>else<block>{
+		
+		<comment type="line">// STEP 2: Get total CourseMarks from CourseStructure Table</comment>
+		<decl_stmt><decl><type><name>int</name></type> <name>totalCourseMarks</name> <init>= <expr><call><name><name>curve</name><operator>.</operator><name>getTotalCourseMarks</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// STEP 3: get totalMarks for each student from CourseExams' Table</comment>
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>studentTotalMarks</name> <init>= <expr><call><name><name>curve</name><operator>.</operator><name>getStudentTotalMarks</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// STEP 4: Sort the hashmap in descending order</comment>
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>sortedstudentTotalMarks</name> <init>= <expr><call><name>sortHashMap</name><argument_list>(<argument><expr><name>studentTotalMarks</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// STEP 5: Calculate curve for the courseOffered based on</comment>
+		<comment type="line">// the curvingCriteria selected by the professor </comment>
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>courseCurve</name> <init>= <expr><operator>new</operator> <call><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// int numberOfStudents = sortedstudentTotalMarks.size();</comment>
+		<decl_stmt><decl><type><name>int</name></type> <name>numberOfGrades</name> <init>= <expr><call><name><name>curvingCriteria</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<comment type="line">// int studentsLeft = numberOfStudents;</comment>
+		
+<comment type="line">//		System.out.println(" numberOfGrades: " + numberOfGrades + "totalCourseMarks: " + totalCourseMarks);	</comment>
+		<decl_stmt><decl><type><name><name>Set</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>keys</name> <init>= <expr><call><name><name>sortedstudentTotalMarks</name><operator>.</operator><name>keySet</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>Iterator</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>keyIterator</name> <init>= <expr><call><name><name>keys</name><operator>.</operator><name>iterator</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<for>for <control>(<init><decl><type><name>int</name></type> <name>gradeLevel</name><init>=<expr><literal type="number">1</literal></expr></init></decl>;</init> <condition><expr><name>gradeLevel</name><operator>&lt;=</operator> <name>numberOfGrades</name></expr>;</condition><incr><expr><name>gradeLevel</name><operator>++</operator></expr></incr>)</control><block>{
+			<decl_stmt><decl><type><name>GradeSystem</name></type> <name>grade</name> <init>= <expr><call><name><name>GradeSystem</name><operator>.</operator><name>getGradeForGradeLevel</name></name><argument_list>(<argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>studentGrade</name> <init>= <expr><call><name><name>grade</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+			<decl_stmt><decl><type><name>int</name></type> <name>cutOffPercent</name> <init>= <expr><call><name><name>curvingCriteria</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>gradeLevel</name><operator>-</operator><literal type="number">1</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+<comment type="line">//			System.out.println("cutOffPercent: " + cutOffPercent);</comment>
+			<while>while <condition>(<expr><call><name><name>keyIterator</name><operator>.</operator><name>hasNext</name></name><argument_list>()</argument_list></call></expr>)</condition> <block>{
+				<decl_stmt><decl><type><name>Student</name></type> <name>student</name> <init>= <expr><call><name><name>keyIterator</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<comment type="line">//int UIN = student.getUIN();</comment>
+				<decl_stmt><decl><type><name>double</name></type> <name>marks</name> <init>= <expr><operator>(</operator><name>double</name><operator>)</operator> <call><name><name>sortedstudentTotalMarks</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name>double</name></type> <name>studentPercentage</name> <init>= <expr><operator>(</operator><name>marks</name><operator>/</operator> <name>totalCourseMarks</name><operator>)</operator> <operator>*</operator> <literal type="number">100</literal></expr></init></decl>;</decl_stmt>
+<comment type="line">//				System.out.println("studentPercentage "+studentPercentage);</comment>
+				<if>if<condition>(<expr><name>studentPercentage</name> <operator>&gt;=</operator> <name>cutOffPercent</name></expr>)</condition><then><block>{
+<comment type="line">//					System.out.println("--");</comment>
+					<expr_stmt><expr><call><name><name>courseCurve</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>, <argument><expr><name>studentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				}</block></then> <else>else <block>{
+					<expr_stmt><expr><name>grade</name> <operator>=</operator> <call><name><name>GradeSystem</name><operator>.</operator><name>getGradeForGradeLevel</name></name><argument_list>(<argument><expr><name>gradeLevel</name><operator>+</operator><literal type="number">1</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><name>studentGrade</name> <operator>=</operator> <call><name><name>grade</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>courseCurve</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>, <argument><expr><name>studentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<break>break;</break>
+				}</block></else></if>
+			}</block></while>	
+		}</block></for>
+		
+		<expr_stmt><expr><call><name><name>curve</name><operator>.</operator><name>setCourseCurve</name></name><argument_list>(<argument><expr><name>courseCurve</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		}</block></else></if> <comment type="line">// Else ends here</comment>
+		<return>return <expr><name>curve</name></expr>;</return>
+		
+	}</block></function>
+		
+	<comment type="line">// HashMap&lt;String,Integer&gt; = HashMap&lt;Grade,Minimum Number of students in that grade&gt;</comment>
+	<comment type="line">// Example: &lt;10,10,10&gt; = Atleast top 10 students get grade at level 1 </comment>
+	<comment type="line">// After all level 1 grades, atleast 10 students will be given grade at level 2</comment>
+	<function><type><annotation>@<name>SuppressWarnings</name><argument_list>(<argument><expr><literal type="string">"null"</literal></expr></argument>)</argument_list></annotation>
+	<specifier>public</specifier> <specifier>static</specifier> <name>CourseCurve</name></type> <name>calculateMaxGapCurve</name><parameter_list>(<param><decl><type><name>int</name></type> <name>offerID</name></decl></param>, <param><decl><type><name><name>List</name><argument_list type="template">&lt;<argument><name>Integer</name></argument>&gt;</argument_list></name></type> <name>curvingCriteria</name></decl></param>)</parameter_list><block>{
+		<decl_stmt><decl><type><name>CourseCurve</name></type> <name>curve</name> <init>= <expr><operator>new</operator> <call><name>CourseCurve</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>,<argument><expr><name>curvingCriteria</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// STEP 1: Get total CourseMarks from CourseStructure Table</comment>
+		<comment type="line">//int totalCourseMarks = curve.getTotalCourseMarks();</comment>
+		
+		<comment type="line">// STEP 2: get totalMarks for each student from CourseExams' Table</comment>
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>studentTotalMarks</name> <init>= <expr><call><name><name>curve</name><operator>.</operator><name>getStudentTotalMarks</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// STEP 3: Sort the hashmap in descending order</comment>
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>sortedstudentTotalMarks</name> <init>= <expr><call><name>sortHashMap</name><argument_list>(<argument><expr><name>studentTotalMarks</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// STEP 4: Calculate curve for the courseOffered based on</comment>
+		<comment type="line">// the curvingCriteria selected by the professor </comment>
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>courseCurve</name> <init>= <expr><operator>new</operator> <call><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>String</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<comment type="line">// Algo to calculate curve</comment>
+		<comment type="line">// 1. Sort students in decreasing order of total mks -- Done in step 3</comment>
+		<comment type="line">// 2. Skip over minimum students and give them the first grade</comment>
+		<comment type="line">// 3. Keep track of difference between total marks of students students</comment>
+		<comment type="line">// 4. Find 1st instance where difference increases. </comment>
+		<comment type="line">// 5. That is the cut-off point.</comment>
+		<comment type="line">// 6. Move on to the next grade</comment>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>numberOfStudents</name> <init>= <expr><call><name><name>sortedstudentTotalMarks</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>numberOfGrades</name> <init>= <expr><call><name><name>curvingCriteria</name><operator>.</operator><name>size</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>studentsLeft</name> <init>= <expr><name>numberOfStudents</name></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>Set</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>keys</name> <init>= <expr><call><name><name>sortedstudentTotalMarks</name><operator>.</operator><name>keySet</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name><name>Iterator</name><argument_list type="template">&lt;<argument><name>Student</name></argument>&gt;</argument_list></name></type> <name>keyIterator</name> <init>= <expr><call><name><name>keys</name><operator>.</operator><name>iterator</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>boolean</name></type> <name>nextGraded</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<for>for <control>(<init><decl><type><name>int</name></type> <name>gradeLevel</name><init>=<expr><literal type="number">1</literal></expr></init></decl>;</init> <condition><expr><name>gradeLevel</name> <operator>&lt;=</operator> <name>numberOfGrades</name></expr>;</condition><incr><expr><name>gradeLevel</name><operator>++</operator></expr></incr>)</control><block>{
+			<decl_stmt><decl><type><name>GradeSystem</name></type> <name>grade</name> <init>= <expr><call><name><name>GradeSystem</name><operator>.</operator><name>getGradeForGradeLevel</name></name><argument_list>(<argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>studentGrade</name> <init>= <expr><call><name><name>grade</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>int</name></type> <name>gradedStudents</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>int</name></type> <name>minimumPeople</name> <init>= <expr><call><name><name>curvingCriteria</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>gradeLevel</name><operator>-</operator><literal type="number">1</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"numberOfGrades: "</literal> <operator>+</operator> <name>numberOfGrades</name> <operator>+</operator> <literal type="string">" minimumPeople:"</literal> <operator>+</operator> <name>minimumPeople</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<if>if<condition>(<expr><name>nextGraded</name><operator>==</operator><literal type="boolean">true</literal></expr>)</condition><then><block>{
+				<expr_stmt><expr><name>minimumPeople</name><operator>-=</operator><literal type="number">2</literal></expr>;</expr_stmt>
+				<expr_stmt><expr><name>nextGraded</name> <operator>=</operator> <literal type="boolean">false</literal></expr>;</expr_stmt>
+			}</block></then></if>
+			
+			<decl_stmt><decl><type><annotation>@<name>SuppressWarnings</name><argument_list>(<argument><expr><literal type="string">"unused"</literal></expr></argument>)</argument_list></annotation>
+			<name>int</name></type> <name>UIN</name> <init>= <expr><literal type="number">0</literal></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>double</name></type> <name>marks</name> <init>= <expr><literal type="number">0.0</literal></expr></init></decl>;</decl_stmt>
+			<while>while <condition>(<expr><operator>(</operator><call><name><name>keyIterator</name><operator>.</operator><name>hasNext</name></name><argument_list>()</argument_list></call><operator>)</operator> <operator>&amp;&amp;</operator> <name>gradedStudents</name> <operator>&lt;</operator> <name>minimumPeople</name></expr> )</condition> <block>{
+				<decl_stmt><decl><type><name>Student</name></type> <name>student</name> <init>= <expr><call><name><name>keyIterator</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<expr_stmt><expr><name>UIN</name> <operator>=</operator> <call><name><name>student</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><name>marks</name> <operator>=</operator> <operator>(</operator><name>double</name><operator>)</operator> <call><name><name>sortedstudentTotalMarks</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN-: "</literal> <operator>+</operator> <name>UIN</name> <operator>+</operator> <literal type="string">" Grade-: "</literal> <operator>+</operator> <name>studentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>courseCurve</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>, <argument><expr><name>studentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><name>gradedStudents</name><operator>++</operator></expr>;</expr_stmt>
+				<expr_stmt><expr><name>studentsLeft</name><operator>--</operator></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Graded Students: "</literal> <operator>+</operator> <name>gradedStudents</name> <operator>+</operator> <literal type="string">" studentsLeft: "</literal> <operator>+</operator> <name>studentsLeft</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></while>
+			<if>if<condition>(<expr><call><name><name>keyIterator</name><operator>.</operator><name>hasNext</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+				<decl_stmt><decl><type><name>boolean</name></type> <name>added</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name>Student</name></type> <name>student</name> <init>= <expr><call><name><name>keyIterator</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><annotation>@<name>SuppressWarnings</name><argument_list>(<argument><expr><literal type="string">"unused"</literal></expr></argument>)</argument_list></annotation>
+				<name>int</name></type> <name>nextUIN</name> <init>= <expr><call><name><name>student</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+				<decl_stmt><decl><type><name>double</name></type> <name>nextMarks</name> <init>= <expr><operator>(</operator><name>double</name><operator>)</operator> <call><name><name>sortedstudentTotalMarks</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+				
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"nextUIN: "</literal><operator>+</operator><name>nextUIN</name><operator>+</operator><literal type="string">" nextMarks: "</literal> <operator>+</operator> <name>nextMarks</name> <operator>+</operator><literal type="string">" mks: "</literal><operator>+</operator> <name>marks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				
+				<decl_stmt><decl><type><name>double</name></type> <name>difference</name> <init>= <expr><name>marks</name><operator>-</operator><name>nextMarks</name></expr></init></decl>;</decl_stmt>
+				
+				<while>while<condition>(<expr><call><name><name>keyIterator</name><operator>.</operator><name>hasNext</name></name><argument_list>()</argument_list></call> <operator>&amp;&amp;</operator> <operator>(</operator><name>gradeLevel</name><operator>&lt;</operator> <name>numberOfGrades</name><operator>)</operator></expr>)</condition> <block>{
+					<expr_stmt><expr><name>added</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					<expr_stmt><expr><name>marks</name> <operator>=</operator> <name>nextMarks</name></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>Student</name></type> <name>nextstudent</name> <init>= <expr><call><name><name>keyIterator</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>int</name></type> <name>nextUIN2</name> <init>= <expr><call><name><name>nextstudent</name><operator>.</operator><name>getUIN</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><name>nextMarks</name> <operator>=</operator> <operator>(</operator><name>double</name><operator>)</operator> <call><name><name>sortedstudentTotalMarks</name><operator>.</operator><name>get</name></name><argument_list>(<argument><expr><name>nextstudent</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>double</name></type> <name>nextDifference</name> <init>= <expr><name>marks</name> <operator>-</operator> <name>nextMarks</name></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"nextUIN2: "</literal> <operator>+</operator> <name>nextUIN2</name> <operator>+</operator> <literal type="string">" nextMarks-: "</literal> <operator>+</operator> <name>nextMarks</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<if>if<condition>(<expr><name>nextDifference</name> <operator>&gt;=</operator> <name>difference</name></expr>)</condition><then><block>{
+						<comment type="line">//System.out.println("UIN: " + nextUIN + " Grade: " + studentGrade);</comment>
+						<expr_stmt><expr><call><name><name>courseCurve</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>, <argument><expr><name>studentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>gradedStudents</name><operator>++</operator></expr>;</expr_stmt>
+						<expr_stmt><expr><name>studentsLeft</name><operator>--</operator></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Graded Students: "</literal> <operator>+</operator> <name>gradedStudents</name> <operator>+</operator> <literal type="string">" studentsLeft: "</literal> <operator>+</operator> <name>studentsLeft</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>grade</name> <operator>=</operator> <call><name><name>GradeSystem</name><operator>.</operator><name>getGradeForGradeLevel</name></name><argument_list>(<argument><expr><operator>(</operator><name>gradeLevel</name><operator>+</operator><literal type="number">1</literal><operator>)</operator></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>studentGrade</name> <operator>=</operator> <call><name><name>grade</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"NEXTUINinIF: "</literal> <operator>+</operator> <name>nextUIN2</name> <operator>+</operator> <literal type="string">" Grade: "</literal> <operator>+</operator> <name>studentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>courseCurve</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>nextstudent</name></expr></argument>, <argument><expr><name>studentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>gradedStudents</name><operator>++</operator></expr>;</expr_stmt>
+						<expr_stmt><expr><name>studentsLeft</name><operator>--</operator></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Graded Students: "</literal> <operator>+</operator> <name>gradedStudents</name> <operator>+</operator> <literal type="string">" studentsLeft: "</literal> <operator>+</operator> <name>studentsLeft</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>added</name> <operator>=</operator> <literal type="boolean">false</literal></expr>;</expr_stmt>
+						<break>break;</break>
+					}</block></then> <elseif>else <if>if <condition>(<expr><name>nextDifference</name> <operator>&lt;</operator> <name>difference</name></expr>)</condition><then><block>{
+						<expr_stmt><expr><name>gradeLevel</name><operator>++</operator></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>GradeSystem</name></type> <name>nextGrade</name> <init>= <expr><call><name><name>GradeSystem</name><operator>.</operator><name>getGradeForGradeLevel</name></name><argument_list>(<argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>nextStudentGrade</name> <init>= <expr><call><name><name>nextGrade</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"UIN: "</literal> <operator>+</operator> <name>UIN</name> <operator>+</operator> <literal type="string">" Grade: "</literal> <operator>+</operator> <name>studentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"NEXTUIN: "</literal> <operator>+</operator> <name>nextUIN</name> <operator>+</operator> <literal type="string">" Grade: "</literal> <operator>+</operator> <name>nextStudentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>courseCurve</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>, <argument><expr><name>nextStudentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>gradedStudents</name><operator>++</operator></expr>;</expr_stmt>
+						<expr_stmt><expr><name>studentsLeft</name><operator>--</operator></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Graded Students: "</literal> <operator>+</operator> <name>gradedStudents</name> <operator>+</operator> <literal type="string">" studentsLeft: "</literal> <operator>+</operator> <name>studentsLeft</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>courseCurve</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>nextstudent</name></expr></argument>, <argument><expr><name>nextStudentGrade</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>gradedStudents</name><operator>++</operator></expr>;</expr_stmt>
+						<expr_stmt><expr><name>studentsLeft</name><operator>--</operator></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Graded Students: "</literal> <operator>+</operator> <name>gradedStudents</name> <operator>+</operator> <literal type="string">" studentsLeft: "</literal> <operator>+</operator> <name>studentsLeft</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>added</name> <operator>=</operator> <literal type="boolean">false</literal></expr>;</expr_stmt>
+						<comment type="line">//nextGraded = true;</comment>
+						<break>break;</break>
+					}</block></then></if></elseif></if>
+					
+					
+					
+				}</block></while> 
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Added: "</literal> <operator>+</operator><name>added</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<if>if <condition>(<expr><name>added</name><operator>==</operator><literal type="boolean">false</literal></expr>)</condition><then><block>{
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Graded Students--: "</literal> <operator>+</operator> <name>gradedStudents</name> <operator>+</operator> <literal type="string">" studentsLeft: "</literal> <operator>+</operator> <name>studentsLeft</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"gradelevel: "</literal><operator>+</operator><name>gradeLevel</name> <operator>+</operator> <literal type="string">" numberOfGrades: "</literal> <operator>+</operator><name>numberOfGrades</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<if>if<condition>(<expr><name>studentsLeft</name> <operator>&gt;</operator> <literal type="number">0</literal> <operator>&amp;&amp;</operator> <operator>(</operator><name>gradeLevel</name> <operator>==</operator> <name>numberOfGrades</name><operator>-</operator><literal type="number">1</literal><operator>)</operator></expr> )</condition><then><block>{
+						<comment type="line">//Student student = keyIterator.next();</comment>
+						<decl_stmt><decl><type><name>GradeSystem</name></type> <name>grade2</name> <init>= <expr><call><name><name>GradeSystem</name><operator>.</operator><name>getGradeForGradeLevel</name></name><argument_list>(<argument><expr><name>gradeLevel</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>studentGrade2</name> <init>= <expr><call><name><name>grade</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>courseCurve</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>, <argument><expr><name>studentGrade2</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>studentsLeft</name><operator>--</operator></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Graded Students: "</literal> <operator>+</operator> <name>gradedStudents</name> <operator>+</operator> <literal type="string">" studentsLeft: "</literal> <operator>+</operator> <name>studentsLeft</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<if>if<condition>(<expr><call><name><name>keyIterator</name><operator>.</operator><name>hasNext</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+							<expr_stmt><expr><name>student</name> <operator>=</operator> <call><name><name>keyIterator</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><name>grade2</name> <operator>=</operator> <call><name><name>GradeSystem</name><operator>.</operator><name>getGradeForGradeLevel</name></name><argument_list>(<argument><expr><name>gradeLevel</name><operator>+</operator><literal type="number">1</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><name>studentGrade2</name> <operator>=</operator> <call><name><name>grade</name><operator>.</operator><name>getGrade</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>courseCurve</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><name>student</name></expr></argument>, <argument><expr><name>studentGrade2</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<expr_stmt><expr><name>studentsLeft</name><operator>--</operator></expr>;</expr_stmt>
+							<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Graded Students: "</literal> <operator>+</operator> <name>gradedStudents</name> <operator>+</operator> <literal type="string">" studentsLeft: "</literal> <operator>+</operator> <name>studentsLeft</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						}</block></then></if>
+						
+					}</block></then></if>
+				}</block></then></if>
+			
+				
+			
+			}</block></then></if>
+			
+		}</block></for>
+		<expr_stmt><expr><call><name><name>curve</name><operator>.</operator><name>setCourseCurve</name></name><argument_list>(<argument><expr><name>courseCurve</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		<return>return <expr><name>curve</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// Function to update the final grades in the StudentEnrollment table</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>UpdateGrades</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>gradesUpdated</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		
+		<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getOfferID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>CourseOffered</name></type> <name>offeredCourse</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+		<try>try <block>{
+			<expr_stmt><expr><name>offeredCourse</name> <operator>=</operator> <operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+		
+		<decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>,<argument><name>String</name></argument>&gt;</argument_list></name></type> <name>studentGrades</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getCourseCurve</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		
+		<expr_stmt><expr><name>gradesUpdated</name> <operator>=</operator> <call><name><name>StudentEnrollment</name><operator>.</operator><name>updateAllStudentGrade</name></name><argument_list>(<argument><expr><name>studentGrades</name></expr></argument>, <argument><expr><name>offeredCourse</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		
+		<return>return <expr><name>gradesUpdated</name></expr>;</return>
+	}</block></function>
+	
+	<comment type="line">// To sort a HashMap</comment>
+	<comment type="line">// [1] http://stackoverflow.com/questions/8119366/sorting-hashmap-by-values</comment>
+	<function><type><specifier>private</specifier> <specifier>static</specifier> <name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>sortHashMap</name><parameter_list>(<param><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>unsortedStudentTotalMarks</name></decl></param>)</parameter_list>
+    <block>{
+
+        <decl_stmt><decl><type><name><name>List</name><argument_list type="template">&lt;<argument><name><name>Entry</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>Double</name></argument>&gt;</argument_list></name></argument>&gt;</argument_list></name></type> <name>list</name> <init>= <expr><operator>new</operator> <call><name><name>LinkedList</name><argument_list type="template">&lt;<argument><name><name>Entry</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>Double</name></argument>&gt;</argument_list></name></argument>&gt;</argument_list></name><argument_list>(<argument><expr><call><name><name>unsortedStudentTotalMarks</name><operator>.</operator><name>entrySet</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+        <comment type="line">// Sorting the list based on values</comment>
+        <expr_stmt><expr><call><name><name>Collections</name><operator>.</operator><name>sort</name></name><argument_list>(<argument><expr><name>list</name></expr></argument>, <argument><expr><operator>new</operator> <class><super><name><name>Comparator</name><argument_list type="template">&lt;<argument><name><name>Entry</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>Double</name></argument>&gt;</argument_list></name></argument>&gt;</argument_list></name></super><argument_list>()</argument_list>
+        <block>{
+            <function><type><specifier>public</specifier> <name>int</name></type> <name>compare</name><parameter_list>(<param><decl><type><name><name>Entry</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>studentTotalMarks1</name></decl></param>, <param><decl><type><name><name>Entry</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>studentTotalMarks2</name></decl></param>)</parameter_list> <block>{
+                <return>return <expr><call><name><name>studentTotalMarks2</name><operator>.</operator><name>getValue</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>compareTo</name><argument_list>(<argument><expr><call><name><name>studentTotalMarks1</name><operator>.</operator><name>getValue</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</return>
+            }</block></function>
+        }</block></class></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+        <comment type="line">// Maintaining insertion order with the help of LinkedList</comment>
+        <decl_stmt><decl><type><name><name>HashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>sortedstudentTotalMarks</name> <init>= <expr><operator>new</operator> <call><name><name>LinkedHashMap</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>Double</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+        <for>for <control>(<init><decl><type><name><name>Entry</name><argument_list type="template">&lt;<argument><name>Student</name></argument>, <argument><name>Double</name></argument>&gt;</argument_list></name></type> <name>entry</name> <range>: <expr><name>list</name></expr></range></decl></init>)</control> <block>{
+        	<expr_stmt><expr><call><name><name>sortedstudentTotalMarks</name><operator>.</operator><name>put</name></name><argument_list>(<argument><expr><call><name><name>entry</name><operator>.</operator><name>getKey</name></name><argument_list>()</argument_list></call></expr></argument>, <argument><expr><call><name><name>entry</name><operator>.</operator><name>getValue</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        }</block></for>
+
+        <return>return <expr><name>sortedstudentTotalMarks</name></expr>;</return>
+    }</block></function>
+
+	
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list><block>{
+		
+		<comment type="line">// To test percentage curve</comment>
+<comment type="line">//		int offerID = 345678;</comment>
+<comment type="line">//		List&lt;Integer&gt; curvingCriteria = new ArrayList&lt;Integer&gt;();</comment>
+<comment type="line">//		curvingCriteria.add(30);</comment>
+<comment type="line">//		curvingCriteria.add(40);</comment>
+<comment type="line">//		curvingCriteria.add(30);</comment>
+<comment type="line">//				</comment>
+<comment type="line">//		CourseCurve curve = CourseCurve.calculatePercentageCurve(offerID, curvingCriteria);</comment>
+<comment type="line">//		</comment>
+<comment type="line">//		HashMap&lt;Student,String&gt; courseCurve = curve.getCourseCurve();</comment>
+<comment type="line">//		System.out.println("----------------------------------");</comment>
+<comment type="line">//		for(Student students:courseCurve.keySet()){</comment>
+<comment type="line">//			int UIN = students.getUIN();</comment>
+<comment type="line">//			String grade = courseCurve.get(students);</comment>
+<comment type="line">//			</comment>
+<comment type="line">//			System.out.println("UIN: " + UIN + " Grade: " + grade);</comment>
+<comment type="line">//		</comment>
+<comment type="line">//		}</comment>
+<comment type="line">//		CourseOffered offered = null;</comment>
+<comment type="line">//		try {</comment>
+<comment type="line">//			offered = new CourseOffered(offerID);</comment>
+<comment type="line">//		} catch (Course.CourseDoesNotExistException</comment>
+<comment type="line">//				| CourseOffered.CourseOfferingDoesNotExistException e) {</comment>
+<comment type="line">//			e.printStackTrace();</comment>
+<comment type="line">//		}</comment>
+<comment type="line">//		</comment>
+<comment type="line">//		StudentEnrollment.updateAllStudentGrade(courseCurve, offered);</comment>
+		
+		<comment type="line">// To test absolute curve</comment>
+<comment type="line">//		int offerID = 345678;</comment>
+<comment type="line">//		List&lt;Integer&gt; curvingCriteria = new ArrayList&lt;Integer&gt;();</comment>
+<comment type="line">//		curvingCriteria.add(65);</comment>
+<comment type="line">//		curvingCriteria.add(50);</comment>
+<comment type="line">//		curvingCriteria.add(45);</comment>
+<comment type="line">//				</comment>
+<comment type="line">//		CourseCurve curve = CourseCurve.calculateAbsoluteCurve(offerID, curvingCriteria);</comment>
+<comment type="line">//		</comment>
+<comment type="line">//		HashMap&lt;Student,String&gt; courseCurve = curve.getCourseCurve();</comment>
+<comment type="line">//		System.out.println("----------------------------------");</comment>
+<comment type="line">//		if(courseCurve != null){</comment>
+<comment type="line">//			for(Student students:courseCurve.keySet()){</comment>
+<comment type="line">//				int UIN = students.getUIN();</comment>
+<comment type="line">//				String grade = courseCurve.get(students);</comment>
+<comment type="line">//				</comment>
+<comment type="line">//				System.out.println("UIN: " + UIN + " Grade: " + grade);</comment>
+<comment type="line">//			}</comment>
+<comment type="line">//		}</comment>
+		
+		
+		<comment type="line">// To test max gap curve</comment>
+<comment type="line">//		int offerID = 345678;</comment>
+<comment type="line">//		List&lt;Integer&gt; curvingCriteria = new ArrayList&lt;Integer&gt;();</comment>
+<comment type="line">//		curvingCriteria.add(3);</comment>
+<comment type="line">//		curvingCriteria.add(1);</comment>
+<comment type="line">//		curvingCriteria.add(1);</comment>
+<comment type="line">//				</comment>
+<comment type="line">//		CourseCurve curve = CourseCurve.calculateMaxGapCurve(offerID, curvingCriteria);</comment>
+<comment type="line">//		</comment>
+<comment type="line">//		HashMap&lt;Student,String&gt; courseCurve = curve.getCourseCurve();</comment>
+<comment type="line">//		System.out.println("----------------------------------");</comment>
+<comment type="line">//		if(courseCurve != null){</comment>
+<comment type="line">//			for(Student students:courseCurve.keySet()){</comment>
+<comment type="line">//				int UIN = students.getUIN();</comment>
+<comment type="line">//				String grade = courseCurve.get(students);</comment>
+<comment type="line">//				</comment>
+<comment type="line">//				System.out.println("UIN: " + UIN + " Grade: " + grade);</comment>
+<comment type="line">//			}</comment>
+<comment type="line">//		}</comment>
+		
+		
+		
+	}</block></function>
+
+
+}</block></class>
+</unit>

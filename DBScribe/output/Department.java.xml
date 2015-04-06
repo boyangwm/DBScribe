@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.sdml.info/srcML/src" language="Java" filename="C:\Users\Boyang\Desktop\ASE15\subjects\UMAS\src\com\umas\code\Department.java"><package>package <name><name>com</name><operator>.</operator><name>umas</name><operator>.</operator><name>code</name></name>;</package>
+
+
+<comment type="block" format="javadoc">/****************@author Simant Purohit*********************************/</comment>
+
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>Connection</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>DriverManager</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>PreparedStatement</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>ResultSet</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>sql</name><operator>.</operator><name>SQLException</name></name>;</import>
+<import>import <name><name>java</name><operator>.</operator><name>util</name><operator>.</operator><name>ArrayList</name></name>;</import>
+
+<import>import <name><name>com</name><operator>.</operator><name>mysql</name><operator>.</operator><name>jdbc</name><operator>.</operator><name>Statement</name></name>;</import>
+
+<class><specifier>public</specifier> class <name>Department</name> <block>{
+	<decl_stmt><decl><type><specifier>private</specifier> <name>String</name></type> <name>departmentName</name></decl>;</decl_stmt>
+	<decl_stmt><decl><type><specifier>private</specifier> <name>int</name></type> <name>departmentID</name></decl>;</decl_stmt>
+	<comment type="block" format="javadoc">/**
+	 * @return the departmentName
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>String</name></type> <name>getDepartmentName</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>departmentName</name></expr>;</return>
+	}</block></function>
+	<comment type="block" format="javadoc">/**
+	 * @param departmentName the departmentName to set
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>setDepartmentName</name><parameter_list>(<param><decl><type><name>String</name></type> <name>departmentName</name></decl></param>)</parameter_list> <block>{
+		<expr_stmt><expr><name><name>this</name><operator>.</operator><name>departmentName</name></name> <operator>=</operator> <name>departmentName</name></expr>;</expr_stmt>
+	}</block></function>
+	<comment type="block" format="javadoc">/**
+	 * @return the departmentID
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>int</name></type> <name>getDepartmentID</name><parameter_list>()</parameter_list> <block>{
+		<return>return <expr><name>departmentID</name></expr>;</return>
+	}</block></function>
+
+
+	<comment type="block">/*
+	 * Retrieve department from the database using the department ID;
+	 */</comment>
+	<constructor><specifier>public</specifier> <name>Department</name><parameter_list>(<param><decl><type><name>int</name></type> <name>departmentID</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name>DepartmentDoesNotExistException</name></expr></argument></throws><block>{
+
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					<comment type="block">/*
+					 * Try to look for the department in the department table
+					 */</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name><init>= <expr><literal type="string">"Select DepartmentID, DepartmentName"</literal>
+							<operator>+</operator> <literal type="string">" FROM department"</literal>
+							<operator>+</operator> <literal type="string">" WHERE DepartmentID= ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>departmentID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<comment type="block">/*
+					 * If the department is found in the database
+					 * Initialize the values of the object
+					 */</comment>
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<comment type="block">/*
+						 * The object with the DepartmentName already exists
+						 * Just initialize the current object with new values
+						 */</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"dID"</literal></expr></argument>, <argument><expr><literal type="string">"department"</literal></expr></argument>, <argument><expr><literal type="string">"DepartmentID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>dID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"DepartmentID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"dName"</literal></expr></argument>, <argument><expr><literal type="string">"department"</literal></expr></argument>, <argument><expr><literal type="string">"DepartmentName"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>dName</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>departmentID</name></name> <operator>=</operator> <name>dID</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>departmentName</name></name> <operator>=</operator> <name>dName</name></expr>;</expr_stmt>
+					}</block></then>
+
+					<else>else<block>{
+						<comment type="block">/*
+						 * Throw department does not exists exception
+						 */</comment>
+						<throw>throw <expr><operator>new</operator> <call><name>DepartmentDoesNotExistException</name><argument_list>()</argument_list></call></expr>;</throw>
+					}</block></else></if>
+				}</block></then></if>
+			}</block>
+
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error in sql"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block>
+
+		<finally>finally<block>{
+		}</block></finally></try>
+	}</block></constructor>
+
+	<comment type="block">/*
+	 * Retrieve department from the database using the department name, 
+	 * Initialize the object if it does, else values remain null
+	 */</comment>
+	<constructor><specifier>public</specifier> <name>Department</name><parameter_list>(<param><decl><type><name>String</name></type> <name>departmentName</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name>DepartmentDoesNotExistException</name></expr></argument></throws><block>{
+
+		<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Searching for department with Name:"</literal><operator>+</operator><name>departmentName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					<comment type="block">/*
+					 * Try to retrieve the department
+					 */</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name><init>= <expr><literal type="string">"Select DepartmentID, DepartmentName"</literal>
+							<operator>+</operator> <literal type="string">" FROM department"</literal>
+							<operator>+</operator> <literal type="string">" WHERE DepartmentName= ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>departmentName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<comment type="block">/*
+					 * If the department is found, initialize the object with the retireved values
+					 */</comment>
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<comment type="block">/*
+						 * The object with the DepartmentName already exist
+						 * Just initialize the current object with new values
+						 */</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"dID"</literal></expr></argument>, <argument><expr><literal type="string">"department"</literal></expr></argument>, <argument><expr><literal type="string">"DepartmentID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>dID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"DepartmentID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"dName"</literal></expr></argument>, <argument><expr><literal type="string">"department"</literal></expr></argument>, <argument><expr><literal type="string">"DepartmentName"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>dName</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>departmentID</name></name> <operator>=</operator> <name>dID</name></expr>;</expr_stmt>
+						<expr_stmt><expr><name><name>this</name><operator>.</operator><name>departmentName</name></name> <operator>=</operator> <name>dName</name></expr>;</expr_stmt>
+					}</block></then>
+
+					<else>else<block>{
+						<comment type="block">/*
+						 * Throw exception
+						 */</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"----DEPARTMENT DOES NOT EXIST----"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<throw>throw <expr><operator>new</operator> <call><name>DepartmentDoesNotExistException</name><argument_list>()</argument_list></call></expr>;</throw>
+					}</block></else></if>
+				}</block></then></if>
+			}</block>
+
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error updating/adding"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block>
+
+		<finally>finally<block>{
+		}</block></finally></try>
+	}</block></constructor>
+
+
+	<comment type="block">/*
+	 * Add a new department to the database
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>addNewDepartment</name><parameter_list>(<param><decl><type><name>String</name></type> <name>departmentName</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name>DepartmentAlreadyExistsException</name></expr></argument></throws><block>{
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					<comment type="block">/*
+					 * Check to see if the department with the same name exists already
+					 */</comment>
+
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name><init>= <expr><literal type="string">"Select DepartmentName"</literal>
+							<operator>+</operator> <literal type="string">" FROM department"</literal>
+							<operator>+</operator> <literal type="string">" WHERE DepartmentName= ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>departmentName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<comment type="block">/*
+					 * If the department exists, throw exception
+					 */</comment>
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<comment type="line">//The object with the DepartmentName already exists</comment>
+						<throw>throw <expr><operator>new</operator> <call><name>DepartmentAlreadyExistsException</name><argument_list>()</argument_list></call></expr>;</throw>
+					}</block></then>
+
+					<else>else<block>{
+						<comment type="block">/*
+						 * Add the object data to the department table
+						 */</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"departmentName"</literal></expr></argument>, <argument><expr><literal type="string">"department"</literal></expr></argument>, <argument><expr><literal type="string">"DepartmentName"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>SQLInsert</name><init>= <expr><literal type="string">"Insert into department (DepartmentName) Values (?);"</literal></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>close</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><name>statement</name> <operator>=</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLInsert</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>departmentName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>execute</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></else></if>
+				}</block></then></if>
+			}</block>
+
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error adding department"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally<block>{
+				<comment type="line">//Database.closeConnection(conn);</comment>
+			}</block></finally></try>
+
+		}</block>
+
+		<finally>finally<block>{
+		}</block></finally></try>
+
+	}</block></function>
+
+
+	<comment type="block">/*
+	 * Delete specified department
+	 */</comment>
+	<function><type><annotation>@<name>SuppressWarnings</name><argument_list>(<argument><expr><literal type="string">"unused"</literal></expr></argument>)</argument_list></annotation>
+	<specifier>private</specifier> <specifier>static</specifier> <name>void</name></type> <name>deleteDepartment</name><parameter_list>(<param><decl><type><name>String</name></type> <name>departmentName</name></decl></param>)</parameter_list> <throws>throws <argument><expr><name>DepartmentDoesNotExistException</name></expr></argument></throws><block>{
+		<decl_stmt><decl><type><name>boolean</name></type> <name>isDeleteSuccessfull</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name><init>= <expr><literal type="string">"Select DepartmentID, DepartmentName"</literal>
+							<operator>+</operator> <literal type="string">" FROM department"</literal>
+							<operator>+</operator> <literal type="string">" WHERE DepartmentName= ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>, <argument><expr><name><name>ResultSet</name><operator>.</operator><name>TYPE_SCROLL_SENSITIVE</name></name></expr></argument>, <argument><expr><name><name>ResultSet</name><operator>.</operator><name>CONCUR_UPDATABLE</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>departmentName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<comment type="line">//The object with the DepartmentName already exists</comment>
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Deleting the department:"</literal><operator>+</operator><name>departmentName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<comment type="block">/*Remove all the courses related to this department*/</comment>
+						<decl_stmt><decl><type><name>int</name></type> <name>departmentID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>courseSelect</name><init>= <expr><literal type="string">"Select CourseID, CourseName, DepartmentID"</literal>
+								<operator>+</operator> <literal type="string">" FROM courses"</literal>
+								<operator>+</operator> <literal type="string">" WHERE DepartmentID= ?"</literal></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statementForCourse</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>courseSelect</name></expr></argument>, <argument><expr><name><name>ResultSet</name><operator>.</operator><name>TYPE_SCROLL_SENSITIVE</name></name></expr></argument>, <argument><expr><name><name>ResultSet</name><operator>.</operator><name>CONCUR_UPDATABLE</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>statementForCourse</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>departmentID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>ResultSet</name></type> <name>courseSetToDelete</name> <init>= <expr><call><name><name>statementForCourse</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+						<while>while<condition>(<expr><call><name><name>courseSetToDelete</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+							<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Deleting course:"</literal><operator>+</operator><call><name><name>courseSetToDelete</name><operator>.</operator><name>getString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<decl_stmt><decl><type><name>Course</name></type> <name>c</name> <init>= <expr><operator>new</operator> <call><name>Course</name><argument_list>(<argument><expr><call><name><name>courseSetToDelete</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"CourseID"</literal></expr></argument>)</argument_list></call></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						}</block></while>
+
+						<expr_stmt><expr><call><name><name>rs</name><operator>.</operator><name>deleteRow</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>	
+						<expr_stmt><expr><name>isDeleteSuccessfull</name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+					}</block></then>
+
+					<else>else<block>{
+						<expr_stmt><expr><name>isDeleteSuccessfull</name> <operator>=</operator> <literal type="boolean">false</literal></expr>;</expr_stmt>
+					}</block></else></if>
+
+				}</block></then></if>
+
+				<if>if<condition>(<expr><operator>!</operator><name>isDeleteSuccessfull</name></expr>)</condition><then>
+					<block type="pseudo"><throw>throw <expr><operator>new</operator> <call><name>DepartmentDoesNotExistException</name><argument_list>()</argument_list></call></expr>;</throw></block></then></if>
+
+			}</block>
+
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error updating"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block>
+
+		<finally>finally<block>{
+
+		}</block></finally></try>
+	}</block></function>
+
+	<comment type="block">/*
+	 * Update the existing department using the object values to update the database
+	 * It will update the department with the values of the instance variables
+	 */</comment>
+	<function><type><specifier>public</specifier> <name>boolean</name></type> <name>updateDepartment</name><parameter_list>()</parameter_list> <throws>throws <argument><expr><name>DepartmentDoesNotExistException</name></expr></argument>, <argument><expr><name>DepartmentAlreadyExistsException</name></expr></argument></throws><block>{
+
+		<comment type="block">/*
+		 * Null checks
+		 */</comment>
+		<if>if<condition>(<expr><call><name><name>this</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call> <operator>==</operator> <literal type="null">null</literal> <operator>||</operator> <call><name><name>this</name><operator>.</operator><name>getDepartmentID</name></name><argument_list>()</argument_list></call> <operator>==</operator> <literal type="number">0</literal></expr>)</condition><then>
+			<block type="pseudo"><throw>throw <expr><operator>new</operator> <call><name>DepartmentDoesNotExistException</name><argument_list>(<argument><expr><literal type="string">"Un-initialized object"</literal></expr></argument>)</argument_list></call></expr>;</throw></block></then></if>
+
+		<comment type="block">/*
+		 * Check if the department name is acceptable and does not conflict with other department names
+		 */</comment>
+		<if>if<condition>(<expr><call><name>isNameExisting</name><argument_list>(<argument><expr><name><name>this</name><operator>.</operator><name>departmentName</name></name></expr></argument>)</argument_list></call></expr>)</condition><then><block>{
+			<throw>throw <expr><operator>new</operator> <call><name>DepartmentAlreadyExistsException</name><argument_list>()</argument_list></call></expr>;</throw>
+		}</block></then></if>
+
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					<comment type="block">/*
+					 * Retrieve the department row
+					 */</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name><init>= <expr><literal type="string">"Select DepartmentID, DepartmentName"</literal>
+							<operator>+</operator> <literal type="string">" FROM department"</literal>
+							<operator>+</operator> <literal type="string">" WHERE DepartmentID= ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>, <argument><expr><name><name>ResultSet</name><operator>.</operator><name>TYPE_SCROLL_SENSITIVE</name></name></expr></argument>, <argument><expr><name><name>ResultSet</name><operator>.</operator><name>CONCUR_UPDATABLE</name></name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><call><name><name>this</name><operator>.</operator><name>getDepartmentID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<comment type="block">/*
+					 * Update the department row with new values and commit the update
+					 */</comment>
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<comment type="block">/*
+						 * Update with new values from the object instance variables
+						 */</comment>
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"dID"</literal></expr></argument>, <argument><expr><literal type="string">"department"</literal></expr></argument>, <argument><expr><literal type="string">"DepartmentID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>dID</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getDepartmentID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"dName"</literal></expr></argument>, <argument><expr><literal type="string">"department"</literal></expr></argument>, <argument><expr><literal type="string">"DepartmentName"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>String</name></type> <name>dName</name> <init>= <expr><call><name><name>this</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+						<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Updating the department with new values"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>rs</name><operator>.</operator><name>updateInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>dID</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>rs</name><operator>.</operator><name>updateString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>dName</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<expr_stmt><expr><call><name><name>rs</name><operator>.</operator><name>updateRow</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>	
+						<expr_stmt><expr><call><name><name>Database</name><operator>.</operator><name>commitTransaction</name></name><argument_list>(<argument><expr><name>conn</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+					}</block></then></if>
+
+				}</block></then></if>
+			}</block>
+
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error updating"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+			}</block></catch></try>
+
+		}</block>
+
+		<finally>finally<block>{
+		}</block></finally></try>
+		<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+	}</block></function>
+
+
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>boolean</name></type> <name>isNameExisting</name><parameter_list>(<param><decl><type><name>String</name></type> <name>name</name></decl></param>)</parameter_list><block>{
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					<comment type="block">/*
+					 * Try to retrieve the department
+					 */</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name><init>= <expr><literal type="string">"Select DepartmentName"</literal>
+							<operator>+</operator> <literal type="string">" FROM department"</literal>
+							<operator>+</operator> <literal type="string">" WHERE DepartmentName= ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>name</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<comment type="block">/*
+					 * If the department is found, return true
+					 */</comment>
+					<if>if<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>first</name></name><argument_list>()</argument_list></call></expr>)</condition><then><block>{
+						<return>return <expr><literal type="boolean">true</literal></expr>;</return>
+					}</block></then>
+
+					<else>else<block>{
+						<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+					}</block></else></if>
+				}</block></then></if>
+			}</block>
+
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error updating/adding"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+			}</block></catch></try>
+
+		}</block>
+
+		<finally>finally<block>{
+		}</block></finally></try>
+
+		<return>return <expr><literal type="boolean">false</literal></expr>;</return>
+	}</block></function>
+
+	<function><type><annotation>@<name>Override</name></annotation>
+	<specifier>public</specifier> <name>String</name></type> <name>toString</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name>String</name></type> <name>toReturn</name> <init>= <expr><literal type="string">" "</literal></expr></init></decl>;</decl_stmt>
+		<expr_stmt><expr><name>toReturn</name><operator>+=</operator><literal type="string">"\nDepartment name:"</literal><operator>+</operator><call><name><name>this</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<expr_stmt><expr><name>toReturn</name><operator>+=</operator><literal type="string">"\nDepartment ID:"</literal><operator>+</operator><call><name><name>this</name><operator>.</operator><name>getDepartmentName</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+		<return>return <expr><name>toReturn</name></expr>;</return>
+	}</block></function>
+
+
+	<comment type="block">/*
+	 * Method to retrieve a list of all the departments in a list
+	 */</comment>
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Department</name></argument>&gt;</argument_list></name></type> <name>getAllDepartments</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Department</name></argument>&gt;</argument_list></name></type> <name>departments</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Department</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					<comment type="block">/*
+					 * retrieve all the departments
+					 */</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name><init>= <expr><literal type="string">"Select *"</literal>
+							<operator>+</operator> <literal type="string">" FROM department"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<comment type="block">/*
+					 * Add all the retrieved department to the List
+					 */</comment>
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<try>try <block>{
+							<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"dID"</literal></expr></argument>, <argument><expr><literal type="string">"department"</literal></expr></argument>, <argument><expr><literal type="string">"DepartmentID"</literal></expr></argument>, <argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+							<decl_stmt><decl><type><name>int</name></type> <name>dID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"DepartmentID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<decl_stmt><decl><type><name>Department</name></type> <name>d</name> <init>= <expr><operator>new</operator> <call><name>Department</name><argument_list>(<argument><expr><name>dID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+							<expr_stmt><expr><call><name><name>departments</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>d</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						}</block> <catch>catch <parameter_list>(<param><decl><type><name>DepartmentDoesNotExistException</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+							<comment type="line">// TODO Auto-generated catch block</comment>
+							<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+						}</block></catch></try>
+
+					}</block></while>
+
+				}</block></then></if>
+			}</block>
+
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error retrieving"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>			
+		}</block>
+
+		<finally>finally<block>{
+		}</block></finally></try>
+
+		<return>return <expr><name>departments</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block">/*
+	 * DepartmentDoesnotExist Exception
+	 */</comment>
+	<class><specifier>public</specifier> <specifier>static</specifier> class <name>DepartmentDoesNotExistException</name> <super><extends>extends <name>Exception</name></extends></super><block>{
+		<comment type="block" format="javadoc">/**
+		 * 
+		 */</comment>
+		<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><specifier>private</specifier> <name>String</name></type> <name>message</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+
+		<constructor><specifier>public</specifier>  <name>DepartmentDoesNotExistException</name><parameter_list>()</parameter_list> <block>{
+			<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>message</name></name> <operator>=</operator> <literal type="string">"Department does not exist"</literal></expr>;</expr_stmt>
+		}</block></constructor>
+
+		<constructor><specifier>public</specifier>  <name>DepartmentDoesNotExistException</name><parameter_list>(<param><decl><type><name>String</name></type> <name>message</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>message</name></name> <operator>=</operator> <name>message</name></expr>;</expr_stmt>
+		}</block></constructor>
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>toString</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>getMessage</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+	}</block></class>
+
+	<comment type="block">/*
+	 * DepartmentDoesnotExist Exception
+	 */</comment>
+	<class><specifier>public</specifier> <specifier>static</specifier> class <name>DepartmentAlreadyExistsException</name> <super><extends>extends <name>Exception</name></extends></super><block>{
+		<comment type="block" format="javadoc">/**
+		 * 
+		 */</comment>
+		<decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <specifier>final</specifier> <name>long</name></type> <name>serialVersionUID</name> <init>= <expr><literal type="number">1L</literal></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><specifier>private</specifier> <name>String</name></type> <name>message</name> <init>= <expr><literal type="null">null</literal></expr></init></decl>;</decl_stmt>
+
+		<constructor><specifier>public</specifier>  <name>DepartmentAlreadyExistsException</name><parameter_list>()</parameter_list> <block>{
+			<expr_stmt><expr><call><name>super</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><name><name>this</name><operator>.</operator><name>message</name></name> <operator>=</operator> <literal type="string">"Department already exists"</literal></expr>;</expr_stmt>
+		}</block></constructor>
+
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>toString</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+
+		<function><type><annotation>@<name>Override</name></annotation>
+		<specifier>public</specifier> <name>String</name></type> <name>getMessage</name><parameter_list>()</parameter_list> <block>{
+			<return>return <expr><name>message</name></expr>;</return>
+		}</block></function>
+	}</block></class>
+
+	<comment type="block">/*
+	 * Method to retrieve all the courses in the department
+	 */</comment>
+	<function><type><specifier>public</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Course</name></argument>&gt;</argument_list></name></type> <name>getDepartmentCourses</name><parameter_list>()</parameter_list><block>{
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Course</name></argument>&gt;</argument_list></name></type> <name>deptCourses</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>Course</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					<comment type="block">/*
+					 * Retrieve all courses by filtering using the department id
+					 */</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name><init>= <expr><literal type="string">"Select CourseID"</literal>
+							<operator>+</operator> <literal type="string">" FROM department natural join courses"</literal>
+							<operator>+</operator> <literal type="string">" WHERE DepartmentID= ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><call><name><name>this</name><operator>.</operator><name>getDepartmentID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+					<comment type="block">/*
+					 * Add all the retrieved courses to the List
+					 */</comment>
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"cID"</literal></expr></argument>, <argument><expr><literal type="string">"department"</literal></expr></argument>, <argument><expr><literal type="string">"CourseID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>cID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"CourseID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>Course</name></type> <name>c</name> <init>= <expr><operator>new</operator> <call><name>Course</name><argument_list>(<argument><expr><name>cID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>deptCourses</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>c</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>
+				}</block></then></if>
+			}</block>
+
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error updating/adding"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch>
+
+			<finally>finally<block>{
+				<comment type="line">//Database.closeConnection(conn);</comment>
+			}</block></finally></try>
+
+		}</block>
+
+		<finally>finally<block>{
+		}</block></finally></try>
+
+		<return>return <expr><name>deptCourses</name></expr>;</return>
+	}</block></function>
+
+	<comment type="block">/*
+	 * Retrieve all the courses in the department that are currently offered
+	 */</comment>
+	<function><type><specifier>public</specifier> <name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>getDepartmentCourseOffered</name><parameter_list>()</parameter_list><block>{
+
+		<decl_stmt><decl><type><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name></type> <name>deptCourses</name> <init>= <expr><operator>new</operator> <call><name><name>ArrayList</name><argument_list type="template">&lt;<argument><name>CourseOffered</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<decl_stmt><decl><type><name>int</name></type> <name>currentSemester</name> <init>= <expr><call><name><name>CourseOffered</name><operator>.</operator><name>getCurrentSemesterID</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+		<try>try<block>{
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><call><name><name>Database</name><operator>.</operator><name>getConnection</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<try>try<block>{
+				<if>if<condition>(<expr><name>conn</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition><then><block>{
+					<comment type="block">/*
+					 * Filter all the course offerings using the specified department
+					 */</comment>
+					<decl_stmt><decl><type><name>String</name></type> <name>SQLSelect</name><init>= <expr><literal type="string">"Select CourseID, OfferID"</literal>
+							<operator>+</operator> <literal type="string">" FROM coursesoffered natural join courses"</literal>
+							<operator>+</operator> <literal type="string">" WHERE DepartmentID= ? and SemesterID = ?"</literal></expr></init></decl>;</decl_stmt>
+					<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>statement</name> <init>= <expr><call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>SQLSelect</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><call><name><name>this</name><operator>.</operator><name>getDepartmentID</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<expr_stmt><expr><call><name><name>statement</name><operator>.</operator><name>setInt</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>currentSemester</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>=  <expr><call><name><name>statement</name><operator>.</operator><name>executeQuery</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+					<comment type="block">/*
+					 * Add all the retrieved CoursesOffered to the list
+					 */</comment>
+					<while>while<condition>(<expr><call><name><name>rs</name><operator>.</operator><name>next</name></name><argument_list>()</argument_list></call></expr>)</condition><block>{
+						<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"offerID"</literal></expr></argument>, <argument><expr><literal type="string">"coursesoffered"</literal></expr></argument>, <argument><expr><literal type="string">"OfferID"</literal></expr></argument>, <argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+						<decl_stmt><decl><type><name>int</name></type> <name>offerID</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"OfferID"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<decl_stmt><decl><type><name>CourseOffered</name></type> <name>co</name> <init>= <expr><operator>new</operator> <call><name>CourseOffered</name><argument_list>(<argument><expr><name>offerID</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+						<expr_stmt><expr><call><name><name>deptCourses</name><operator>.</operator><name>add</name></name><argument_list>(<argument><expr><name>co</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+					}</block></while>
+				}</block></then></if>
+			}</block>
+
+			<catch>catch<parameter_list>(<param><decl><type><name>SQLException</name></type> <name>e</name></decl></param>)</parameter_list><block>{
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"Error retrieving"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+				<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><call><name><name>e</name><operator>.</operator><name>getMessage</name></name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>Course</name><operator>.</operator><name>CourseDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch> <catch>catch <parameter_list>(<param><decl><type><name><name>CourseOffered</name><operator>.</operator><name>CourseOfferingDoesNotExistException</name></name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+				<comment type="line">// TODO Auto-generated catch block</comment>
+				<expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>printStackTrace</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+			}</block></catch></try>
+
+		}</block>
+
+		<finally>finally<block>{
+		}</block></finally></try>
+
+		<return>return <expr><name>deptCourses</name></expr>;</return>
+	}</block></function>
+
+	<function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>main</name><parameter_list>(<param><decl><type><name><name>String</name><index>[]</index></name></type> <name>args</name></decl></param>)</parameter_list><block>{
+
+	}</block></function>
+
+
+	<comment type="line">//incorrect</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>updateDepLT250</name><parameter_list>(<param><decl><type><name>String</name></type> <name>id</name></decl></param>)</parameter_list><block>{
+		<try>try <block>{
+
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><operator>(</operator><name>Connection</name><operator>)</operator> <call><name><name>DriverManager</name><operator>.</operator><name>getConnection</name></name><argument_list>(
+					<argument><expr><literal type="string">"jdbc:mysql://localhost:3306/MOCK_DATA2"</literal></expr></argument>,
+					<argument><expr><literal type="string">"root"</literal></expr></argument>, <argument><expr><literal type="string">"boyang"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>Statement</name></type> <name>stmt</name> <init>= <expr><operator>(</operator><name>Statement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>createStatement</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>query</name> <init>= <expr><literal type="string">"select number FROM MOCK_DATA1000 where id = "</literal> <operator>+</operator> <name>id</name></expr></init></decl>;</decl_stmt>	
+			<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>(<argument><expr><name>query</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<comment type="line">//while(rs.next()){</comment>
+
+			<decl_stmt><decl><type><name>int</name></type> <name>number</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"number"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"number"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA1000"</literal></expr></argument>,<argument><expr><literal type="string">"number"</literal></expr></argument>,<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+
+			<assert>assert<expr><operator>(</operator><name>number</name> <operator>&lt;</operator> <literal type="number">250</literal><operator>)</operator></expr>;</assert>
+			<decl_stmt><decl><type><name>int</name></type> <name>department</name> <init>= <expr><literal type="number">1</literal></expr></init></decl>;</decl_stmt>   <comment type="line">// 2, correct </comment>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"department"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA1000"</literal></expr></argument>,<argument><expr><literal type="string">"department"</literal></expr></argument>,<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+			<decl_stmt><decl><type><name>String</name></type> <name>updateS</name> <init>= <expr><literal type="string">"UPDATE PERSON SET department = ?  WHERE id = ?"</literal></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>preparedStmt</name> <init>=  <expr><operator>(</operator><name>PreparedStatement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>updateS</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>department</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>id</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>conn</name><operator>.</operator><name>close</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+		}</block>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"exception"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	}</block></function>
+
+
+	<comment type="line">//correct</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>updateDepThree</name><parameter_list>(<param><decl><type><name>String</name></type> <name>id</name></decl></param>)</parameter_list><block>{
+		<try>try <block>{
+
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><operator>(</operator><name>Connection</name><operator>)</operator> <call><name><name>DriverManager</name><operator>.</operator><name>getConnection</name></name><argument_list>(
+					<argument><expr><literal type="string">"jdbc:mysql://localhost:3306/MOCK_DATA2"</literal></expr></argument>,
+					<argument><expr><literal type="string">"root"</literal></expr></argument>, <argument><expr><literal type="string">"boyang"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>Statement</name></type> <name>stmt</name> <init>= <expr><operator>(</operator><name>Statement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>createStatement</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>query</name> <init>= <expr><literal type="string">"select age FROM MOCK_DATA1000 where id = "</literal> <operator>+</operator> <name>id</name></expr></init></decl>;</decl_stmt>	
+			<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>(<argument><expr><name>query</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<comment type="line">//while(rs.next()){</comment>
+
+
+
+			<decl_stmt><decl><type><name>double</name></type> <name>number</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"number"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"number"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA1000"</literal></expr></argument>,<argument><expr><literal type="string">"number"</literal></expr></argument>,<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<assert>assert<expr><operator>(</operator><name>number</name> <operator>&gt;</operator> <literal type="number">750</literal><operator>)</operator></expr>;</assert>
+			<decl_stmt><decl><type><name>int</name></type> <name>department</name> <init>= <expr><literal type="number">3</literal></expr></init></decl>;</decl_stmt>   <comment type="line">// 3, correct </comment>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"department"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA1000"</literal></expr></argument>,<argument><expr><literal type="string">"department"</literal></expr></argument>,<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+			<decl_stmt><decl><type><name>String</name></type> <name>updateS</name> <init>= <expr><literal type="string">"UPDATE PERSON SET department = ?  WHERE id = ?"</literal></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>preparedStmt</name> <init>=  <expr><operator>(</operator><name>PreparedStatement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>updateS</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>department</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>id</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>conn</name><operator>.</operator><name>close</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+		}</block>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"exception"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	}</block></function>
+
+
+
+	<comment type="line">//incorrect</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>updateDutyGT600</name><parameter_list>(<param><decl><type><name>String</name></type> <name>id</name></decl></param>)</parameter_list><block>{
+		<try>try <block>{
+
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><operator>(</operator><name>Connection</name><operator>)</operator> <call><name><name>DriverManager</name><operator>.</operator><name>getConnection</name></name><argument_list>(
+					<argument><expr><literal type="string">"jdbc:mysql://localhost:3306/MOCK_DATA2"</literal></expr></argument>,
+					<argument><expr><literal type="string">"root"</literal></expr></argument>, <argument><expr><literal type="string">"boyang"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>Statement</name></type> <name>stmt</name> <init>= <expr><operator>(</operator><name>Statement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>createStatement</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>query</name> <init>= <expr><literal type="string">"select number FROM MOCK_DATA1000 where id = "</literal> <operator>+</operator> <name>id</name></expr></init></decl>;</decl_stmt>	
+			<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>(<argument><expr><name>query</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<comment type="line">//while(rs.next()){</comment>
+
+			<decl_stmt><decl><type><name>int</name></type> <name>number</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"number"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"number"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA1000"</literal></expr></argument>,<argument><expr><literal type="string">"number"</literal></expr></argument>,<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+
+			<assert>assert<expr><operator>(</operator><name>number</name> <operator>&gt;</operator> <literal type="number">600</literal><operator>)</operator></expr>;</assert>
+			<decl_stmt><decl><type><name>int</name></type> <name>duty</name> <init>= <expr><literal type="number">1</literal></expr></init></decl>;</decl_stmt>   <comment type="line">// 3, correct </comment>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"duty"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA1000"</literal></expr></argument>,<argument><expr><literal type="string">"duty"</literal></expr></argument>,<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+			<decl_stmt><decl><type><name>String</name></type> <name>updateS</name> <init>= <expr><literal type="string">"UPDATE PERSON SET duty = ?  WHERE id = ?"</literal></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>preparedStmt</name> <init>=  <expr><operator>(</operator><name>PreparedStatement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>updateS</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>duty</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>id</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>conn</name><operator>.</operator><name>close</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+		}</block>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"exception"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	}</block></function>
+
+
+	<comment type="line">//correct</comment>
+	<function><type><specifier>public</specifier> <name>void</name></type> <name>updateDutyOne</name><parameter_list>(<param><decl><type><name>String</name></type> <name>id</name></decl></param>)</parameter_list><block>{
+		<try>try <block>{
+
+			<decl_stmt><decl><type><name>Connection</name></type> <name>conn</name> <init>= <expr><operator>(</operator><name>Connection</name><operator>)</operator> <call><name><name>DriverManager</name><operator>.</operator><name>getConnection</name></name><argument_list>(
+					<argument><expr><literal type="string">"jdbc:mysql://localhost:3306/MOCK_DATA2"</literal></expr></argument>,
+					<argument><expr><literal type="string">"root"</literal></expr></argument>, <argument><expr><literal type="string">"boyang"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>Statement</name></type> <name>stmt</name> <init>= <expr><operator>(</operator><name>Statement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>createStatement</name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+			<decl_stmt><decl><type><name>String</name></type> <name>query</name> <init>= <expr><literal type="string">"select age FROM MOCK_DATA1000 where id = "</literal> <operator>+</operator> <name>id</name></expr></init></decl>;</decl_stmt>	
+			<decl_stmt><decl><type><name>ResultSet</name></type> <name>rs</name> <init>= <expr><call><name><name>stmt</name><operator>.</operator><name>executeQuery</name></name><argument_list>(<argument><expr><name>query</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+
+			<comment type="line">//while(rs.next()){</comment>
+
+
+
+			<decl_stmt><decl><type><name>double</name></type> <name>number</name> <init>= <expr><call><name><name>rs</name><operator>.</operator><name>getInt</name></name><argument_list>(<argument><expr><literal type="string">"age"</literal></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"number"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA1000"</literal></expr></argument>,<argument><expr><literal type="string">"number"</literal></expr></argument>,<argument><expr><literal type="boolean">true</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<assert>assert<expr><operator>(</operator><name>number</name> <operator>&lt;</operator><literal type="number">360</literal><operator>)</operator></expr>;</assert>
+			<decl_stmt><decl><type><name>int</name></type> <name>duty</name> <init>= <expr><literal type="number">1</literal></expr></init></decl>;</decl_stmt>   <comment type="line">// 1, correct </comment>
+			<expr_stmt><expr><call><name><name>DBAnnotation</name><operator>.</operator><name>annoate</name></name><argument_list>(<argument><expr><literal type="string">"duty"</literal></expr></argument>,<argument><expr><literal type="string">"MOCK_DATA1000"</literal></expr></argument>,<argument><expr><literal type="string">"duty"</literal></expr></argument>,<argument><expr><literal type="boolean">false</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+
+			<decl_stmt><decl><type><name>String</name></type> <name>updateS</name> <init>= <expr><literal type="string">"UPDATE PERSON SET duty = ?  WHERE id = ?"</literal></expr></init></decl>;</decl_stmt>
+
+			<decl_stmt><decl><type><name>PreparedStatement</name></type> <name>preparedStmt</name> <init>=  <expr><operator>(</operator><name>PreparedStatement</name><operator>)</operator> <call><name><name>conn</name><operator>.</operator><name>prepareStatement</name></name><argument_list>(<argument><expr><name>updateS</name></expr></argument>)</argument_list></call></expr></init></decl>;</decl_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setDouble</name></name><argument_list>(<argument><expr><literal type="number">1</literal></expr></argument>, <argument><expr><name>duty</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>setString</name></name><argument_list>(<argument><expr><literal type="number">2</literal></expr></argument>, <argument><expr><name>id</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>preparedStmt</name><operator>.</operator><name>executeUpdate</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+			<expr_stmt><expr><call><name><name>conn</name><operator>.</operator><name>close</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+		}</block>
+		<catch>catch <parameter_list>(<param><decl><type><name>Exception</name></type> <name>e</name></decl></param>)</parameter_list> <block>{
+			<expr_stmt><expr><call><name><name>System</name><operator>.</operator><name>out</name><operator>.</operator><name>println</name></name><argument_list>(<argument><expr><literal type="string">"exception"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+		}</block></catch></try>
+	}</block></function>
+
+
+
+}</block></class>
+</unit>
