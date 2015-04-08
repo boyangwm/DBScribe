@@ -8,9 +8,9 @@ import java.util.ArrayList;
  */
 public class Class {
 	
-	Name packageName = new Name();
-	ArrayList <Name> imports = new ArrayList <Name> ();
-	String className = "";
+	private Name packageName = new Name();  			// the package name
+	private ArrayList <Name> imports = new ArrayList <Name> (); //shows all import information
+	private String className = "";					//the class name
 	
 	
 	public Class(){
@@ -36,9 +36,6 @@ public class Class {
 		Name nameNewImport = new Name(strlistImportName);
 		imports.add(nameNewImport);
 	}
-	
-	
-	
 	
 	
 	

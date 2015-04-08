@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -15,6 +16,9 @@ import org.jdom2.input.SAXBuilder;
 
 public class Xmlparser {
 
+	Namespace ns = Namespace.getNamespace("http://www.sdml.info/srcML/src");
+	
+	
 	public Xmlparser(){
 
 	}
@@ -55,7 +59,7 @@ public class Xmlparser {
 		try{
 
 			SAXBuilder builder = new SAXBuilder();
-			Namespace ns = Namespace.getNamespace("http://www.sdml.info/srcML/src");
+			
 			Document document = (Document) builder.build(new File(fileName));
 			Element rootNode = document.getRootElement();
 
@@ -77,7 +81,7 @@ public class Xmlparser {
 				}
 				newCL.setPackageName(packageName);
 
-				//*********** "import"   ***********
+				//*********** "package"   ***********
 				List < Element> listImport = rootNode.getChildren("import", ns);
 				System.out.println(listImport.size());
 				//<import><name><name>realname</name><name/></name> </import>
@@ -100,11 +104,20 @@ public class Xmlparser {
 				newCL.setClassName(eleClass.getChildText("name", ns));
 				
 				//*********** "class name"   ***********
-				List < Element> listMethod = eleClass.getChildren("function", ns);
-				for(Element eleMethod: listMethod) {
-					Method curMethod = parseMethodElement(eleMethod);
-				}
+				Element tempBlock = eleClass.getChild("block", ns);
+				if(tempBlock != null){
+					List < Element> listMethod = tempBlock.getChildren("function", ns);
+					//<function> </function>
+					for(Element eleMethod: listMethod) {
+						Method curMethod = parseMethodElement(eleMethod);
+					}
 
+				}else{
+					System.out.println("WARNING: Emptey class ");
+				}
+				
+				
+				
 
 				System.out.println("class print \n" + newCL.toString());
 			}
@@ -117,17 +130,53 @@ public class Xmlparser {
 	}
 	
 	
+	/**
+	 * Given method element, this function can parse the element to Method class
+	 * @param eleMethod
+	 * @return
+	 */
 	private Method parseMethodElement(Element eleMethod){
+		//method name
 		Method ret_Method = new Method();
+		String methodName = eleMethod.getChildText("name", ns);
+		ret_Method.setMethodName(methodName);
 		
 		
+		//specifier: public private etc.
+		String methodSpecifier = "";
+		Element tempType = eleMethod.getChild("type", ns);
+		if(tempType != null){
+			methodSpecifier = tempType.getChildText("specifier", ns);
+		}
+		ret_Method.setMethodSpecifier(methodSpecifier);
+		
+		
+		//
+		
+		
+		//sub blocks
+		Queue <Element> queueBlocks =  new LinkedList <Element> ();
+		queueBlocks.add(eleMethod.getChild("block", ns));
+		while(queueBlocks.size() >= 1){
+			Element curBlock = queueBlocks.poll();
+			
+			
+			
+			List <Element> blockList = curBlock.getChildren("block", ns);
+			for(Element b: blockList){
+				queueBlocks.add(b);
+			}
+			
+		}
+		
+		
+		
+		System.out.println(ret_Method);
 		return ret_Method;
 		
 	}
 	
 	
-	
-
 	//testing for XmlParser
 	public static void main(String [] args){
 		Xmlparser xp = new Xmlparser();
