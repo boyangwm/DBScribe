@@ -24,7 +24,6 @@ public class Xmlparser {
 	}
 
 
-
 	/**
 	 * Parse the xml folder
 	 * @param folderName
@@ -43,9 +42,6 @@ public class Xmlparser {
 		//fileName = "abc.xml";
 
 		parseXMLFile(fileName);
-		//}
-
-
 
 	}
 
@@ -150,18 +146,51 @@ public class Xmlparser {
 		}
 		ret_Method.setMethodSpecifier(methodSpecifier);
 
-
-		//
-
+		// Extract number of args
+		int numMethodArgs = 0;
+		Element tempParasList = eleMethod.getChild("parameter_list", ns);
+		if(tempParasList != null){
+			List < Element> args = tempParasList.getChildren("param", ns);
+			numMethodArgs = args.size();
+		}
+		ret_Method.setMethodNumArgs(numMethodArgs);
 
 		//sub blocks
 		Queue <Element> queueBlocks =  new LinkedList <Element> ();
 		queueBlocks.add(eleMethod.getChild("block", ns));
 		while(queueBlocks.size() >= 1){
 
-			
-			//System.out.println("queueblock visit");
 			Element curBlock = queueBlocks.poll();
+
+			/*
+			 * catching function calls from statements
+			 */
+			Element tempEle = null;
+
+			//<decl_stmt><decl><init><expr><call> 
+			List <Element> declList = curBlock.getChildren("decl_stmt", ns);
+
+			for(Element curDecl : declList){
+				Element declEle = curDecl.getChild("decl", ns); 
+				if(declEle!= null){
+					tempEle = declEle.getChild("init", ns); 	//<init><expr><call> 
+					if(tempEle!= null){
+						Element exprEle = tempEle.getChild("expr", ns);	//<expr><call> 
+						if(exprEle != null){
+							Element callEle = exprEle.getChild("call", ns);
+							if(callEle != null){
+								//return CallStmt
+								CallStmt cs = parseToCallStmt(callEle);
+								ret_Method.addfuncCallStmt(cs);
+							}
+						}
+					}
+				}
+			}
+
+
+			//<expr_stmt><expr><call>
+
 
 			/*
 			 * Add other blocks into the queue
@@ -170,13 +199,11 @@ public class Xmlparser {
 			Element blockNew = null;
 			//<if><then><block>
 			List <Element> ifList = curBlock.getChildren("if", ns);
-			//System.out.println("ifList  size " + ifList.size());
 			for(Element curif : ifList){
 				Element eleThen = curif.getChild("then", ns);
 				if(eleThen != null){
 					blockNew = eleThen.getChild("block", ns);
 					if(blockNew != null){
-						//System.out.println("queue  add -- then ");
 						queueBlocks.add(blockNew);
 					}
 				}
@@ -184,7 +211,6 @@ public class Xmlparser {
 				if(eleElse != null){
 					blockNew = eleElse.getChild("block", ns);
 					if(blockNew != null){
-						//System.out.println("queue  add -- else ");
 						queueBlocks.add(blockNew);
 					}
 				}
@@ -198,7 +224,6 @@ public class Xmlparser {
 			for(Element curWhile : whileList){
 				blockNew = curWhile.getChild("block", ns);
 				if(blockNew != null){
-					//System.out.println("queue  add -- while ");
 					queueBlocks.add(blockNew);
 				}
 			}
@@ -208,7 +233,6 @@ public class Xmlparser {
 			for(Element curTry : tryList){
 				blockNew = curTry.getChild("block", ns);
 				if(blockNew != null){
-					//System.out.println("queue  add -- try ");
 					queueBlocks.add(blockNew);
 				}
 			}
@@ -239,6 +263,55 @@ public class Xmlparser {
 
 		System.out.println(ret_Method);
 		return ret_Method;
+
+	}
+
+
+
+	/**
+	 * Parse  <call> to CallStmt class
+	 * @param ele
+	 * @return
+	 */
+	private CallStmt parseToCallStmt(Element ele){
+
+
+		//might be not necessary to store full name 
+		//System.out.XXX or a.out.XXX is difficult in syntax level anyway.
+		ArrayList <String> fullName = new ArrayList <String>();
+		Element outerName = ele.getChild("name", ns);
+		if(outerName == null){
+			return null;
+		}
+
+		//two level <name>
+		//For example: <call><name><name>Employee</name><operator>.</operator><name>addIntoDatabase</name></name><argument_list>
+		List < Element> curNameList = outerName.getChildren("name", ns);
+		for(int i = 0; i < curNameList.size(); i++){
+			String namePartial = curNameList.get(i).getValue();
+			fullName.add(namePartial);
+		}
+
+		// Extract number of args
+		// Example:<argument_list>(<argument><expr><name>retreivedAdminUIN</name></expr></argument>)</argument_list>
+		int argsNum = 0;
+		Element arg_list = ele.getChild("argument_list", ns);
+		if(arg_list != null){
+			List < Element> args = arg_list.getChildren("argument", ns);
+			argsNum = args.size();
+		}
+
+		//Extract function call name (last)
+		if(curNameList.size() > 0){
+			String functionName = curNameList.get(curNameList.size()-1).getValue();
+			CallStmt cs = new CallStmt(functionName, argsNum, fullName);
+			//System.out.println(functionName   +  "    "  + argsNum + "  **"); 
+			return cs;
+		}else{
+			return null;
+		}
+
+
 
 	}
 

@@ -17,12 +17,20 @@ public class Class {
 		
 	}
 	
+	/**
+	 * Set package name
+	 * @param strlistPackageName
+	 */
 	public void setPackageName(ArrayList<String> strlistPackageName) {
 		this.packageName = new Name(strlistPackageName);
 		
 	}
 	
 	
+	/**
+	 * Set class name
+	 * @param strClassName
+	 */
 	public void setClassName(String strClassName) {
 		this.className = strClassName;	
 	}

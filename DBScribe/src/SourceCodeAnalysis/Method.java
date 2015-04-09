@@ -1,5 +1,7 @@
 package SourceCodeAnalysis;
 
+import java.util.ArrayList;
+
 /**
  * Method entity to represent a method
  * @author Boyang
@@ -9,6 +11,9 @@ public class Method {
 	
 	private String methodName = "";
 	private String methodSpecifier = "";
+	private int methodNumArgs = 0;
+	
+	private ArrayList <CallStmt> funcCallStmts = new ArrayList <CallStmt>(); 
 	
 	
 	
@@ -49,9 +54,23 @@ public class Method {
 	
 	
 	
+	public void addfuncCallStmt(CallStmt cs){
+		funcCallStmts.add(cs);
+		
+	}
+	
+	
+	public void setMethodNumArgs(int numMethodArgs){
+		this.methodNumArgs = numMethodArgs;
+	}
+	
+	
 	public String toString(){
 		String str_ret = "";
-		str_ret += "Method :" + this.methodSpecifier +  "  " + this.methodName +"\n";
+		str_ret += "Method :" + this.methodSpecifier +  "  " + this.methodName +"(" +methodNumArgs+")"+"\n";
+		for(CallStmt cs: funcCallStmts){
+			str_ret += cs.toString() + "\n";		
+		}
 		return str_ret;
 		
 	}
