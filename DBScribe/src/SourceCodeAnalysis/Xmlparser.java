@@ -17,8 +17,8 @@ import org.jdom2.input.SAXBuilder;
 public class Xmlparser {
 
 	Namespace ns = Namespace.getNamespace("http://www.sdml.info/srcML/src");
-	
-	
+
+
 	public Xmlparser(){
 
 	}
@@ -59,7 +59,7 @@ public class Xmlparser {
 		try{
 
 			SAXBuilder builder = new SAXBuilder();
-			
+
 			Document document = (Document) builder.build(new File(fileName));
 			Element rootNode = document.getRootElement();
 
@@ -68,7 +68,7 @@ public class Xmlparser {
 			//process each class in the file
 			for(Element eleClass : listClass){
 				Class newCL = new Class();
-				
+
 				//=====  General info start  =======
 				//*********** "package"   ***********
 				Element elePackage = rootNode.getChild("package", ns);
@@ -99,10 +99,10 @@ public class Xmlparser {
 				}
 
 				//=====  General info end  =======
-				
+
 				//*********** "class name"   ***********
 				newCL.setClassName(eleClass.getChildText("name", ns));
-				
+
 				//*********** "class name"   ***********
 				Element tempBlock = eleClass.getChild("block", ns);
 				if(tempBlock != null){
@@ -115,21 +115,21 @@ public class Xmlparser {
 				}else{
 					System.out.println("WARNING: Emptey class ");
 				}
-				
-				
-				
+
+
+
 
 				System.out.println("class print \n" + newCL.toString());
 			}
-			
+
 		} catch (JDOMException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-	
-	
+
+
 	/**
 	 * Given method element, this function can parse the element to Method class
 	 * @param eleMethod
@@ -140,8 +140,8 @@ public class Xmlparser {
 		Method ret_Method = new Method();
 		String methodName = eleMethod.getChildText("name", ns);
 		ret_Method.setMethodName(methodName);
-		
-		
+
+
 		//specifier: public private etc.
 		String methodSpecifier = "";
 		Element tempType = eleMethod.getChild("type", ns);
@@ -149,34 +149,100 @@ public class Xmlparser {
 			methodSpecifier = tempType.getChildText("specifier", ns);
 		}
 		ret_Method.setMethodSpecifier(methodSpecifier);
-		
-		
+
+
 		//
-		
-		
+
+
 		//sub blocks
 		Queue <Element> queueBlocks =  new LinkedList <Element> ();
 		queueBlocks.add(eleMethod.getChild("block", ns));
 		while(queueBlocks.size() >= 1){
+
+			
+			//System.out.println("queueblock visit");
 			Element curBlock = queueBlocks.poll();
-			
-			
-			
-			List <Element> blockList = curBlock.getChildren("block", ns);
-			for(Element b: blockList){
-				queueBlocks.add(b);
+
+			/*
+			 * Add other blocks into the queue
+			 * nested while if etc.
+			 */
+			Element blockNew = null;
+			//<if><then><block>
+			List <Element> ifList = curBlock.getChildren("if", ns);
+			//System.out.println("ifList  size " + ifList.size());
+			for(Element curif : ifList){
+				Element eleThen = curif.getChild("then", ns);
+				if(eleThen != null){
+					blockNew = eleThen.getChild("block", ns);
+					if(blockNew != null){
+						//System.out.println("queue  add -- then ");
+						queueBlocks.add(blockNew);
+					}
+				}
+				Element eleElse = curif.getChild("else", ns);
+				if(eleElse != null){
+					blockNew = eleElse.getChild("block", ns);
+					if(blockNew != null){
+						//System.out.println("queue  add -- else ");
+						queueBlocks.add(blockNew);
+					}
+				}
 			}
-			
+
+
+
+
+			//while><block>
+			List <Element> whileList = curBlock.getChildren("while", ns);
+			for(Element curWhile : whileList){
+				blockNew = curWhile.getChild("block", ns);
+				if(blockNew != null){
+					//System.out.println("queue  add -- while ");
+					queueBlocks.add(blockNew);
+				}
+			}
+
+			//<try><block>
+			List <Element> tryList = curBlock.getChildren("try", ns);
+			for(Element curTry : tryList){
+				blockNew = curTry.getChild("block", ns);
+				if(blockNew != null){
+					//System.out.println("queue  add -- try ");
+					queueBlocks.add(blockNew);
+				}
+			}
+
+
+			//<catch><block>
+			List <Element> catchList = curBlock.getChildren("catch", ns);
+			for(Element curCatch : catchList){
+				blockNew = curCatch.getChild("block", ns);
+				if(blockNew != null){
+					queueBlocks.add(blockNew);
+				}
+			}
+
+			//<for> <block>
+			List <Element> forList = curBlock.getChildren("for", ns);
+			for(Element curFor : forList){
+				blockNew = curFor.getChild("block", ns);
+				if(blockNew != null){
+					queueBlocks.add(blockNew);
+				}
+			}
+			//do
+			//switch
 		}
-		
-		
-		
+
+
+
 		System.out.println(ret_Method);
 		return ret_Method;
-		
+
 	}
-	
-	
+
+
 	//testing for XmlParser
 	public static void main(String [] args){
 		Xmlparser xp = new Xmlparser();
