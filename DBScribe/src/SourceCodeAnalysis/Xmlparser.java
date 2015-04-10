@@ -105,16 +105,14 @@ public class Xmlparser {
 					List < Element> listMethod = tempBlock.getChildren("function", ns);
 					//<function> </function>
 					for(Element eleMethod: listMethod) {
-						Method curMethod = parseMethodElement(eleMethod);
+						Method curMethod = parseMethodElement(newCL, eleMethod);
+						newCL.addMethod(curMethod);
+						System.out.println(curMethod);
 					}
 
 				}else{
 					System.out.println("WARNING: Emptey class ");
 				}
-
-
-
-
 				System.out.println("class print \n" + newCL.toString());
 			}
 
@@ -128,12 +126,13 @@ public class Xmlparser {
 
 	/**
 	 * Given method element, this function can parse the element to Method class
+	 * @param classBelong
 	 * @param eleMethod
 	 * @return
 	 */
-	private Method parseMethodElement(Element eleMethod){
+	private Method parseMethodElement(Class classBelong, Element eleMethod){
 		//method name
-		Method ret_Method = new Method();
+		Method ret_Method = new Method(classBelong);
 		String methodName = eleMethod.getChildText("name", ns);
 		ret_Method.setMethodName(methodName);
 
@@ -259,9 +258,6 @@ public class Xmlparser {
 			//switch
 		}
 
-
-
-		System.out.println(ret_Method);
 		return ret_Method;
 
 	}

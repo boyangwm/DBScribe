@@ -13,6 +13,11 @@ public class Class {
 	private String className = "";					//the class name
 	
 	
+	/**
+	 * all methods of this class
+	 */
+	private ArrayList <Method> allMethods = new ArrayList <Method>();
+	
 	public Class(){
 		
 	}
@@ -45,6 +50,17 @@ public class Class {
 		imports.add(nameNewImport);
 	}
 	
+	
+	
+	
+	/**
+	 * Add a method m to the method list
+	 * @param m
+	 */
+	public void addMethod(Method m){
+		allMethods.add(m);
+		
+	}
 	
 	
 	public String toString(){

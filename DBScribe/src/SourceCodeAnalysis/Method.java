@@ -9,12 +9,23 @@ import java.util.ArrayList;
  */
 public class Method {
 	
+	//The class this method belong to 
+	private Class classBelong = null;
+	
 	private String methodName = "";
 	private String methodSpecifier = "";
 	private int methodNumArgs = 0;
 	
 	private ArrayList <CallStmt> funcCallStmts = new ArrayList <CallStmt>(); 
 	
+	
+	/**
+	 * class constructor. create a method belong to classBelong
+	 * @param classBelong
+	 */
+	public Method(Class classBelong){
+		this.classBelong = classBelong;
+	}
 	
 	
 	/**
