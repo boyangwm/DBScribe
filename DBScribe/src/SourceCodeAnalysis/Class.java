@@ -41,6 +41,12 @@ public class Class {
 	}
 	
 	
+	public String getClassName() {
+		return this.className;	
+	}
+	
+	
+	
 	/**
 	 * add an import information to the class
 	 * @param strImportName

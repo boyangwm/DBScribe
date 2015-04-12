@@ -42,7 +42,6 @@ public class MethodKey{
 	@Override
 	public int hashCode()
 	{
-		System.out.println("In hashcode");
         int hashcode = 0;
         hashcode = NumPara*20;
         hashcode += funcName.hashCode();

@@ -35,14 +35,14 @@ public class Xmlparser {
 
 		File file[] = dir.listFiles();
 
-		//for (int i = 0; i < file.length; i++) {
-		int i = 0;
-		fileName = file[i].getAbsolutePath();
-		//fileName = "Admin.java.xml";
-		//fileName = "abc.xml";
+		for (int i = 0; i < file.length; i++) {
+			//int i = 0;
+			fileName = file[i].getAbsolutePath();
+			//fileName = "Admin.java.xml";
+			//fileName = "abc.xml";
 
-		parseXMLFile(fileName);
-
+			parseXMLFile(fileName);
+		}
 	}
 
 
@@ -53,7 +53,6 @@ public class Xmlparser {
 	private void parseXMLFile(String fileName){
 		System.out.println(fileName);
 		try{
-
 			SAXBuilder builder = new SAXBuilder();
 
 			Document document = (Document) builder.build(new File(fileName));
@@ -107,6 +106,8 @@ public class Xmlparser {
 					for(Element eleMethod: listMethod) {
 						Method curMethod = parseMethodElement(newCL, eleMethod);
 						newCL.addMethod(curMethod);
+						//save current method (we save each method after we create it)
+						DBscribe.storeMethod(curMethod);
 						System.out.println(curMethod);
 					}
 
@@ -166,9 +167,13 @@ public class Xmlparser {
 			 */
 			Element tempEle = null;
 
+			ArrayList<Element> callElementList = new ArrayList<Element>();
+
+			Queue <Element> queueExpr = new LinkedList <Element> ();
+
+
 			//<decl_stmt><decl><init><expr><call> 
 			List <Element> declList = curBlock.getChildren("decl_stmt", ns);
-
 			for(Element curDecl : declList){
 				Element declEle = curDecl.getChild("decl", ns); 
 				if(declEle!= null){
@@ -176,19 +181,55 @@ public class Xmlparser {
 					if(tempEle!= null){
 						Element exprEle = tempEle.getChild("expr", ns);	//<expr><call> 
 						if(exprEle != null){
-							Element callEle = exprEle.getChild("call", ns);
-							if(callEle != null){
-								//return CallStmt
-								CallStmt cs = parseToCallStmt(callEle);
-								ret_Method.addfuncCallStmt(cs);
-							}
+							queueExpr.add(exprEle);
+						}
+					}
+				}
+			}
+
+			//<expr_stmt><expr><call>
+			List <Element> expStmtList = curBlock.getChildren("expr_stmt", ns);
+			for(Element curExpstmt : expStmtList){
+				Element exprEle = curExpstmt.getChild("expr", ns);	//<expr><call> 
+				if(exprEle != null){
+					queueExpr.add(exprEle);
+				}
+			}
+
+
+
+			while(queueExpr.size() > 0){
+				Element CurExprEle = queueExpr.poll();
+				Element callEle = CurExprEle.getChild("call", ns);
+				if(callEle != null){
+					callElementList.add(callEle);
+					//return CallStmt
+					//CallStmt cs = parseToCallStmt(callEle);
+					//ret_Method.addfuncCallStmt(cs);
+				}
+				Element nameEle = CurExprEle.getChild("name", ns);
+				if(nameEle != null){
+					Element indexEle = nameEle.getChild("index", ns);
+					if(indexEle != null){
+						Element exprEle = indexEle.getChild("expr", ns);
+						if(exprEle != null){
+							queueExpr.add(exprEle);
 						}
 					}
 				}
 			}
 
 
-			//<expr_stmt><expr><call>
+
+
+
+			//for each call element
+			for(Element callEle:  callElementList){
+				CallStmt cs = parseToCallStmt(callEle);
+				//System.out.println(cs);
+				if(cs != null)
+					ret_Method.addfuncCallStmt(cs);
+			}
 
 
 			/*
@@ -306,9 +347,6 @@ public class Xmlparser {
 		}else{
 			return null;
 		}
-
-
-
 	}
 
 
@@ -316,6 +354,13 @@ public class Xmlparser {
 	public static void main(String [] args){
 		Xmlparser xp = new Xmlparser();
 		xp.parseXMLFolder("output\\");
+		MethodKey mk = new MethodKey ("updateAdminDept", 1);
+		ArrayList<Method> al = DBscribe.mm.getMethodList(mk);
+		System.out.println("print updateAdminDept");
+		for(Method m : al){
+			System.out.println(m);
+		}
+		 DBscribe.mm.myTest();
 
 	}
 
