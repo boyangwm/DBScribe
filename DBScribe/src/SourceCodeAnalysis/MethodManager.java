@@ -99,7 +99,7 @@ public class MethodManager {
 		Iterator<Entry<Integer, Integer>> it = hm.entrySet().iterator();
 	    while (it.hasNext()) {
 	    	Map.Entry<Integer, Integer> pair = (Map.Entry<Integer, Integer>)it.next();
-	        System.out.println(pair.getKey() + " = " + pair.getValue());
+	        System.out.println(  pair.getKey() + "  ---  " + "Number of keys (name + numOfParas) " + ((pair.getValue()+1)/pair.getKey()));
 	        it.remove(); // avoids a ConcurrentModificationException
 	    }
 		

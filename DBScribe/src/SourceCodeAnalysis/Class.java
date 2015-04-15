@@ -41,10 +41,22 @@ public class Class {
 	}
 	
 	
+	/**
+	 * return class name
+	 * @return
+	 */
 	public String getClassName() {
 		return this.className;	
 	}
 	
+	
+	/**
+	 * return package name 
+	 * @return
+	 */
+	public Name getPackageName(){
+		return this.packageName;
+	}
 	
 	
 	/**

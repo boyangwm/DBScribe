@@ -1,0 +1,229 @@
+com.umas.code|Admin|getAllAdmin|0|Select *   FROM people   WHERE PositionID=1
+com.umas.code|Classroom|Classroom|1|Select *   FROM classroom   WHERE classroomID= ?
+com.umas.code|Classroom|addNewClassroom|3|Insert into classroom   (ClassroomName, ClassroomLocation, ClassroomCapacity)   Values(?,?,?)
+com.umas.code|Classroom|addNewClassroom|3|Select ClassroomName   FROM classroom   WHERE ClassroomName= ? AND ClassroomLocation= ?
+com.umas.code|Classroom|getClassID|2|Select ClassroomID   FROM classroom   WHERE classroomName= ? and classroomLocation= ?
+com.umas.code|Classroom|findOpenSlotsForClassroom|1|SELECT TimeslotID FROM courseschedule natural join timeslots   where ClassroomID = ? and TimeslotType = ?
+com.umas.code|Classroom|findOpenSlotsForClassroom|1|SELECT TimeslotID   From timeslots   where TimeslotType = ?
+com.umas.code|Classroom|isEmpty|2|Select *   FROM courseschedule   WHERE classroomID= ? and TimeSlotID= ?
+com.umas.code|Course|Course|1|Select CourseID, CourseName, DepartmentID   FROM courses   WHERE CourseID= ?
+com.umas.code|Course|Course|1|Select CourseID, CourseName, DepartmentID   FROM courses   WHERE CourseName= ?
+com.umas.code|Course|addCourse|2|Insert into courses (CourseName, DepartmentID) Values (?,?);
+com.umas.code|Course|updateCourse|2|UPDATE courses   SET CourseName= ?, DepartmentID= ?   WHERE CourseID= ?
+com.umas.code|Course|isExists|2|Select CourseID, CourseName, DepartmentID   FROM courses   WHERE CourseName= ? and DepartmentID=?
+com.umas.code|Course|removeCourse|1|Select CourseID, CourseName, DepartmentID   FROM courses   WHERE CourseID= ?
+com.umas.code|Course|getAllCourses|0|Select *   FROM courses
+com.umas.code|Course|getCurrentOfferings|0|Select *   FROM coursesoffered natural join courseschedule   WHERE coursesoffered.CourseID= ?
+com.umas.code|Course|getCoursesOfDepartment|1|Select *   FROM courses   WHERE DepartmentID= ?
+com.umas.code|CourseCurve|getTotalCourseMarks|0|Select sum(TotalMarks) As TotalMarks2 FROM %s;
+com.umas.code|CourseExams|createCourseExamMarksTable|3|CREATE TABLE %s (`StudentUIN` int(12) NOT NULL,`StudentEnrollmentID` int(12) NOT NULL,   PRIMARY KEY (`StudentUIN`), KEY `StudentID_idx` (`StudentUIN`),    KEY `StudentEnrollmentID_idx` (`StudentEnrollmentID`),  CONSTRAINT %s FOREIGN KEY (`StudentEnrollmentID`) REFERENCES `studentenrollment` (`EnrollmentID`) ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT %s FOREIGN KEY (`StudentUIN`) REFERENCES `student` (`UIN`) ON DELETE CASCADE ON UPDATE CASCADE);
+com.umas.code|CourseExams|addNewExamColumn|1|ALTER TABLE %s ADD COLUMN %s DECIMAL(4,1) Null DEFAULT 0 ;
+com.umas.code|CourseExams|isExamPresent|2|SELECT ISC.column_name FROM INFORMATION_SCHEMA.COLUMNS ISC WHERE ISC.table_name = ?;
+com.umas.code|CourseExams|modifyExistingExamColumnName|2|ALTER TABLE %s CHANGE COLUMN %s %s DECIMAL(4,1) NULL;
+com.umas.code|CourseExams|deleteExistingExamColumn|1|ALTER TABLE %s DROP COLUMN %s ;
+com.umas.code|CourseExams|addStudentMarks|0|UPDATE %s SET %s = ? WHERE `StudentUIN`=?;
+com.umas.code|CourseExams|getStudentMarks|0|SELECT * FROM %s ;
+com.umas.code|CourseExams|getStudentMarks|2|SELECT %s FROM %s WHERE StudentUIN = ?;
+com.umas.code|CourseExams|getStudents|2|SELECT StudentUIN, %s FROM %s;
+com.umas.code|CourseExams|modifyStudentMarks|0|UPDATE %s SET %s = ? WHERE `StudentUIN`=?;
+com.umas.code|CourseExams|viewAllExams|0|SELECT ExamName FROM %s ;
+com.umas.code|CourseExamStructure|CourseExamStructure|2|Select TotalMarks FROM %s WHERE ExamName = ?;
+com.umas.code|CourseExamStructure|createCourseExamStructureTable|3|CREATE TABLE %s (ExamName varchar(20), TotalMarks int(12),PRIMARY KEY (ExamName)) ;
+com.umas.code|CourseExamStructure|addNewExam|0|INSERT INTO %s (ExamName,TotalMarks) VALUES(?,?) ;
+com.umas.code|CourseExamStructure|isExamPresent|2|Select ExamName FROM %s ;
+com.umas.code|CourseExamStructure|modifyExistingExamName|1|UPDATE %s SET ExamName = ? WHERE ExamName = ? ;
+com.umas.code|CourseExamStructure|modifyExistingExamTotalMarks|1|UPDATE %s SET TotalMarks = ? WHERE ExamName = ? ;
+com.umas.code|CourseExamStructure|deleteExistingExam|0|DELETE FROM %s WHERE ExamName = ?  ;
+com.umas.code|CourseExamStructure|viewExams|1|SELECT ExamName,TotalMarks FROM %s ;
+com.umas.code|CourseOffered|CourseOffered|1|Select *   FROM coursesoffered   WHERE OfferID= ?
+com.umas.code|CourseOffered|getAllCurrentlyOfferedCourses|0|Select *   FROM coursesoffered   WHERE SemesterID= ?
+com.umas.code|CourseOffered|getAllOfferedIDAndCourseOffered|0|Select *   FROM coursesoffered   WHERE SemesterID= ?
+com.umas.code|CourseOffered|getAllOfferedCourses|0|Select *   FROM coursesoffered
+com.umas.code|CourseOffered|addCourseOfferingToDatabase|3|Insert into coursesoffered  (CourseID,SemesterID,TotalCapacity,SeatsFilled,TaughtBy)  Values(?,?,?,?,?);
+com.umas.code|CourseOffered|addCourseOfferingToDatabase|3|Select OfferID   FROM coursesoffered   WHERE courseID= ? and TaughtBy= ? and SemesterID= ?
+com.umas.code|CourseOffered|updateCourseOffering|1|UPDATE coursesoffered   SET Taughtby= ?   WHERE offerID= ?
+com.umas.code|CourseOffered|getStudentCourses|1|Select *   FROM studentenrollment   WHERE UIN= ?
+com.umas.code|CourseOffered|getAllStudentsInCourse|1|Select *   FROM studentenrollment   WHERE OfferID=?
+com.umas.code|CourseOffered|getCurrentProfessorCourses|1|Select *   FROM coursesoffered   WHERE TaughtBy=? and SemesterID= ?
+com.umas.code|CourseOffered|getAllCurrentCoursesTAedBy|1|Select *   FROM coursesoffered as c join teachingassistant as t   WHERE c.SemesterID= ? and t.OfferID = c.OfferID and TaUIN= ?
+com.umas.code|CourseOffered|getAllCurrentCoursesTakenBy|1|Select *   FROM studentenrollment   WHERE UIN= ?
+com.umas.code|CourseOffered|addOneSeatFilledToCourseOffered|0|UPDATE coursesoffered   SET SeatsFilled= ?   WHERE OfferID= ? ;
+com.umas.code|CourseOffered|addOneSeatFilledToCourseOffered|0|Select *   FROM coursesoffered   WHERE OfferID= ?
+com.umas.code|CourseOffered|removeOneSeatFromCourseOffered|0|Select * FROM coursesoffered WHERE OfferID= ?;
+com.umas.code|CourseOffered|checkIfScheduled|0|Select *   FROM courseschedule   WHERE OfferID= ?
+com.umas.code|CourseOffered|checkIfExists|1|Select *   FROM coursesoffered   WHERE OfferID= ?
+com.umas.code|CourseOffered|getCurrentSemesterID|0|Select *   FROM semester   WHERE isCurrent= ?
+com.umas.code|CourseOffered|getTAsForCourse|1|Select *   FROM teachingassistant as t   WHERE t.OfferID = ?
+com.umas.code|CourseSchedule|CourseSchedule|1|Select *   FROM courseschedule   WHERE offerID= ?
+com.umas.code|CourseSchedule|updateCourseSchedule|3|UPDATE courseschedule   SET TimeSlotID= ? , ClassroomID=?   WHERE OfferID= ?
+com.umas.code|CourseSchedule|getAllScheduledCourses|0|Select *   FROM courseschedule natural join coursesoffered   ORDER BY TotalCapacity
+com.umas.code|CourseSchedule|getAllScheduledCourses|1|Select *   FROM courseschedule natural join coursesoffered   ORDER BY TotalCapacity
+com.umas.code|CourseSchedule|isScheduled|1|Select *   FROM courseschedule   WHERE offerID= ?
+com.umas.code|CourseSchedule|addSchedule|3|Insert into courseschedule   (OfferID, TimeSlotID, ClassroomID)   Values(?,?,?)
+com.umas.code|CourseSchedule|deleteAllCourseSchedule|0|Delete   FROM courseschedule
+com.umas.code|CourseSchedule|deleteSingleSchedule|1|Delete   FROM courseschedule   WHERE OfferID = ?
+com.umas.code|Department|Department|1|Select DepartmentID, DepartmentName   FROM department   WHERE DepartmentID= ?
+com.umas.code|Department|Department|1|Select DepartmentID, DepartmentName   FROM department   WHERE DepartmentName= ?
+com.umas.code|Department|addNewDepartment|1|Select DepartmentName   FROM department   WHERE DepartmentName= ?
+com.umas.code|Department|addNewDepartment|1|Insert into department (DepartmentName) Values (?);
+com.umas.code|Department|deleteDepartment|1|Select DepartmentID, DepartmentName   FROM department   WHERE DepartmentName= ?
+com.umas.code|Department|deleteDepartment|1|Select CourseID, CourseName, DepartmentID   FROM courses   WHERE DepartmentID= ?
+com.umas.code|Department|updateDepartment|0|Select DepartmentID, DepartmentName   FROM department   WHERE DepartmentID= ?
+com.umas.code|Department|isNameExisting|1|Select DepartmentName   FROM department   WHERE DepartmentName= ?
+com.umas.code|Department|getAllDepartments|0|Select *   FROM department
+com.umas.code|Department|getDepartmentCourses|0|Select CourseID   FROM department natural join courses   WHERE DepartmentID= ?
+com.umas.code|Department|getDepartmentCourseOffered|0|Select CourseID, OfferID   FROM coursesoffered natural join courses   WHERE DepartmentID= ? and SemesterID = ?
+com.umas.code|Department|updateDepLT250|1|select number FROM MOCK_DATA1000 where id =   id
+com.umas.code|Department|updateDepThree|1|select age FROM MOCK_DATA1000 where id =   id
+com.umas.code|Department|updateDutyGT600|1|select number FROM MOCK_DATA1000 where id =   id
+com.umas.code|Department|updateDutyOne|1|select age FROM MOCK_DATA1000 where id =   id
+com.umas.code|Employee|Employee|1|Select * From employee where UIN=?;
+com.umas.code|Employee|addEmployee|1|Insert into employee (UIN, Salary, OfficeAddress, OfficeHours) Values (?,?,?,?);
+com.umas.code|Employee|addEmployeeCheck|1|Select UIN From employee where UIN=?;
+com.umas.code|Employee|updateEmpDetails|3|UPDATE employee SET OfficeAddress=?, OfficeHours=? where UIN=?;
+com.umas.code|Employee|updateEmpDetailscheck|1|Select UIN From employee where UIN=?;
+com.umas.code|Employee|giveBonus|2|UPDATE employee SET Salary=? where UIN=?;
+com.umas.code|Employee|getsalary|1|Select Salary From employee where UIN=?;
+com.umas.code|Employee|giveBonusCheck|1|Select * From employee where UIN=?;
+com.umas.code|Employee|deleteFromEmployeeByUIN|1|Delete From employee where UIN=?;
+com.umas.code|Employee|deleteFromEmployeeByUINCheck|1|Select UIN From employee where UIN=?;
+com.umas.code|Employee|deleteFromEmployeeByUserName|1|Delete From employee where UIN=?;
+com.umas.code|Employee|getEmployeeUIN|1|Select UIN From people where Username=?;
+com.umas.code|Employee|deleteFromEmployeeByUserNameCheck|1|Select UIN From people where Username=?;
+com.umas.code|Employee|getAllEmployeesByDepartment|1|Select Username   FROM employee natural join people natural join department   WHERE DepartmentName= ?
+com.umas.code|Employee|checkIfEmployee|1|Select PositionID From People where UIN=?;
+com.umas.code|Employee|checkIfEmployee|1|Select PositionID From People where Username=?;
+com.umas.code|File|addFileToDB|3|INSERT INTO files (FileName,FileLocation,OfferID) VALUES(?,?,?);
+com.umas.code|File|isFilePresent|3|SELECT FileName FROM files WHERE OfferID = ? AND FileName = ? AND FileLocation = ?;
+com.umas.code|File|deleteFileFromDB|0|DELETE FROM files WHERE FileID = ?;
+com.umas.code|File|modifyFileLocation|1|UPDATE files SET `FileLocation`= ? WHERE `FileID`= ? ;
+com.umas.code|File|getFileIDFromDB|2|SELECT FileID FROM files WHERE FileName = ? AND FileLocation = ?;
+com.umas.code|File|getFiles|1|SELECT FileID, FileName, FileLocation FROM files WHERE OfferID = ?;
+com.umas.code|GradeSystem|insertNewGrade|0|INSERT INTO gradingsystem VALUES(?,?);
+com.umas.code|GradeSystem|isGradePresent|0|SELECT Grade FROM gradingsystem;
+com.umas.code|GradeSystem|isGradeLevelPresent|1|SELECT GradeLevel FROM gradingsystem;
+com.umas.code|GradeSystem|deleteGrade|0|DELETE FROM gradingsystem WHERE Grade = ?;
+com.umas.code|GradeSystem|modifyGrade|1|UPDATE gradingsystem SET Grade = ? WHERE Grade = ? ;
+com.umas.code|GradeSystem|modifyGradeLevel|1|UPDATE gradingsystem SET GradeLevel = ? WHERE GradeLevel = ? ;
+com.umas.code|GradeSystem|getGradeLevelForGrade|0|SELECT GradeLevel FROM gradingsystem WHERE Grade = ?;
+com.umas.code|GradeSystem|getGradeForGradeLevel|1|SELECT Grade FROM gradingsystem WHERE GradeLevel = ?;
+com.umas.code|GradeSystem|getMaxGradeLevel|0|SELECT max(GradeLevel) FROM gradingsystem;
+com.umas.code|Job|Job|1|Select * From jobpostings where JobID=?;
+com.umas.code|Job|postJob|9|Insert into jobpostings (PostedByUIN,JobInDepartment,ReqdMinimumGPA,  ReqdMinimumWorkExperience,  ReqdSkillset1,ReqdSkillset2,ReqdSkillset3,ReqdSkillset4,ReqdSkillset5)  values (?,?,?,?,?,?,?,?,?);
+com.umas.code|Job|updateJob|9|UPDATE jobpostings SET ReqdMinimumGPA=?,  ReqdMinimumWorkExperience=?,  ReqdSkillset1=?,ReqdSkillset2=?,ReqdSkillset3=?,ReqdSkillset4=?,ReqdSkillset5=?  where PostedByUIN=?;
+com.umas.code|Job|checkEligibility|1|Select PositionID From people where UIN=?;
+com.umas.code|Job|addToJobRoster|2|Insert into jobRoster (JobID, UIN) values (?,?);
+com.umas.code|Job|getAllJobsBySingleProfessor|1|Select JobID From jobpostings where PostedByUIN=?;
+com.umas.code|JobApplication|JobApplication|1|Select * From applicationdetails where ApplicantUIN=?;
+com.umas.code|JobApplication|addApplicationDetails|7|Insert into applicationdetails (applicantUIN, WorkExperience, Skillset1, Skillset2, Skillset3, Skillset4, Skillset5, Scaledscore) Values (?,?,?,?,?,?,?,?);
+com.umas.code|JobApplication|addApplicationDetailsCheck|1|Select ApplicationID From applicationdetails where ApplicantUIN=?;
+com.umas.code|JobApplication|retreiveMatchingStudents|7|Select applicationdetails.ApplicantUIN   From applicationdetails inner join student on   student.UIN=applicationdetails.ApplicantUIN where student.GPA>=? and  applicationdetails.WorkExperience>=? and applicationdetails.SkillSet1=? and  applicationdetails.SkillSet2=? and applicationdetails.SkillSet3=? and  applicationdetails.SkillSet4=? and applicationdetails.SkillSet5=?  and applicationdetails.ApplicantUIN not in  (select UIN from employee where employee.UIN=applicationdetails.ApplicantUIN) ORDER BY  applicationdetails.Scaledscore DESC LIMIT 10;
+com.umas.code|JobApplication|rePost|8|Select applicationdetails.ApplicantUIN   From applicationdetails inner join student on   student.UIN=applicationdetails.ApplicantUIN where student.GPA>=? and  applicationdetails.WorkExperience>=? and applicationdetails.SkillSet1=? and  applicationdetails.SkillSet2=? and applicationdetails.SkillSet3=? and  applicationdetails.SkillSet4=? and applicationdetails.SkillSet5=?  and applicationdetails.ApplicantUIN not in  (select UIN from employee where employee.UIN=applicationdetails.ApplicantUIN)  and applicationdetails.ApplicantUIN not in  (select UIN from jobroster where applicationdetails.ApplicantUIN=jobroster.UIN and JobID=?) ORDER BY  applicationdetails.Scaledscore DESC LIMIT 10;
+com.umas.code|JobApplication|updateApplication|7|Select ApplicantUIN From applicationdetails where ApplicantUIN=?;
+com.umas.code|JobApplication|updateApplication|7|UPDATE applicationdetails SET WorkExperience=?, Skillset1=?, Skillset2=?, Skillset3=?, Skillset4=?, Skillset5=?, Scaledscore=? where ApplicantUIN=?;
+com.umas.code|JobApplication|updateApplicationCheck|1|Select ApplicantUIN From applicationdetails where ApplicantUIN=?;
+com.umas.code|Login|authenticate|0|SELECT Username, Password FROM logindetails WHERE username = ? AND Password = ? ;
+com.umas.code|Login|addLoginInfoToDB|2|INSERT INTO logindetails (Username,Password) VALUES(?,?);
+com.umas.code|Login|checkUsernameInDatabase|1|SELECT Username FROM logindetails WHERE username = ? ;
+com.umas.code|Login|changePassword|2|UPDATE logindetails SET Password = ? WHERE Username = ?;
+com.umas.code|Login|recoverPassword|1|SELECT Password FROM logindetails WHERE Username = ?;
+com.umas.code|People|People|1|Select UIN, Name, Username, DepartmentID, PositionID From People where UIN=?;
+com.umas.code|People|People|1|Select UIN, Name, Username, DepartmentID, PositionID From People where Username=?;
+com.umas.code|People|checkIfUserNameExists|1|Select Username From People where Username=?;
+com.umas.code|People|addUserDetailsIntoLoginTable|2|Insert into logindetails (Username, Password) Values (?,?);
+com.umas.code|People|updateUserNameIntoLoginTable|2|UPDATE logindetails SET Username= ? where Username=?;
+com.umas.code|People|updateNameIntoPeopleTable|2|UPDATE people SET Name= ? where UIN=?;
+com.umas.code|People|updateDeptIntoPeopleTable|2|UPDATE people SET DepartmentID= ? where UIN=?;
+com.umas.code|People|addUserDetailsIntoLoginTableCheck|1|Select Username From logindetails where Username=?;
+com.umas.code|People|addIntoDatabase|3|Insert into People (Name, Username, DepartmentID, PositionID) Values (?,?,?,?);
+com.umas.code|People|addIntoDatabaseCheck|1|Select UIN, Name, Username, DepartmentID, PositionID From People where Username=?;
+com.umas.code|People|deleteFromDatabaseByUIN|1|Select UIN, Name, Username, DepartmentID, PositionID From People where UIN=?;
+com.umas.code|People|deleteFromDatabaseByUIN|1|Delete From People where UIN=?;
+com.umas.code|People|deleteFromDatabaseByUserName|1|Delete From People where Username=?;
+com.umas.code|People|deleteFromDatabaseByUserNameCheck|1|Select UIN, Name, Username, DepartmentID, PositionID From People where Username=?;
+com.umas.code|People|deleteFromDatabaseByUINCheck|1|Select UIN, Name, Username, DepartmentID, PositionID From People where UIN=?;
+com.umas.code|People|retireveDetailsByUIN|1|Select UIN, Name, Username, DepartmentID, PositionID From People where UIN=?;
+com.umas.code|People|retireveDetailsByuserName|1|Select UIN, Name, Username, DepartmentID, PositionID From People where Username=?;
+com.umas.code|People|updateGraduateLT25|1|select AGE FROM MOCK_DATA7000 where id =   id
+com.umas.code|People|updateGraduateOne|1|select AGE FROM MOCK_DATA7000 where id =   id
+com.umas.code|People|updateLocationZoneGrad|1|select graduate FROM MOCK_DATA7000 where id =   id
+com.umas.code|People|updateLocationTwo|1|select graduate FROM MOCK_DATA7000 where id =   id
+com.umas.code|People|updateCreditsGrad|1|select graduate FROM MOCK_DATA7000 where id =   id
+com.umas.code|People|updatecredits15|1|select graduate FROM MOCK_DATA7000 where id =   id
+com.umas.code|People|updateMarriageLT25|1|select age FROM MOCK_DATA7000 where id =   id
+com.umas.code|People|updateMarriageGTOne|1|select age FROM MOCK_DATA7000 where id =   id
+com.umas.code|People|updateParkingGT30|1|select age FROM MOCK_DATA7000 where id =   id
+com.umas.code|People|updateParkingThree|1|select age FROM MOCK_DATA7000 where id =   id
+com.umas.code|PopulateData|populateDepartments|0|Select * FROM namesdept
+com.umas.code|PopulateData|populateAdmins|0|Select * FROM names3 order by rand() LIMIT 50
+com.umas.code|PopulateData|populateProfessors|0|Select * FROM names3
+com.umas.code|PopulateData|populateStudents|0|Select * FROM names2
+com.umas.code|PopulateData|populateCourses|0|Select * FROM names1
+com.umas.code|Professor|checkIfProfessor|1|Select PositionID From People where UIN=?;
+com.umas.code|Professor|checkIfProfessor|1|Select PositionID From People where Username=?;
+com.umas.code|Professor|getAllProfInADept|1|Select *   FROM people   WHERE DepartmentID= ? and PositionID=2
+com.umas.code|Professor|getAllProfInADept|1|Select *   FROM people   WHERE DepartmentID= ? and PositionID=2
+com.umas.code|Professor|getAllProfInADept|1|Select DepartmentID   FROM department   WHERE DepartmentName= ?
+com.umas.code|Professor|getAllProf|0|Select *   FROM people   WHERE PositionID=2
+com.umas.code|Professor|updateTitleGT50|1|select age FROM MOCK_DATA3000 where id =   id
+com.umas.code|Professor|updateTitleTwo|1|select age FROM MOCK_DATA3000 where id =   id
+com.umas.code|Professor|updateSalaryGT50|1|select age FROM MOCK_DATA3000 where id =   id
+com.umas.code|Professor|updateSalary4000|1|select age FROM MOCK_DATA3000 where id =   id
+com.umas.code|Semester|Semester|0|Select *   FROM semester   WHERE isCurrent= ?
+com.umas.code|Semester|commitNextSemester|0|Insert into semester   (SemesterName, SemesterYear, isCurrent)   Values(?,?,?)
+com.umas.code|Semester|updateIsCurrent|0|UPDATE semester   SET IsCurrent= ?
+com.umas.code|Student|Student|1|Select * From student where UIN=?;
+com.umas.code|Student|addIntoStudentTable|2|Select UIN From student where UIN=?;
+com.umas.code|Student|addIntoStudentTable|2|Insert into student (UIN, GPA, Level) Values (?,?,?);
+com.umas.code|Student|checkIfStudent|1|Select PositionID From People where UIN=?;
+com.umas.code|Student|updateGPA|2|UPDATE student SET GPA=? where UIN=?;
+com.umas.code|Student|updateGPACheck|1|Select UIN From student where UIN=?;
+com.umas.code|Student|getAllStudents|0|Select *   FROM people   WHERE PositionID=3
+com.umas.code|Student|getStudentCourses|0|Select *   FROM studentenrollment   WHERE UIN= ?
+com.umas.code|Student|calculateGPA|1|Select * From studentenrollment natural join gradingsystem where UIN=?;
+com.umas.code|StudentEnrollment|getAllGradesOfStudent|1|Select OfferID, Grade FROM studentenrollment WHERE UIN = ?;
+com.umas.code|StudentEnrollment|getStudentsAllCourses|1|Select OfferID FROM studentenrollment WHERE UIN = ?;
+com.umas.code|StudentEnrollment|getStudentsInCourse|1|Select UIN FROM studentenrollment WHERE OfferID = ?;
+com.umas.code|StudentEnrollment|getCurrentCoursesOfStudent|1|SELECT studentenrollment.OfferID   FROM university.studentenrollment JOIN coursesoffered JOIN semester   Where studentenrollment.UIN = ?  AND studentenrollment.OfferID = coursesoffered.OfferID  AND coursesoffered.SemesterID = semester.SemesterID  AND semester.IsCurrent = 1;
+com.umas.code|StudentEnrollment|enrollStudents|0|INSERT INTO studentenrollment(UIN,OfferID,Grade) VALUES(?,?,?) ;
+com.umas.code|StudentEnrollment|enrollStudents|0|INSERT INTO %s (StudentUIN,StudentEnrollmentID) VALUES(?,?) ;
+com.umas.code|StudentEnrollment|updateStudentGrade|0|UPDATE `studentenrollment` SET `Grade`=? WHERE `EnrollmentID`=?;
+com.umas.code|StudentEnrollment|getStudentEnrollmentID|0|Select EnrollmentID FROM studentenrollment WHERE UIN = ? AND OfferID = ?;
+com.umas.code|StudentEnrollment|unregisterStudent|0|DELETE FROM `studentenrollment` WHERE `EnrollmentID`=?;
+com.umas.code|StudentEnrollment|unregisterStudent|0|DELETE FROM %s WHERE `StudentUIN`=?;
+com.umas.code|StudentEnrollment|isStudentEnrolled|2|Select UIN FROM studentenrollment WHERE UIN = ? AND OfferID = ?;
+com.umas.code|StudentEnrollment|isSeatAvailable|0|Select OfferID FROM coursesoffered   WHERE SeatsFilled < TotalCapacity   AND OfferID = ?;
+com.umas.code|StudentEnrollment|removeOneSeatFromCourseOffered|1|Select * FROM coursesoffered WHERE OfferID= ?;
+com.umas.code|StudentEnrollment|removeOneSeatFromCourseOffered|1|UPDATE university.coursesoffered   SET SeatsFilled= ?   WHERE OfferID= ? ;
+com.umas.code|TA|TA|1|Select * From teachingassistant where TaUIN=?;
+com.umas.code|TA|updateTaOfficeAddress|3|UPDATE teachingassistant SET TaOfficeLocation= ? where TaUIN=? and OfferID=? ;
+com.umas.code|TA|updateTaOfficeHours|3|UPDATE teachingassistant SET TaOfficeHours= ? where TaUIN=? and OfferID=? ;
+com.umas.code|TA|getTAOfficeAddress|2|select * from teachingassistant where TaUIN=? and OfferID=? ;
+com.umas.code|TA|getTAOfficeHours|2|select * from teachingassistant where TaUIN=? and OfferID=? ;
+com.umas.code|TA|addTAtoTAtable|2|Insert into teachingassistant (TaUIN, OfferID) Values (?,?);
+com.umas.code|TA|addTAtoTAtableCheck|2|Select TaUIN From teachingassistant where OfferID=? and TaUIN= ?;
+com.umas.code|TA|getAllTAs|0|Select *   FROM people   WHERE PositionID=4
+com.umas.code|TA|updateStudentToTA|1|UPDATE people SET PositionID= ? where UIN=?;
+com.umas.code|TA|updateTAtoStudent|1|UPDATE people SET PositionID= ? where UIN=?;
+com.umas.code|Timeslots|Timeslots|1|Select *   FROM timeslots   WHERE TimeSlotID= ?
+com.umas.code|Timeslots|Timeslots|2|Select *  FROM timeslots   WHERE starthour = ? and endhour = ?
+com.umas.code|Timeslots|addTimeSlot|3|INSERT INTO timeslots   (StartHour, EndHour, TimeslotType)   Values(?,?,?);
+com.umas.code|Timeslots|addTimeSlot|3|Select *   FROM timeslots   WHERE starthour = ? and endhour = ?
+com.umas.code|WaitList|addStudentToWaitList|2|INSERT INTO waitlist   (UIN, OfferID, QueuePos)   Values(?,?,?)
+com.umas.code|WaitList|getLastQueuePos|1|Select max(QueuePos) as QueuePos   FROM waitlist   WHERE offerID= ?
+com.umas.code|WaitList|getFirstQueuePosition|1|Select min(QueuePos) as QueuePos   FROM waitlist   WHERE offerID= ?
+com.umas.code|WaitList|getStudentsOnEmailList|1|Select StudentUIN   FROM emailedwaitlist   WHERE offerID= ?
+com.umas.code|WaitList|getStudentsOnWaitList|1|Select *   FROM waitlist   WHERE offerID= ?  ORDER BY QueuePos
+com.umas.code|WaitList|getWaitListCoursesOfStudent|1|Select *   FROM waitlist   WHERE UIN= ?  ORDER BY QueuePos
+com.umas.code|WaitList|removeFromWaitList|2|DELETE FROM waitlist   WHERE UIN= ? and OfferID= ?
+com.umas.code|WaitList|removeFromWaitListAndCommit|2|DELETE FROM waitlist   WHERE UIN= ? and OfferID= ?
+com.umas.code|WaitList|removeFromEmailedList|2|DELETE FROM emailedwaitlist   WHERE StudentUIN= ? and OfferID= ?
+com.umas.code|WaitList|emailFirstStudentOnWaitList|1|INSERT INTO emailedwaitlist   (StudentUIN, OfferID, TimeEmailed)   Values(?,?,?)
+com.umas.code|WaitList|getStudentFirstOnWaitList|1|Select UIN   FROM waitlist   WHERE offerID= ? and QueuePos= ?
+com.umas.code|WaitList|isStudentRegistered|2|Select *   FROM studentenrollment   WHERE offerID= ? and UIN= ?
+com.umas.code|WaitList|isStudentOnWaitList|2|Select *   FROM waitlist   WHERE offerID= ? and UIN= ?
+com.umas.code|WaitList|isWaitListEmpty|1|Select *   FROM waitlist   WHERE offerID= ?
+com.umas.code|WaitList|emptyWaitAndEmailList|0|Delete from waitlist
+com.umas.code|WaitList|emptyWaitAndEmailList|0|Delete from waitlistDelete from emailedwaitlist
+com.umas.code|WaitList|isStudentEmailed|2|Select *   FROM emailedwaitlist   WHERE offerID= ? and StudentUIN= ?
+com.umas.code|WaitList|checkTheStatusOfEmailedStudents|0|Select *   FROM emailedwaitlist
