@@ -114,7 +114,8 @@ public class Xmlparser {
 				}else{
 					System.out.println("WARNING: Emptey class ");
 				}
-				System.out.println("class print \n" + newCL.toString());
+				DBscribe.storeClass(newCL);
+				//System.out.println("class print \n" + newCL.toString());
 			}
 
 		} catch (JDOMException | IOException e) {

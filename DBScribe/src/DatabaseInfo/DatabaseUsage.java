@@ -9,8 +9,17 @@ import java.util.ArrayList;
 public class DatabaseUsage {
 
 
+	/**
+	 * The least stores all database related function info
+	 */
 	ArrayList <DatabaseMethod> methodUsageList =  new ArrayList<DatabaseMethod> ();
 
+	
+	
+	/**
+	 * parse the given database CSV file 
+	 * @param csvFile
+	 */
 	public void parseCSVfile(String csvFile){
 
 		BufferedReader br = null;
@@ -24,14 +33,9 @@ public class DatabaseUsage {
 				//System.out.println("line   : " + line);
 				// use comma as separator
 				String[] MethodDBInfo = line.split(cvsSplitBy);
-
-				System.out.println("0 " + MethodDBInfo[0] 
-						+ " 1 " + MethodDBInfo[1]
-								+ " 2 " + MethodDBInfo[2]
-										+ " 3 " + MethodDBInfo[3]
-												+ " 4 " + MethodDBInfo[4]);
-				
-				//build DatabaseMethod list then. 
+				DatabaseMethod dm = new DatabaseMethod(MethodDBInfo);
+				//build DatabaseMethod list then
+				methodUsageList.add(dm);
 
 			}
 
@@ -39,7 +43,10 @@ public class DatabaseUsage {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		finally {
 			if (br != null) {
 				try {
 					br.close();
@@ -52,12 +59,24 @@ public class DatabaseUsage {
 		System.out.println("Done");
 
 	}
+	
+	
+	/**
+	 * Print all database related function info
+	 */
+	public void printList(){
+		for(DatabaseMethod dm : this.methodUsageList){
+			System.out.println(dm);
+		}
+		
+	}
 
 
 
 	public static void main(String [] args){
 		DatabaseUsage du = new DatabaseUsage ();
 		du.parseCSVfile("DatabaseUsageInfo\\UMAS.csv");
+		du.printList();
 
 	}
 

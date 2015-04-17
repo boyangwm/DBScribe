@@ -37,7 +37,7 @@ public class MethodManager {
 	 * @param mk
 	 * @param m
 	 */
-	public void put(MethodKey mk, Method m){
+	public void putKeyAndMethod(MethodKey mk, Method m){
 		ArrayList<Method> methodList = map.get(mk);
 		if(methodList == null){
 			ArrayList<Method> newList = new ArrayList<Method>();
@@ -102,8 +102,6 @@ public class MethodManager {
 	        System.out.println(  pair.getKey() + "  ---  " + "Number of keys (name + numOfParas) " + ((pair.getValue()+1)/pair.getKey()));
 	        it.remove(); // avoids a ConcurrentModificationException
 	    }
-		
-		
 	}
 	
 
