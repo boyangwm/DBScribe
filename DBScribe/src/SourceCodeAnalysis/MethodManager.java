@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import DatabaseInfo.DatabaseMethod;
+import DatabaseInfo.DatabaseUsage;
+
 /**
  * store and manage all methods information
  * @author Boyang
@@ -28,7 +31,13 @@ public class MethodManager {
 	 * @return
 	 */
 	public ArrayList<Method> getMethodList(MethodKey mkey){
-		return map.get(mkey);
+		
+		 ArrayList<Method> returnList =  map.get(mkey);
+		 if(returnList!= null){
+			 return returnList;
+		 }else{
+			 return new ArrayList<Method>();
+		 }
 	}
 	
 	
@@ -71,6 +80,39 @@ public class MethodManager {
 		allMethod.add(m);
 	}
 	
+	
+	
+	/**
+	 * import databases usage info to the methods
+	 * @param du
+	 */
+	public void ImportDBUsage(DatabaseUsage du){
+
+		for(DatabaseMethod dm : du.methodUsageList){
+			MethodKey mk = new MethodKey (dm.getMethodName(), dm.getNumPara());
+			ArrayList<Method> al = DBscribe.mm.getMethodList(mk);
+			for(Method m: al){
+				Class curClass = m.getClassBelong();
+				if(curClass.getClassName().equals(dm.getClassName()) && 
+						curClass.getPackageName().equals(dm.getPackageName())){
+					m.setHasDBusage(true);
+					m.setDBusageInfo(dm.getDbInfo());
+				}
+			}
+		}
+	}
+	
+	
+	public ArrayList<Method> getAllMethods(){
+		return this.allMethod;
+	}
+	
+	public void printAllMethod(){
+		for(Method m : this.allMethod){
+			System.out.println(m);
+		}
+		
+	}
 	
 	public void myTest(){
 		

@@ -2,6 +2,9 @@ package SourceCodeAnalysis;
 
 import java.util.ArrayList;
 
+import DatabaseInfo.DatabaseUsage;
+import LevelGraph.Analyzer;
+
 public class DBscribe {
 	public static ClassManager cm = new ClassManager();
 	public static MethodManager mm = new MethodManager();
@@ -28,11 +31,9 @@ public class DBscribe {
 	 * the class and method info will be store in cm and mm. (Class and Method manager)
 	 * @param folder
 	 */
-	public void parseXMLFolderAndGetInfo(String folder){
+	public static void parseXMLFolderAndGetInfo(String folder){
 		Xmlparser xp = new Xmlparser();
 		xp.parseXMLFolder(folder);
-		
-		
 	}
 	
 	
@@ -45,10 +46,31 @@ public class DBscribe {
 	}
 	
 	
+	
+	
+	/**
+	 * run DBScribe
+	 */
 	public void run(){
-		parseXMLFolderAndGetInfo("output\\");
-		DBscribe.mm.myTest();
-		DBscribe.cm.printClassesName();
+		//parse xml file and store SC info
+		parseXMLFolderAndGetInfo("output2\\");
+//		DBscribe.mm.myTest();
+//		DBscribe.cm.printClassesName();
+		
+		//parse file and store DB usage info
+		DatabaseUsage du = new DatabaseUsage ();
+		du.parseCSVfile("DatabaseUsageInfo\\Test.csv");
+		DBscribe.mm.ImportDBUsage(du);	
+		//DBscribe.mm.printAllMethod();
+		
+		Analyzer az = new Analyzer();
+		az.buildLevelGraph();
+		
+		
+		
+		
+		System.out.println("Done");
+
 	}
 	
 	
@@ -56,8 +78,6 @@ public class DBscribe {
 	public static void main(String [] args){
 		DBscribe dbscribe = new DBscribe();
 		dbscribe.run();
-		
-
 	}
 
 

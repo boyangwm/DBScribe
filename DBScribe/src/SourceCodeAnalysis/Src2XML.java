@@ -70,6 +70,7 @@ public class Src2XML {
 
 			String cmd = "RunSrcml.bat " + source + " " + XMLOutput;
 			System.out.println("generating XML file: " + XMLOutput);
+			//System.out.println(cmd);
 			Process p = Runtime.getRuntime().exec(cmd);
 
 			BufferedInputStream in = new BufferedInputStream(p.getInputStream());     
@@ -88,9 +89,9 @@ public class Src2XML {
 	public static void main(String[] args){
 		Src2XML sx = new Src2XML();
 
-		//String sourceLoc = "C:\\Users\\Boyang\\Desktop\\ASE15\\subjects\\Test1";
-		String sourceLoc = "C:\\Users\\Boyang\\Desktop\\ASE15\\subjects\\UMAS";
-		String outputLoc = "output\\";
+		String sourceLoc = "D:\\workspace_test\\CallGraphSubject";
+		//String sourceLoc = "C:\\Users\\Boyang\\Desktop\\ASE15\\subjects\\UMAS";
+		String outputLoc = "output2\\";
 		sx.sourceFolderToXML(sourceLoc, outputLoc);
 		System.out.println("Done.");
 	}

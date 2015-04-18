@@ -12,7 +12,7 @@ public class DatabaseUsage {
 	/**
 	 * The least stores all database related function info
 	 */
-	ArrayList <DatabaseMethod> methodUsageList =  new ArrayList<DatabaseMethod> ();
+	public ArrayList <DatabaseMethod> methodUsageList =  new ArrayList<DatabaseMethod> ();
 
 	
 	
@@ -55,9 +55,6 @@ public class DatabaseUsage {
 				}
 			}
 		}
-
-		System.out.println("Done");
-
 	}
 	
 	
@@ -75,7 +72,8 @@ public class DatabaseUsage {
 
 	public static void main(String [] args){
 		DatabaseUsage du = new DatabaseUsage ();
-		du.parseCSVfile("DatabaseUsageInfo\\UMAS.csv");
+		//du.parseCSVfile("DatabaseUsageInfo\\UMAS.csv");
+		du.parseCSVfile("DatabaseUsageInfo\\Test.csv");
 		du.printList();
 
 	}

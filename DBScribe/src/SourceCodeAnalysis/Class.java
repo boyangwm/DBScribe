@@ -54,8 +54,8 @@ public class Class {
 	 * return package name 
 	 * @return
 	 */
-	public Name getPackageName(){
-		return this.packageName;
+	public String getPackageName(){
+		return this.packageName.toString();
 	}
 	
 	
@@ -67,8 +67,6 @@ public class Class {
 		Name nameNewImport = new Name(strlistImportName);
 		imports.add(nameNewImport);
 	}
-	
-	
 	
 	
 	/**

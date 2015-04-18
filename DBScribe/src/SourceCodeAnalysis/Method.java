@@ -15,6 +15,15 @@ public class Method {
 	private String methodName = "";
 	private String methodSpecifier = "";
 	private int methodNumArgs = 0;
+	private boolean hasDBusage = false;  // has DBusage in Current method
+	
+	
+	//we use String temporarily for DBInfo 
+	private String dbInfo = "";
+	
+	
+	
+	
 	
 	private ArrayList <CallStmt> funcCallStmts = new ArrayList <CallStmt>(); 
 	
@@ -88,12 +97,46 @@ public class Method {
 	
 	
 	/**
+	 * setter boolean DBusage 
+	 * @param b
+	 */
+	public void setHasDBusage(boolean b) {
+		this.hasDBusage = b;
+	}
+	
+	
+	
+	/**
+	 * getter boolean DBusage
+	 * @return
+	 */
+	public boolean getHasDBusage() {
+		return hasDBusage;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * temporarily
+	 * @param str
+	 */
+	public void setDBusageInfo(String str) {
+		this.dbInfo = str; 
+	}
+	
+	
+	/**
 	 * add function call cs in this method
 	 * @param cs
 	 */
 	public void addfuncCallStmt(CallStmt cs){
 		funcCallStmts.add(cs);
-		
+	}
+	
+	public ArrayList<CallStmt> getfuncCallStmt(){
+		return this.funcCallStmts;
 	}
 	
 
@@ -102,8 +145,9 @@ public class Method {
 	public String toString(){
 		String str_ret = "";
 		str_ret += "Class :" + this.classBelong.getClassName();
-		str_ret += "  Method :" + this.methodSpecifier +  "  " + this.methodName +"(" +methodNumArgs+")"+"\n";
-		System.out.println(this.methodName  + "   " + funcCallStmts.size());
+		str_ret += "  Method :" + this.methodSpecifier +  "  " + this.methodName +"(" +methodNumArgs+")";
+		str_ret += " hasDBusage  :  " + hasDBusage;
+		str_ret += " DBInfo  :  " + this.dbInfo  +"\n";
 		for(CallStmt cs: funcCallStmts){
 			str_ret += cs.toString() + "\n";		
 		}
