@@ -8,6 +8,7 @@ import LevelGraph.Analyzer;
 public class DBscribe {
 	public static ClassManager cm = new ClassManager();
 	public static MethodManager mm = new MethodManager();
+	public static final int LEVELTHRESHOLD = 15;
 	
 	
 	/**
@@ -53,19 +54,27 @@ public class DBscribe {
 	 */
 	public void run(){
 		//parse xml file and store SC info
-		parseXMLFolderAndGetInfo("output2\\");
+		parseXMLFolderAndGetInfo("output\\");
 //		DBscribe.mm.myTest();
 //		DBscribe.cm.printClassesName();
 		
 		//parse file and store DB usage info
 		DatabaseUsage du = new DatabaseUsage ();
-		du.parseCSVfile("DatabaseUsageInfo\\Test.csv");
+		du.parseCSVfile("DatabaseUsageInfo\\UMAS.csv");
 		DBscribe.mm.ImportDBUsage(du);	
 		//DBscribe.mm.printAllMethod();
 		
 		Analyzer az = new Analyzer();
 		az.buildLevelGraph();
+		az.printLevelMap();
 		
+//		//
+		ArrayList<Method> al =  mm.getAllMethods();
+		System.out.println("num of all Method  : "  + al.size());
+//		for(Method m : al){
+//			az.findCalleeListToDB(m);
+//		}
+//		
 		
 		
 		
