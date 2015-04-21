@@ -2,7 +2,9 @@ package LevelGraph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import DatabaseInfo.DatabaseUsage;
 import SourceCodeAnalysis.CallStmt;
@@ -95,9 +97,13 @@ public class Analyzer {
 
 	public ArrayList <ArrayList <Method>> findCalleeListToDB(Method m){
 		calleeList = new ArrayList <ArrayList <Method>>();
-		Method curM = m; 
+		if(!lg.containsMethod(m)){
+			return calleeList;
+		}
+		System.out.println("pos 1");
+		System.out.println(m.getMethodName());
 		ArrayList <Method> path = new ArrayList <Method>();
-		findCalleeListToDBHelper(m, new ArrayList <Method>(path));
+		findCalleeListToDBHelper(m, new ArrayList <Method>(path), 0);
 		//print the list
 		System.out.println("callee list of " + m.getMethodName());
 		for(ArrayList <Method> al : calleeList){
@@ -111,8 +117,11 @@ public class Analyzer {
 	}
 
 
-	public void findCalleeListToDBHelper(Method m, ArrayList <Method> path){
+	public void findCalleeListToDBHelper(Method m, ArrayList <Method> path, int level){
 		if(m == null){
+			return;
+		}
+		if(level > DBscribe.LEVELTHRESHOLD){
 			return;
 		}
 		path.add(m);
@@ -126,7 +135,7 @@ public class Analyzer {
 		{
 			ArrayList <Method> calleeList = lg.returnCallee(m);
 			for(Method calleeM : calleeList){
-				findCalleeListToDBHelper(calleeM, new ArrayList <Method>(path));
+				findCalleeListToDBHelper(calleeM, new ArrayList <Method>(path), level + 1);
 			}	    
 		}   
 	}
@@ -135,10 +144,34 @@ public class Analyzer {
 
 
 	public void printLevelMap(){
+		HashMap <Integer, Integer> hm = new HashMap<Integer, Integer> ();  // level to numOfethod
 		for(Map.Entry<Method, Integer> entry : this.levelMap.entrySet()){
 			String cName = entry.getKey().getClassBelong().getClassName();
-			System.out.println(cName+"."+entry.getKey().getMethodName() + "  /   " + entry.getValue());
+			String mName = entry.getKey().getMethodName();
+			int level = entry.getValue();
+			//print
+			
+			System.out.println(cName+"."+ mName + "  /   " + level);
+
+			Integer val =  hm.get(level);
+			if(val == null){
+				hm.put(level, 1);
+			}else{
+				val++;
+				hm.put(level, val);
+			}
+			
 		}
+
+		Iterator<Entry<Integer, Integer>> it = hm.entrySet().iterator();
+	    while (it.hasNext()) {
+	    	Map.Entry<Integer, Integer> pair = (Map.Entry<Integer, Integer>)it.next();
+	        System.out.println(  pair.getKey() + "  ---  " + "Number of methods  " + pair.getValue());
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }
+	    
+	    System.out.println("number of method related with DB : " + levelMap.size());
+	    
 	}
 
 }
