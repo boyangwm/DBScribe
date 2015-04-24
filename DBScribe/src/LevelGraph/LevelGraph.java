@@ -88,6 +88,11 @@ public class LevelGraph {
 	
 	
 	
+	/**
+	 * return a list of m's callee
+	 * @param m
+	 * @return
+	 */
 	public ArrayList<Method> returnCallee(Method m) {
 		ArrayList<Method> ret_al = new ArrayList<Method>();
 		int colPos = index.get(m);
@@ -98,6 +103,25 @@ public class LevelGraph {
 		return ret_al;
 		
 	}
+	
+	
+	/**
+	 * return a list of m's caller
+	 * @param m
+	 * @return
+	 */
+	public ArrayList<Method> returnCaller(Method m) {
+		ArrayList<Method> ret_al = new ArrayList<Method>();
+		int colPos = index.get(m);
+		HashSet <Integer> hs = callerEdge.get(colPos);
+		for(Integer i : hs){
+			ret_al.add(nodes.get(i));
+		}
+		return ret_al;
+		
+	}
+
+	
 
 
 

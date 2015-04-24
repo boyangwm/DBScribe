@@ -75,6 +75,11 @@ public class DBscribe {
 		for(Method m : al){
 			az.findCalleeListToDB(m);
 		}
+		
+		
+		for(Method m : al){
+			az.findCallerList(m);
+		}
 //		
 		
 		
