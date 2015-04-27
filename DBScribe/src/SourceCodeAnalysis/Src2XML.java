@@ -18,11 +18,20 @@ public class Src2XML {
 	 * sourceLoc is the source code location (folder)
 	 * outputLoc is the output location (folder) for xml files
 	 * @param outputLoc
+	 * @throws Exception 
 	 */
 	public void sourceFolderToXML(String sourceLoc, String outputLoc){
 		//Worklist
 		LinkedList<File> list = new LinkedList <File> ();
 		File dir = new File(sourceLoc);
+		File dirOutput = new File(outputLoc);
+		if(!dirOutput.exists()){
+			boolean suc = dirOutput.mkdir();
+			if(!suc){
+				System.out.println("ERROR: cannot create folder" + outputLoc);
+				System.exit(0);
+			}
+		}
 		String fileName = "";
 		//Start with the root directory. 
 		File file[] = dir.listFiles();
@@ -33,7 +42,10 @@ public class Src2XML {
 				if(file[i].getName().contains(".java")){
 					fileName = file[i].getAbsolutePath();
 					//System.out.println(fileName);
-					sourceFileToXML(fileName, outputLoc+ fileName.substring(fileName.lastIndexOf("\\")+1) +".xml");
+					if(fileName.contains("/"))
+						sourceFileToXML(fileName, outputLoc+ fileName.substring(fileName.lastIndexOf("/")+1) +".xml");
+					else
+						sourceFileToXML(fileName, outputLoc+ fileName.substring(fileName.lastIndexOf("\\")+1) +".xml");
 				}
 		}
 
@@ -46,20 +58,25 @@ public class Src2XML {
 				if (file == null)
 					continue;
 				for (int i = 0; i < file.length; i++) {
-					if (file[i].isDirectory())
+					if (file[i].isDirectory()){
+						//System.out.println(file[i].getAbsolutePath());
 						list.add(file[i]);
+					}
 					else
 						if(file[i].getName().contains(".java")){
 							fileName = file[i].getAbsolutePath();
 							//System.out.println(fileName);
-							sourceFileToXML(fileName, outputLoc+ fileName.substring(fileName.lastIndexOf("\\")+1) +".xml");
+							if(fileName.contains("/"))
+								sourceFileToXML(fileName, outputLoc+ fileName.substring(fileName.lastIndexOf("/")+1) +".xml");
+							else
+								sourceFileToXML(fileName, outputLoc+ fileName.substring(fileName.lastIndexOf("\\")+1) +".xml");
 						}
 				}
 			}
 		}
 	}
 
-	
+
 	/**
 	 * Translate a source file to XML file
 	 * @param source
